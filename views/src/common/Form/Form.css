@@ -1,0 +1,9 @@
+#Form{
+  display: inline-block;
+  width: 33%;
+  height: 500px;
+  margin-left: 1%;
+  border-radius: 8px;
+  margin-top: 15px;
+  background-color: rgb(175, 206, 255);
+}
