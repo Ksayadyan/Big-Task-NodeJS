@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(to right ,#FF6D00, #A10D2B
+  , #D95FB5); 
+}
+
+canvas{
+  position : absolute;
+  width: 100%;
+  z-index:-1;
+  
+}
+
+.login-form {
+  margin-top: 100px;
+  height: 80px;
+  width: 400px;
+  background-color:rgba(238, 238, 238, 0.911);
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+  border-radius: 20px;
+}
+
+.form-container{
+  height: 600px;
+  width: 400px;
+  background-color:rgba(238, 238, 238, 0.911);
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9  ;
+  border-radius: 20px;
+}
+
+.nkar{
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  margin-left: 50px;
+  margin-top: 50px;
+}
