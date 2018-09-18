@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
-import Users from './pages/Users'
+import HomePage from './pages/HomePage'
 import './App.css'
 import ParticlesStyle from './particles/particles'
 
@@ -14,7 +14,7 @@ class App extends React.Component{
     return(
       <div>
           <div className = 'nkar'>
-            <img src = 'logo.png'/>
+            <img src = 'logo.png' alt = 'logo'/>
           </div>
       <ParticlesStyle/>
     <Router>
@@ -25,17 +25,19 @@ class App extends React.Component{
 
          <div className = 'login-form'>
             <div className = 'change-buttons'>
-                <Link to = '/' className="sign"> Sign In</Link>
-                <Link to= '/sign-up' className="sign"> Sign Up</Link>
+                <NavLink exact activeStyle = {{backgroundColor : '#B52F5C'}} to = '/sign-in' className="sign"> Sign In</NavLink>
+                <NavLink exact activeStyle = {{backgroundColor : '#B52F5C'}} to= '/sign-up' className="sign"> Sign Up</NavLink>
 
             </div>
         </div> 
-        <Route exact path = '/' component = {SignIn}>
+        <Route exact path = '/sign-in' component = {SignIn}>
              
         </Route>
        
         <Route exact path = '/sign-up' component = {SignUp}> 
-            
+          
+        </Route>
+        <Route exact path = '/Home_page' component = {HomePage}>
 
         </Route>
 

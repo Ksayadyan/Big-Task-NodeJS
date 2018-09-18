@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 class SignIn extends React.Component {
     constructor(){
@@ -21,8 +22,8 @@ class SignIn extends React.Component {
         });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
+    handleSubmit(event) {
+        event.preventDefault();
 
         console.log('The form was submitted with the following data:');
         console.log(this.state);
@@ -45,7 +46,7 @@ class SignIn extends React.Component {
                   <input type = 'password' placeholder = 'Enter your Password...' className = 'form-field-input' value = {this.state.password} onChange = {this.handleChange} name = 'password'/>
               </div>
               <div className = 'form-field'>
-                  <button className = 'form-field-button' >Sign In</button>
+                  <button className = 'form-field-button' ><Link to = '/Home_page'>Sign In</Link></button>
               </div>
              
             </form>
