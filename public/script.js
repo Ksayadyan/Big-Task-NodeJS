@@ -12,7 +12,7 @@ $('#submit').on('click',()=>{
   let mail = $('#mail').val();
   let birthday = $('#birthday').val();
   if(login.length >= 6 || password.length >= 6){
-      $.post('/register',{
+      $.post('/api',{
         login,
         password,
         name,
