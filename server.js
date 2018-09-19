@@ -66,6 +66,7 @@ app.post('/recoverpasswordattempt',async (req,res)=>{
 })
 
 app.post('/signin', user.login);
+app.get('/home', user.profile);
 
  app.listen(5000,()=>{
   console.log("Listening 5000")
