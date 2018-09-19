@@ -1,7 +1,30 @@
-
-
 const cryptPassword = require('./cryptPassword.js');
 
+module.exports.signup=async (req,res)=>{
+  let value=req.body;
+  let password=cryptPassword(value.password);
+   try {
+    db.sync()
+       Users.create({
+        name: value.firstName,
+        lastname: value.lastName,
+        login: value.login,
+        password: password,
+        gender:   value.gender,
+        birthday: value.birthday,
+        question: value.question,
+        answer:   value.answer,
+        mail:     value.email,
+        phone:    value.telephone,
+     })
+   res.send("OK")
+   console.log("Succesfully registered")
+   }  
+    catch(e){
+        console.log("U have error");
+        res.send("Duplicate")
+    }
+}
 module.exports.login = async (req,res)=>{
   try{
   console.log('signin requrest');

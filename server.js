@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const mysql = require('mysql');
 const serverConfig = require('./utilities/serverConfig.js');
 const authcon = require('./utilities/authcon.js');
-const registerSafe = require('./utilities/registerSafe.js');
+// const registerSafe = require('./utilities/registerSafe.js');
 //const cryptPassword = require('./utilities/cryptPassword.js');
 const getSecretQuestion = require('./utilities/getSecretQuestion.js');
 const recoverPassword = require('./utilities/recoverPassword.js');
@@ -15,7 +15,7 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-let connection=new Sequelize("users","root","k199923",{ //database i anuny, workbenchit useri anuny u paroly
+let connection=new Sequelize("users","root","11235813",{ //database i anuny, workbenchit useri anuny u paroly
  dialect:"mysql",
 })
 global.db = connection;
@@ -37,7 +37,7 @@ let Users=connection.define("users",{ //table i anuny
  mail:     Sequelize.STRING,
  phone:    Sequelize.STRING,
 })
-
+global.Users=Users;
 authcon(connection);
 
 
@@ -45,10 +45,7 @@ app.get('/',(req,res)=>{
   res.sendFile('index.html');
 });
 
-app.post('/api',(req,res)=>{
-  console.log("Got register request");
-  registerSafe(req,res,connection,Users)
-})
+app.post('/api',user.signup)
 
 
 app.post('/recoverpassword',async (req,res)=>{
@@ -64,7 +61,6 @@ app.post('/recoverpasswordattempt',async (req,res)=>{
   let result = await recoverPassword(req,connection);
   res.send()
 })
-
 app.post('/signin', user.login);
 app.get('/home', user.profile);
 
