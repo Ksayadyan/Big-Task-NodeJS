@@ -1,11 +1,8 @@
-module.exports=(con)=>{
-    con.authenticate()
-    .then (()=>{
-     console.log("Connected to database");
-    //  return true
-     
-    })
-    .catch((e)=>{
-        throw new Error ("Unable to connect to database");
-    })
+module.exports = async (con) => {
+  try {
+    await con.authenticate()
+    console.log('Connected to database');
+  } catch (e) {
+    throw new Error('Unable to connect to database');
+  }
 }

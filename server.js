@@ -15,8 +15,8 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-let connection=new Sequelize("users","root","11235813",{ //database i anuny, workbenchit useri anuny u paroly
- dialect:"mysql",
+let connection=new Sequelize('users','root','k199923',{ //database i anuny, workbenchit useri anuny u paroly
+ dialect:'mysql',
 })
 global.db = connection;
 //databasan avtomat sarqvuma taky bayc petqa mtnes u workbenchov dzes mi erku bane
@@ -25,7 +25,7 @@ global.db = connection;
 //id n karas sarqes PK ete problem tvec chnayac chem karcum
 //packege.json y nayi tes vory petqa install ara
 // karevory sequelize mysql (ete problem tvec miate mysql2 install ara)
-let Users=connection.define("users",{ //table i anuny
+let Users=connection.define('users',{ //table i anuny
  lastname: Sequelize.STRING,
  login:    Sequelize.STRING,
  name:     Sequelize.STRING,
