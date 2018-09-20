@@ -10,10 +10,10 @@ module.exports = async (req,con)=>{
        console.log('Password updated');
       });
     }else{
-      return 'Answer ws incorrect';
+      return 'Answer is incorrect';
     }
   }catch(e){
-      console.log('There wan an error while trying to update password');
+      console.log('There was an error while trying to update password');
       return 'Error occuered';
   }
 }

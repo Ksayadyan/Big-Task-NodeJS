@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const mysql = require('mysql');
 const serverConfig = require('./utilities/serverConfig.js');
 const authcon = require('./utilities/authcon.js');
-const registerSafe = require('./utilities/registerSafe.js');
+// const registerSafe = require('./utilities/registerSafe.js');
 //const cryptPassword = require('./utilities/cryptPassword.js');
 const getSecretQuestion = require('./utilities/getSecretQuestion.js');
 const recoverPassword = require('./utilities/recoverPassword.js');
@@ -15,8 +15,8 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-let connection=new Sequelize("users","root","k199923",{ //database i anuny, workbenchit useri anuny u paroly
- dialect:"mysql",
+let connection=new Sequelize('users','root','k199923',{ //database i anuny, workbenchit useri anuny u paroly
+ dialect:'mysql',
 })
 global.db = connection;
 //databasan avtomat sarqvuma taky bayc petqa mtnes u workbenchov dzes mi erku bane
@@ -25,7 +25,7 @@ global.db = connection;
 //id n karas sarqes PK ete problem tvec chnayac chem karcum
 //packege.json y nayi tes vory petqa install ara
 // karevory sequelize mysql (ete problem tvec miate mysql2 install ara)
-let Users=connection.define("users",{ //table i anuny
+let Users=connection.define('users',{ //table i anuny
  lastname: Sequelize.STRING,
  login:    Sequelize.STRING,
  name:     Sequelize.STRING,
@@ -37,7 +37,7 @@ let Users=connection.define("users",{ //table i anuny
  mail:     Sequelize.STRING,
  phone:    Sequelize.STRING,
 })
-
+global.Users=Users;
 authcon(connection);
 
 
@@ -45,10 +45,7 @@ app.get('/',(req,res)=>{
   res.sendFile('index.html');
 });
 
-app.post('/api',(req,res)=>{
-  console.log("Got register request");
-  registerSafe(req,res,connection,Users)
-})
+app.post('/api',user.signup)
 
 
 app.post('/recoverpassword',async (req,res)=>{
@@ -64,8 +61,8 @@ app.post('/recoverpasswordattempt',async (req,res)=>{
   let result = await recoverPassword(req,connection);
   res.send()
 })
-
 app.post('/signin', user.login);
+app.get('/home', user.profile);
 
  app.listen(5000,()=>{
   console.log("Listening 5000")
