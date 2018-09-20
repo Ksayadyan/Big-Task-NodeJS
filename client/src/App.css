@@ -1,6 +1,6 @@
 
 
-  .form-field-input{
+  /* .form-field-input{
     width : 250px;
     height : 30px;
     background-color: #cacbd1;
@@ -8,13 +8,13 @@
     border: none;
     border-radius: 5px; 
     font-size: 15px;
-  }
+  } */
  
-  .form-field-label{
+  /* .form-field-label{
     color: black;
     font-family: sans-serif;
     font-size: 15px;
-  }
+  } */
 
   .form-field-button{
     margin-top: 20px;
@@ -29,11 +29,11 @@
   };
 
 
-  .form-container{
+  /* .form-container{
     background-color: black;
     text-align: center
-  }
-.change-buttons a {
+  } */
+/* .change-buttons a {
   text-decoration: none;
   height: 30px;
   width: 100pxl;
@@ -42,19 +42,28 @@
   border-radius: 10px;
   color: black;
 
+} */
+
+
+.change-buttons a{
+  text-decoration: none;
+}
+
+
+
+.change-buttons{
+  text-decoration: none;
 }
 
  button:hover{
   background-color:#B52F5C;
 }
-input:hover{
+/* input:hover{
   background-color:#B52F5C;
-}
-a:hover{
-  background-color: #B52F5C;
-}
+} */
+
 .form-checkbox-label{
-  color: #cacbd1;
+  color: black;
 }
 
 .form-field-radio{

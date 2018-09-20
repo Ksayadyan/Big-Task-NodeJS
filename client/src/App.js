@@ -1,39 +1,64 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Button from '@material-ui/core/Button';
 
-class App extends Component {
-  state = {
-    response: ''
-  };
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
+import HomePage from './pages/HomePage'
+import './App.css'
+import ParticlesStyle from './particles/particles'
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
-  }
+// import ReactDom from 'react-dom';
 
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
+class App extends React.Component{
+  
+  render(){
+    return(
+      <div>
+         
+      <ParticlesStyle/>
+      <Router>
+      <div className = 'container'>
+              <div className = 'logo'>
+                <NavLink to = '/'><img src = 'logo.png' alt = 'logo'/></NavLink>
+              </div>
+          
 
-    if (response.status !== 200) throw Error(body.message);
 
-    return body;
-  };
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-           {this.state.response}
-        </p>
+            <div className = 'login-form'>
+                <div className = 'change-buttons'>
+                    <NavLink exact to ='/sign-in' >
+                        <Button  variant="outlined" color="secondary">
+                              Sign In
+                        </Button>
+                    </NavLink>
+                    <NavLink exact to ='/sign-up'>
+                      <Button variant="outlined" color="secondary">
+                          Sign Up
+                      </Button>
+                  </NavLink>
+                
+
+            </div>
+        </div>
+     
+        <Route exact path = '/sign-in' component = {SignIn}>
+             
+        </Route>
+       
+        <Route exact path = '/sign-up' component = {SignUp}> 
+          
+        </Route>
+        <Route exact path = '/Home_page' component = {HomePage}>
+
+        </Route>
+
+    
       </div>
-    );
+    </Router>
+    </div>
+    )
+
   }
 }
-
-export default App;
+export default App

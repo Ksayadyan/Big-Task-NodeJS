@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.1.0",
+    "@material-ui/icons": "^3.0.1",
     "babel": "^6.23.0",
     "express": "^4.16.3",
     "particlesjs": "^2.2.3",
