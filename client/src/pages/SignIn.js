@@ -31,6 +31,17 @@ class SignIn extends React.Component {
 
         console.log('The form was submitted with the following data:');
         console.log(this.state);
+        fetch ('/signin', {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(this.state)
+        })
+        .then (res => res.json())
+        .then(get => console.log(get))
+        .catch(err => console.log("err", err));
+        
     }
 
     render(){
@@ -64,6 +75,8 @@ class SignIn extends React.Component {
                                 <Button 
                                     variant="outlined"
                                     color="secondary" 
+                                    onClick = {this.handleSubmit} >
+
                                    
                                     >
                                     Sign In

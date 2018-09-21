@@ -15,7 +15,7 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-let connection=new Sequelize('users','root','k199923',{ //database i anuny, workbenchit useri anuny u paroly
+let connection=new Sequelize('users','root','datamysql',{ //database i anuny, workbenchit useri anuny u paroly
  dialect:'mysql',
 })
 global.db = connection;
@@ -45,7 +45,9 @@ app.get('/',(req,res)=>{
   res.sendFile('index.html');
 });
 
-app.post('/api',user.signup)
+app.post('/api',user.signup);
+
+
 
 
 app.post('/recoverpassword',async (req,res)=>{
