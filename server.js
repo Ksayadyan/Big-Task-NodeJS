@@ -15,15 +15,8 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-<<<<<<< HEAD
-let connection=new Sequelize('users','root','11235813',{ //database i anuny, workbenchit useri anuny u paroly
-=======
-<<<<<<< HEAD
-let connection=new Sequelize('users','root','11235813',{ //database i anuny, workbenchit useri anuny u paroly
-=======
+
 let connection=new Sequelize('users','root','k199923',{ //database i anuny, workbenchit useri anuny u paroly
->>>>>>> 34cf540af9fecbba4ac0beca820c61f6a7f05e01
->>>>>>> cd9616895eb8be8dc9b9c7e66d657d40423e1bb1
  dialect:'mysql',
 })
 global.db = connection;
@@ -33,11 +26,7 @@ global.db = connection;
 //id n karas sarqes PK ete problem tvec chnayac chem karcum
 //packege.json y nayi tes vory petqa install ara
 // karevory sequelize mysql (ete problem tvec miate mysql2 install ara)
-<<<<<<< HEAD
 let Users=connection.define('users',{ //table i anuny
-=======
-let Users=connection.define('uniqelogin',{ //table i anuny
->>>>>>> cd9616895eb8be8dc9b9c7e66d657d40423e1bb1
  lastname:  {
   type:Sequelize.STRING,
   allowNull:false,

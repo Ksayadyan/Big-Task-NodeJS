@@ -34,15 +34,7 @@ module.exports.login = async (req, res) => {
       console.log(post, 'this is post');
       console.log(login, 'this is login');
       console.log(post.password, 'this is password');
-<<<<<<< HEAD
       let password = cryptPassword(post.password);
-=======
-<<<<<<< HEAD
-      let password = cryptPassword(post.password);
-=======
-      let password = post.password;
->>>>>>> 34cf540af9fecbba4ac0beca820c61f6a7f05e01
->>>>>>> cd9616895eb8be8dc9b9c7e66d657d40423e1bb1
       let sql = `SELECT * FROM users WHERE login='${login}' and password='${password}'`;
       let user = await db.query(sql, {
         type: db.QueryTypes.SELECT
