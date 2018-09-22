@@ -15,7 +15,11 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
+<<<<<<< HEAD
 let connection=new Sequelize('users','root','11235813',{ //database i anuny, workbenchit useri anuny u paroly
+=======
+let connection=new Sequelize('users','root','k199923',{ //database i anuny, workbenchit useri anuny u paroly
+>>>>>>> 34cf540af9fecbba4ac0beca820c61f6a7f05e01
  dialect:'mysql',
 })
 global.db = connection;

@@ -1,8 +1,8 @@
-const cryptPassword = require('./cryptPassword.js');
+//const cryptPassword = require('./cryptPassword.js');
 
 module.exports.signup = async (req, res) => {
   let value = req.body;
-  let password = cryptPassword(value.password);
+  let password = value.password;
   try {
     db.sync()
     await Users.create({
@@ -34,7 +34,11 @@ module.exports.login = async (req, res) => {
       console.log(post, 'this is post');
       console.log(login, 'this is login');
       console.log(post.password, 'this is password');
+<<<<<<< HEAD
       let password = cryptPassword(post.password);
+=======
+      let password = post.password;
+>>>>>>> 34cf540af9fecbba4ac0beca820c61f6a7f05e01
       let sql = `SELECT * FROM users WHERE login='${login}' and password='${password}'`;
       let user = await db.query(sql, {
         type: db.QueryTypes.SELECT
