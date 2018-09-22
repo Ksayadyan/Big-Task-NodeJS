@@ -65,7 +65,8 @@ module.exports.profile = async (req, res) => {
       type: db.QueryTypes.SELECT
     });
     console.log(user, 'this is user');
-    res.send(user[0]);
+    res.send({name: user[0]['name'],
+              lastName: user[0]['lastname'],});
   } catch (e) {
     console.log('Error while redirecting');
   }

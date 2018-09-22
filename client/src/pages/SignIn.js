@@ -41,7 +41,7 @@ class SignIn extends React.Component {
         .then (res => res.json())
         .then(get => console.log(get))
         .catch(err => console.log("err", err));
-        
+
     }
 
     render(){
@@ -49,20 +49,20 @@ class SignIn extends React.Component {
             <div className = 'form-container'>
                 <form onSubmit = {this.handleSubmit}  className = 'form'>
                      <div className = 'form-field'>
-                 
-                            <TextField    
+
+                            <TextField
                                 variant="outlined"
                                 type ='text'
-                                label = 'login' 
-                                placeholder = 'Enter your Login...' 
+                                label = 'login'
+                                placeholder = 'Enter your Login...'
                                 value = {this.state.login}
-                                onChange = {this.handleChange} 
+                                onChange = {this.handleChange}
                                 name = 'login' />
                      </div>
                      <div className = 'form-field'>
-                 
-                            <TextField 
-                                type = 'password' 
+
+                            <TextField
+                                type = 'password'
                                 label="Password"
                                 placeholder = 'Enter your Password...'
                                 variant="outlined"
@@ -72,18 +72,18 @@ class SignIn extends React.Component {
                     </div>
                     <div className = 'form-field'>
                             <Link exact to = '/Home_page'>
-                                <Button 
+                                <Button
                                     variant="outlined"
-                                    color="secondary" 
+                                    color="secondary"
                                     onClick = {this.handleSubmit} >
 
-                                   
-                                    >
+
+                                    
                                     Sign In
                                 </Button>
                             </Link>
                      </div>
-             
+
                 </form>
 
         </div>
