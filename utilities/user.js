@@ -5,7 +5,7 @@ module.exports.signup = async (req, res) => {
   let password = cryptPassword(value.password);
   try {
     db.sync()
-    Users.create({
+    await Users.create({
       name: value.firstName,
       lastname: value.lastName,
       login: value.login,
@@ -20,7 +20,7 @@ module.exports.signup = async (req, res) => {
     res.send("OK")
     console.log("Succesfully registered")
   } catch (e) {
-    console.log("U have error");
+    console.log(`User with login "${value.login}" already exists`);
     res.send("Duplicate")
   }
 }
@@ -32,6 +32,8 @@ module.exports.login = async (req, res) => {
       let post = req.body;
       let login = post.login;
       console.log(post, 'this is post');
+      console.log(login, 'this is login');
+      console.log(post.password, 'this is password');
       let password = cryptPassword(post.password);
       let sql = `SELECT * FROM users WHERE login='${login}' and password='${password}'`;
       let user = await db.query(sql, {
@@ -47,7 +49,7 @@ module.exports.login = async (req, res) => {
       }
     }
   } catch (e) {
-    console.log('error user');
+    console.log(e);
   }
 }
 
