@@ -1,11 +1,11 @@
-//const cryptPassword = require('./cryptPassword.js');
+const cryptPassword = require('./cryptPassword.js');
 
 module.exports.signup = async (req, res) => {
   let value = req.body;
-  let password = value.password;
+  let password = cryptPassword(value.password);
   try {
     db.sync()
-    Users.create({
+    await Users.create({
       name: value.firstName,
       lastname: value.lastName,
       login: value.login,
@@ -20,7 +20,7 @@ module.exports.signup = async (req, res) => {
     res.send("OK")
     console.log("Succesfully registered")
   } catch (e) {
-    console.log("U have error");
+    console.log(`User with login "${value.login}" already exists`);
     res.send("Duplicate")
   }
 }
@@ -34,7 +34,7 @@ module.exports.login = async (req, res) => {
       console.log(post, 'this is post');
       console.log(login, 'this is login');
       console.log(post.password, 'this is password');
-      let password = post.password;
+      let password = cryptPassword(post.password);
       let sql = `SELECT * FROM users WHERE login='${login}' and password='${password}'`;
       let user = await db.query(sql, {
         type: db.QueryTypes.SELECT

@@ -15,7 +15,7 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-let connection=new Sequelize('users','root','k199923',{ //database i anuny, workbenchit useri anuny u paroly
+let connection=new Sequelize('users','root','11235813',{ //database i anuny, workbenchit useri anuny u paroly
  dialect:'mysql',
 })
 global.db = connection;
@@ -26,16 +26,47 @@ global.db = connection;
 //packege.json y nayi tes vory petqa install ara
 // karevory sequelize mysql (ete problem tvec miate mysql2 install ara)
 let Users=connection.define('users',{ //table i anuny
- lastname: Sequelize.STRING,
- login:    Sequelize.STRING,
- name:     Sequelize.STRING,
- password: Sequelize.STRING,
- gender:   Sequelize.STRING,
- birthday: Sequelize.STRING,
- question: Sequelize.STRING,
- answer:   Sequelize.STRING,
- mail:     Sequelize.STRING,
- phone:    Sequelize.STRING,
+ lastname:  {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
+ login:    {
+  type: Sequelize.STRING,
+  allowNull: false,
+  unique:true,
+ },
+ name:     {
+   type:Sequelize.STRING,
+   allowNull:false,
+},
+ password: {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
+ gender:    {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
+ birthday: {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
+ question:  {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
+ answer:    {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
+ mail:      {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
+ phone:     {
+  type:Sequelize.STRING,
+  allowNull:false,
+},
 })
 global.Users=Users;
 authcon(connection);
