@@ -1,7 +1,12 @@
 const cryptPassword = require('./cryptPassword.js');
+const fs=require("fs")
+const mongod=require("./mongo.js")
 
 module.exports.signup = async (req, res) => {
   let value = req.body;
+  let obj={
+    login:`${value.login}`
+  }
   let password = cryptPassword(value.password);
   try {
     db.sync()
@@ -18,6 +23,12 @@ module.exports.signup = async (req, res) => {
       phone: value.telephone,
     })
     res.send("OK")
+    fs.mkdir(`./user-images/${value.login}/`,(err)=>{
+      if (err) throw err;
+      mongod.mongo(obj);
+      console.log("Folder created");
+        })
+   
     console.log("Succesfully registered")
   } catch (e) {
     console.log(`User with login "${value.login}" already exists`);
@@ -65,8 +76,7 @@ module.exports.profile = async (req, res) => {
       type: db.QueryTypes.SELECT
     });
     console.log(user, 'this is user');
-    res.send({name: user[0]['name'],
-              lastName: user[0]['lastname'],});
+    res.send(user[0]);
   } catch (e) {
     console.log('Error while redirecting');
   }

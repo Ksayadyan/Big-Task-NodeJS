@@ -6,3 +6,4 @@ module.exports = (password)=>{
   // encrypted += cipher.final('hex');
   // return encrypted;
 }
+  

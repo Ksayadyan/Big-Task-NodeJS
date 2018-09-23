@@ -164,7 +164,7 @@ class SignUp extends React.Component {
                     <div className = 'form-field'>
                         <TextField
                             variant= 'outlined'
-                            label = 'Secret Question'
+                            label = 'Answer'
                             type = 'text'
                             placeholder = 'Enter your answer...'
                             className = 'form-field-input'
