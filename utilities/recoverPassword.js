@@ -5,7 +5,7 @@ module.exports = async (req,con)=>{
     let user = await con.query(`SELECT * FROM users WHERE login = '${req.body.login}'`, {type: con.QueryTypes.SELECT });
     if(user[0]['answer'] === req.body.answer){
       let newPassword = cryptPassword(req.body.newPassword);
-      con.query(`UPDATE users SET password = '${newPassword}' WHERE password = '${user[0]['password']}'`)
+      con.query(`UPDATE users SET password = '${newPassword}' WHERE login = '${user[0]['login']}'`)
       .spread((results,metadata)=>{
        console.log('Password updated');
       });

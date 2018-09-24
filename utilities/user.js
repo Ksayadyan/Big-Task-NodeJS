@@ -1,6 +1,7 @@
 const cryptPassword = require('./cryptPassword.js');
-const fs=require("fs")
-const mongod=require("./mongo.js")
+const fs = require("fs")
+const mongod = require("./mongo.js")
+const ClassUser = require('./classUserDb.js')
 
 module.exports.signup = async (req, res) => {
   let value = req.body;
@@ -29,9 +30,7 @@ module.exports.signup = async (req, res) => {
           type: db.QueryTypes.SELECT,
         })
         console.log(user,'this is mongodb id');
-        let obj={
-          id:`${user[0]['id']}`,
-        };
+        let obj = new ClassUser(`${user[0]['id']}`);
         mongod.mongo(obj);
     console.log("Succesfully registered")
   } catch (e) {
