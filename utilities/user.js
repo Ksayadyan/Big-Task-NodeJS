@@ -4,9 +4,6 @@ const mongod=require("./mongo.js")
 
 module.exports.signup = async (req, res) => {
   let value = req.body;
-  let obj={
-    login:`${value.login}`
-  }
   let password = cryptPassword(value.password);
   try {
     db.sync()
@@ -22,13 +19,20 @@ module.exports.signup = async (req, res) => {
       mail: value.email,
       phone: value.telephone,
     })
-    res.send("OK")
+    res.send("OK");
     fs.mkdir(`./user-images/${value.login}/`,(err)=>{
       if (err) throw err;
-      mongod.mongo(obj);
       console.log("Folder created");
         })
-   
+        let sql = `SELECT id FROM users WHERE login = '${value.login}'`
+        let user = await db.query(sql,{
+          type: db.QueryTypes.SELECT,
+        })
+        console.log(user,'this is mongodb id');
+        let obj={
+          id:`${user[0]['id']}`,
+        };
+        mongod.mongo(obj);
     console.log("Succesfully registered")
   } catch (e) {
     console.log(`User with login "${value.login}" already exists`);
@@ -75,9 +79,9 @@ module.exports.profile = async (req, res) => {
     let user = await db.query(sql, {
       type: db.QueryTypes.SELECT
     });
-    console.log(user, 'this is user');
+    console.log(user, 'User found');
     res.send({ name:user[0]['name'],
-               lastnaem : user[0]['lastname']
+               lastname : user[0]['lastname']
               });
   } catch (e) {
     console.log('Error while redirecting');
