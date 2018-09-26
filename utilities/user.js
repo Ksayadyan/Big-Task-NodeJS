@@ -21,17 +21,17 @@ module.exports.signup = async (req, res) => {
       phone: value.telephone,
     })
     res.send("OK");
-    fs.mkdir(`./user-images/${value.login}/`,(err)=>{
+    fs.mkdir(`./user-images/${value.login}/`, (err) => {
       if (err) throw err;
       console.log("Folder created");
-        })
-        let sql = `SELECT id FROM users WHERE login = '${value.login}'`
-        let user = await db.query(sql,{
-          type: db.QueryTypes.SELECT,
-        })
-        console.log(user,'this is mongodb id');
-        let obj = new ClassUser(`${user[0]['id']}`);
-        mongod.mongo(obj);
+    })
+    let sql = `SELECT id FROM users WHERE login = '${value.login}'`
+    let user = await db.query(sql, {
+      type: db.QueryTypes.SELECT,
+    })
+    console.log(user, 'this is mongodb id');
+    let obj = new ClassUser(`${user[0]['id']}`);
+    mongod.mongo(obj);
     console.log("Succesfully registered")
   } catch (e) {
     console.log(`User with login "${value.login}" already exists`);
@@ -79,9 +79,11 @@ module.exports.profile = async (req, res) => {
       type: db.QueryTypes.SELECT
     });
     console.log(user, 'User found');
-    res.send({ name:user[0]['name'],
-               lastname : user[0]['lastname']
-              });
+    let obj = {
+      name: user[0]['name'],
+      lastname: user[0]['lastname']
+    }
+    mongod.findAndSendUserInfo(userId,res,obj)
   } catch (e) {
     console.log('Error while redirecting');
   }
