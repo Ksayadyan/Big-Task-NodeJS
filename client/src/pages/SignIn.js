@@ -1,7 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import './signIn.css';
+
 
 
 
@@ -47,44 +49,66 @@ class SignIn extends React.Component {
     render(){
         return(
             <div className = 'form-container'>
-                <form onSubmit = {this.handleSubmit}  className = 'form'>
-                     <div className = 'form-field'>
+         
+         <div className = 'logo'>
+                    <NavLink to = '/'><img src = 'logo.png' alt = 'logo'/></NavLink>
+                </div>
 
-                            <TextField
-                                variant="outlined"
-                                type ='text'
-                                label = 'login'
-                                placeholder = 'Enter your Login...'
-                                value = {this.state.login}
-                                onChange = {this.handleChange}
-                                name = 'login' />
-                     </div>
-                     <div className = 'form-field'>
 
-                            <TextField
-                                type = 'password'
-                                label="Password"
-                                placeholder = 'Enter your Password...'
-                                variant="outlined"
-                                value = {this.state.password}
-                                onChange = {this.handleChange}
-                                name = 'password'/>
+
+                <div className = 'login-form'>
+                    <div className = 'change-buttons'>
+                        <NavLink exact to ='/sign-in' >
+                            <Button  variant="outlined" color="secondary">
+                                Sign In
+                            </Button>
+                        </NavLink>
+                        <NavLink exact to ='/sign-up'>
+                        <Button variant="outlined" color="secondary">
+                            Sign Up
+                        </Button>
+                        </NavLink>
+
+
                     </div>
-                    <div className = 'form-field'>
-                            <Link exact to = '/Home_page'>
-                                <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    onClick = {this.handleSubmit} >
+                </div>
+                <form onSubmit = {this.handleSubmit}  className = 'form'>
+<div className = 'form-field'>
 
+       <TextField
+           variant="outlined"
+           type ='text'
+           label = 'login'
+           placeholder = 'Enter your Login...'
+           value = {this.state.login}
+           onChange = {this.handleChange}
+           name = 'login' />
+</div>
+<div className = 'form-field'>
 
-                                    
-                                    Sign In
-                                </Button>
-                            </Link>
-                     </div>
+       <TextField
+           type = 'password'
+           label="Password"
+           placeholder = 'Enter your Password...'
+           variant="outlined"
+           value = {this.state.password}
+           onChange = {this.handleChange}
+           name = 'password'/>
+</div>
+<div className = 'form-field'>
+      
+           <Button
+               variant="outlined"
+               color="secondary"
+               onClick = {this.handleSubmit} >
+                <Link exact to = '/Home_page'>  Sign In</Link>
+             
+               
+           </Button>
+     
+</div>
 
-                </form>
+</form>
 
         </div>
         )
@@ -93,3 +117,5 @@ class SignIn extends React.Component {
 }
 
 export default SignIn
+
+

@@ -1,18 +1,16 @@
+
 import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {NavLink} from 'react-router-dom';
 
-
-
-
-
 class SignUp extends React.Component {
     constructor(){
         super();
         this.state = {
             lastName : '',
+            lastNameError : '',
             login : '', 
             firstName : '',
             password : '',
@@ -22,8 +20,8 @@ class SignUp extends React.Component {
             telephone : '',
             question : '',
             answer : '',
-          
-            agree : false
+            agree : false,
+            
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,31 +31,56 @@ class SignUp extends React.Component {
         let target = event.target;
         let value = target.type === 'checkbox' ? target.checked : target.value;
         let name = target.name;
-
         this.setState({
           [name]: value
         });
     }
 
-    
+    validate = ()=>{
+        let isError = false;
+        let errors = {};
+        if(this.state.lastName.length < 5){
+            isError = true;
+            errors.lastNameError = 'Last Name must be 5 charecters long'
+        }
+        if (isError){
+            this.setState({
+               ...this.state, 
+               ...errors
+            });
+        }
+        else if(!isError){
+            this.setState({
+                lastNameError : '',
+
+            })
+        }
+        return isError
+    }
 
     handleSubmit(event) {
-        const sendObj = this.state;
+       
+        // const sendObj = this.state;
         event.preventDefault();
         // send.lastName
-        console.log('The form was submitted with the following data:');
-        console.log(this.state);
-
-            fetch('/api', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify(sendObj)
-        })
-        .then(res => res.json())
-        .then(get => console.log(get))
-        .catch(err => console.log("err", err));
+        const err = this.validate();
+            if(!err){
+                let sendObj = this.state
+                console.log('The form was submitted with the following data:');
+                console.log(this.state);
+        
+                    fetch('/api', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                      },
+                    body: JSON.stringify(sendObj)
+                })
+                .then(res => res.json())
+                .then(get => console.log(get))
+                .catch(err => console.log("err", err));
+    
+     }
         
     }
 
@@ -65,16 +88,40 @@ class SignUp extends React.Component {
     render(){
         return(
             <div className = 'form-container'>
+            
+                 <div className = 'logo'>
+                    <NavLink to = '/'><img src = 'logo.png' alt = 'logo'/></NavLink>
+                </div>
+                
+                <div className = 'login-form'>
+                    <div className = 'change-buttons'>
+                        <NavLink exact to ='/sign-in' >
+                            <Button  variant="outlined" color="secondary">
+                                Sign In
+                            </Button>
+                        </NavLink>
+                        <NavLink exact to ='/sign-up'>
+                        <Button variant="outlined" color="secondary">
+                            Sign Up
+                        </Button>
+                        </NavLink>
+
+
+                    </div>
+                </div>
                 <form onSubmit = {this.handleSubmit} className = 'form'>
                     <div className = 'form-field'>
                         <TextField  
+                            // error
                             variant = 'outlined'
                             label = 'Last Name'
                             type = 'text'
-                            placeholder = 'Enter your Last Name...'
+                            // placeholder = 'Enter your Last Name...'
                             value = {this.state.lastName}
                             onChange = {this.handleChange}
+                            TextField = {this.state.lastNameError}
                             name = 'lastName'  />
+                            <small className = 'error'>{this.state.lastNameError}</small>
                     </div>
                     <div className = 'form-field'>
                 
@@ -185,6 +232,7 @@ class SignUp extends React.Component {
                                     onClick = {this.handleSubmit} >
                                     Sign Up
                                 </Button>
+                                
                             </NavLink>
                     </div>
               
@@ -197,3 +245,9 @@ class SignUp extends React.Component {
 }
 
 export default SignUp
+
+
+
+
+
+
