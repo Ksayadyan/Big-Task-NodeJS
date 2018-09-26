@@ -97,6 +97,7 @@ app.post('/recoverpasswordattempt',async (req,res)=>{
 })
 app.post('/signin', user.login);
 app.get('/home', user.profile);
+app.post('/imageUpload',user.imageUpload)
 
  app.listen(5000,()=>{
   console.log("Listening 5000")

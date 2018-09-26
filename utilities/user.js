@@ -21,17 +21,24 @@ module.exports.signup = async (req, res) => {
       phone: value.telephone,
     })
     res.send("OK");
-    fs.mkdir(`./user-images/${value.login}/`, (err) => {
-      if (err) throw err;
-      console.log("Folder created");
-    })
     let sql = `SELECT id FROM users WHERE login = '${value.login}'`
     let user = await db.query(sql, {
       type: db.QueryTypes.SELECT,
     })
+    fs.mkdir(`./user-images/Client${user[0]['id']}/`, (err) => {
+      if (err) throw err;
+      console.log("Folder created");
+    })
+
     console.log(user, 'this is mongodb id');
-    let obj = new ClassUser(`${user[0]['id']}`);
-    mongod.mongo(obj);
+    if(value.gender === 'male'){
+      let obj = new ClassUser(`${user[0]['id']}`,'../defaultImages/male.jpg')
+      await mongod.mongo(obj);
+    }else{
+      let obj = new ClassUser(`${user[0]['id']}`,'../defaultImages/female.jpg')
+      await mongod.mongo(obj);
+    }
+
     console.log("Succesfully registered")
   } catch (e) {
     console.log(`User with login "${value.login}" already exists`);
@@ -87,4 +94,28 @@ module.exports.profile = async (req, res) => {
   } catch (e) {
     console.log('Error while redirecting');
   }
+}
+
+module.exports.imageUpload = (req,res) => {
+  if(!req.session.userId){
+    console.log('Not authentificated');
+    res.send('Not authentificated');
+  }else{
+    if(!req.files){
+      console.log('No files uploaded');
+      res.send('No files');
+    }else{
+      let image = req.files.image;
+      console.log(req.files.image.name,' this is file name');
+      console.log(`./user-images/Client${req.userId}/${req.files.image.name}`, 'log for right place');
+      image.mv(`./user-images/Client${req.session.userId}/${req.files.image.name}`,(err)=>{
+        if(err){
+           res.send('Internal error')
+           return;
+        }
+        res.send('File uploaded')
+      })
+    }
+  }
+
 }

@@ -1,6 +1,7 @@
 const express=require("express");
 const bodyParser=require("body-parser");
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 
 
 module.exports= (app) => {
@@ -17,4 +18,5 @@ module.exports= (app) => {
         maxAge: 60000,
       }
   }));
+  app.use(fileUpload());
 };
