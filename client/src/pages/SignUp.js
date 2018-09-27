@@ -10,17 +10,23 @@ class SignUp extends React.Component {
         super();
         this.state = {
             lastName : '',
-            lastNameError : '',
-            login : '', 
+            login : '',
             firstName : '',
             password : '',
             gender : '',
             birthday : '',
             email : '',
-            telephone : '',
+            phone : '',
             question : '',
             answer : '',
             agree : false,
+            errors : {
+                lastNameError : '',
+                firstNameError : '',
+                loginError : '',
+                passwordError : '',
+                emailError : '',
+                phoneError : '',           }
             
         }
         this.handleChange = this.handleChange.bind(this);
@@ -34,28 +40,41 @@ class SignUp extends React.Component {
         this.setState({
           [name]: value
         });
+     
     }
+  
 
     validate = ()=>{
-        let isError = false;
         let errors = {};
-        if(this.state.lastName.length < 5){
-            isError = true;
-            errors.lastNameError = 'Last Name must be 5 charecters long'
-        }
-        if (isError){
+        let phoneNumber = Number(this.state.phone);
+
+            if(this.state.lastName.length === 0 || /[0-9]/.test(this.state.lastName)){
+            errors.lastNameError = 'Last Name must be at least one character long and does not contain numbers';
+                }
+            if(this.state.firstName.length === 0 || /[0-9]/.test(this.state.firstName)){
+                errors.firstNameError = 'First Name must be at least one character long and does not contain numbers';
+                }
+            if(this.state.login.length === 0){
+                errors.loginError = 'login must be at least 1 charecter long'
+                }
+            if(!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)){
+                errors.passwordError = 'Password must be at least 6 characters long and contain at least one numeric digit, one uppercase and one lowercase letter';
+                }
+            if(!this.state.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+                    errors.emailError = 'Please enter correct email address';
+                }
+            if(isNaN(phoneNumber)){
+                    errors.phoneError = 'Phone must contain only digits';
+                }
+
+        if (Object.keys(errors).length){
             this.setState({
-               ...this.state, 
+               ...this.state.errors, 
                ...errors
             });
-        }
-        else if(!isError){
-            this.setState({
-                lastNameError : '',
-
-            })
-        }
-        return isError
+        } 
+     
+        return Object.keys(errors).length
     }
 
     handleSubmit(event) {
@@ -112,7 +131,6 @@ class SignUp extends React.Component {
                 <form onSubmit = {this.handleSubmit} className = 'form'>
                     <div className = 'form-field'>
                         <TextField  
-                            // error
                             variant = 'outlined'
                             label = 'Last Name'
                             type = 'text'
@@ -120,7 +138,8 @@ class SignUp extends React.Component {
                             value = {this.state.lastName}
                             onChange = {this.handleChange}
                             TextField = {this.state.lastNameError}
-                            name = 'lastName'  />
+                            name = 'lastName' 
+                            required />
                             <small className = 'error'>{this.state.lastNameError}</small>
                     </div>
                     <div className = 'form-field'>
@@ -132,7 +151,10 @@ class SignUp extends React.Component {
                             placeholder = 'Enter your First Name...'
                             value = {this.state.firstName}
                             onChange = {this.handleChange}
-                            name = 'firstName' />
+                            name = 'firstName'
+                            required />
+                            <small className = 'error'>{this.state.firstNameError}</small>
+
                     </div>
 
                     <div className = 'form-field'>
@@ -143,7 +165,10 @@ class SignUp extends React.Component {
                             placeholder = 'Enter your Login...'
                             value = {this.state.login}
                             onChange = {this.handleChange}
-                            name = 'login'/>
+                            name = 'login'
+                            required/>
+                        <small className = 'error'>{this.state.loginError}</small>
+
                     </div>
           
                     <div className = 'form-field'>
@@ -155,11 +180,25 @@ class SignUp extends React.Component {
                             className = 'form-field-input'
                             value = {this.state.password}
                             onChange = {this.handleChange}
-                            name = 'password'/>
+                            name = 'password'
+                            required/>
+                            <small className = 'error'>{this.state.passwordError}</small>
+
                     </div>
                     <div className = 'form-field-radio'>
-                        <Checkbox  type="radio" className = 'form-field-rad' name="gender" value= 'male' onChange = {this.handleChange} checked={this.state.gender === 'male'}  /> Male
-                        <Checkbox type="radio" className = 'form-field-rad' name="gender" value= 'female' onChange = {this.handleChange} checked={this.state.gender === 'female'}  /> Female
+                        <Checkbox  
+                        type="radio"
+                        className = 'form-field-rad' 
+                        name="gender" value= 'male' 
+                        onChange = {this.handleChange} 
+                        checked={this.state.gender === 'male'}
+                          /> Male
+                        <Checkbox 
+                            type="radio"
+                            className = 'form-field-rad' 
+                            name="gender" value= 'female' 
+                            onChange = {this.handleChange} 
+                            checked={this.state.gender === 'female'}/> Female
                     </div>
                     <div className = 'form-field'>
                             <TextField
@@ -173,6 +212,7 @@ class SignUp extends React.Component {
                                 InputLabelProps={{
                                 shrink: true,
                                 }}
+                                required    
                             />
                     </div>
               
@@ -184,18 +224,24 @@ class SignUp extends React.Component {
                             placeholder = 'Enter your E-Mail...'
                             value = {this.state.email}
                             onChange = {this.handleChange}
-                            name = 'email'/>    
+                            name = 'email'
+                            required/>
+                    <small className = 'error'>{this.state.emailError}</small>
+    
                      
                     </div>
                     <div className = 'form-field'>
                         <TextField 
                             variant='outlined'
-                            label = 'Telephone'
-                            type = 'tel'
-                            placeholder = 'Enter your telephone...'
-                            value = {this.state.telephonel}
+                            label = 'phone'
+                            type = 'text'
+                            placeholder = 'XXX-XXX-XXX'
+                            value = {this.state.phone}
                             onChange = {this.handleChange}
-                            name = 'telephone'/>
+                            name = 'phone'
+                            required/>
+                            <small className = 'error'>{this.state.phoneError}</small>
+
                     </div>
                     <div className = 'form-field'>
                         <TextField  
