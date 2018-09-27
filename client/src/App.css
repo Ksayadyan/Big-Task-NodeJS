@@ -23,7 +23,7 @@
 
   .form{
     margin-top: 20px;
-    height: 100vh;
+    height: auto;
     width: 400px;
     background-color:rgba(238, 238, 238, 0.911);
     margin: auto;
@@ -34,6 +34,7 @@
     justify-content: center;
     opacity: 0.9;
     border-radius: 20px;
+    padding-bottom: 10px;
   }
 
   .MuiAppBar-colorPrimary-100{
