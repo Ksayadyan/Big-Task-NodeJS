@@ -6,8 +6,9 @@ const ClassUser = require('./classUserDb.js')
 module.exports.signup = async (req, res) => {
   let value = req.body;
   let password = cryptPassword(value.password);
-  try {
+  try {   
     db.sync()
+
     await Users.create({
       name: value.firstName,
       lastname: value.lastName,
@@ -114,8 +115,21 @@ module.exports.imageUpload = (req,res) => {
            return;
         }
         res.send('File uploaded')
-      })
+        mongod.updateImages(req.session.userId,`../../../user-images/Client${req.session.userId}/${req.files.image.name}`)
+        // console.log(user);
+        })
     }
   }
 
+}
+
+module.exports.signout = async (req,res)=>{
+  if (req.session.userId){
+    req.session.destroy();
+    res.send('Logged out');
+  
+  }else {
+    res.send('Not Authorized')
+  }
+  
 }

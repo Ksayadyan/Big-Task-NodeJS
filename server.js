@@ -16,7 +16,7 @@ let app = express();
 serverConfig(app);
 
                                                   //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-let connection=new Sequelize('users','root','k199923',{ //database i anuny, workbenchit useri anuny u paroly
+let connection=new Sequelize('users','root','11235813',{ //database i anuny, workbenchit useri anuny u paroly
  dialect:'mysql',
 })
 global.db = connection;
@@ -27,7 +27,7 @@ global.db = connection;
 //packege.json y nayi tes vory petqa install ara
 // karevory sequelize mysql (ete problem tvec miate mysql2 install ara)
 let Users=connection.define('users',{ //table i anuny
- lastname:  {
+  lastname:  {
   type:Sequelize.STRING,
   allowNull:false,
 },
@@ -35,22 +35,37 @@ let Users=connection.define('users',{ //table i anuny
   type: Sequelize.STRING,
   allowNull: false,
   unique:true,
+  validate: {
+    notEmpty:true,
+    }
  },
  name:     {
    type:Sequelize.STRING,
    allowNull:false,
+   validate: {
+    notEmpty:true,
+    }
 },
  password: {
   type:Sequelize.STRING,
   allowNull:false,
+  validate: {
+    notEmpty:true,
+    }
 },
  gender:    {
   type:Sequelize.STRING,
   allowNull:false,
+  validate: {
+    notEmpty:true,
+    }
 },
  birthday: {
   type:Sequelize.STRING,
   allowNull:false,
+  validate: {
+    notEmpty:true,
+    }
 },
  question:  {
   type:Sequelize.STRING,
@@ -59,14 +74,23 @@ let Users=connection.define('users',{ //table i anuny
  answer:    {
   type:Sequelize.STRING,
   allowNull:false,
+  validate: {
+    notEmpty:true,
+    }
 },
  mail:      {
   type:Sequelize.STRING,
   allowNull:false,
+  validate: {
+    notEmpty:true,
+    }
 },
  phone:     {
   type:Sequelize.STRING,
   allowNull:false,
+  validate: {
+    notEmpty:true,
+    }
 },
 })
 global.Users=Users;
@@ -98,6 +122,7 @@ app.post('/recoverpasswordattempt',async (req,res)=>{
 app.post('/signin', user.login);
 app.get('/home', user.profile);
 app.post('/imageUpload',user.imageUpload)
+app.get('/signout',user.signout)
 
  app.listen(5000,()=>{
   console.log("Listening 5000")
