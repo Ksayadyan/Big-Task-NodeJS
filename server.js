@@ -1,42 +1,40 @@
+//Npm modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const mysql = require('mysql');
-// const mongo=require("mongodb")
+const session = require('express-session');
+//Utility modules
 const serverConfig = require('./utilities/serverConfig.js');
 const authcon = require('./utilities/authcon.js');
-// const registerSafe = require('./utilities/registerSafe.js');
-//const cryptPassword = require('./utilities/cryptPassword.js');
 const getSecretQuestion = require('./utilities/getSecretQuestion.js');
 const recoverPassword = require('./utilities/recoverPassword.js');
 const user = require('./utilities/user.js');
-const session = require('express-session');
 
+//Server creation and configuration
 let app = express();
 serverConfig(app);
 
-                                                  //ete vdrug servery problem tvec mti utilities/serverConfig.js u poxi inchor baner
-let connection=new Sequelize('users','root','11235813',{ //database i anuny, workbenchit useri anuny u paroly
+//Establish connection between server and Mysql Database
+let connection=new Sequelize('users','root','k199923',{
  dialect:'mysql',
 })
+//Global referance to Mysql Connection
 global.db = connection;
-//databasan avtomat sarqvuma taky bayc petqa mtnes u workbenchov dzes mi erku bane
-//login y sarqes NN u UQ
-//obshi sax karas sarqes NN
-//id n karas sarqes PK ete problem tvec chnayac chem karcum
-//packege.json y nayi tes vory petqa install ara
-// karevory sequelize mysql (ete problem tvec miate mysql2 install ara)
-let Users=connection.define('users',{ //table i anuny
+
+//Creating Mysql table if table  doesn't exists
+//Validating properties for every column
+let Users=connection.define('users',{
   lastname:  {
-  type:Sequelize.STRING,
-  allowNull:false,
+  type:Sequelize.STRING,   //type String
+  allowNull:false,         //Value can't be null
 },
  login:    {
   type: Sequelize.STRING,
   allowNull: false,
-  unique:true,
+  unique:true,             //This value is unique in whole table
   validate: {
-    notEmpty:true,
+    notEmpty:true,         //Additional validation(Filed can't be empty)
     }
  },
  name:     {
@@ -93,37 +91,48 @@ let Users=connection.define('users',{ //table i anuny
     }
 },
 })
+
+//Global referance to mysql table
 global.Users=Users;
+//Authenticate connection
 authcon(connection);
 
-
-app.get('/',(req,res)=>{
-  res.sendFile('index.html');
-});
-
+//Handling registration(every user function can be found in utilities/users.js)
 app.post('/api',user.signup);
 
 
 
-
+//Sending back secret question for specific user
 app.post('/recoverpassword',async (req,res)=>{
-    console.log(req.body,'this is recover');
     let result = await getSecretQuestion(req.body.login,connection);
-    res.send(result); //esi hly prcac chi sran ushadrutyun mi dardzra
+    res.send(result);
   });
 
+//Attemting to change password for specific user
+//Body of request contains properties below
+//1.req.body.login,
+//2.req.body.answer,
+//3.req.body.newpassword,
 app.post('/recoverpasswordattempt',async (req,res)=>{
-  //req.body.login,
-  //req.body.answer,
-  //req.body.newpassword,
   let result = await recoverPassword(req,connection);
-  res.send()
-})
-app.post('/signin', user.login);
-app.get('/home', user.profile);
-app.post('/imageUpload',user.imageUpload)
-app.get('/signout',user.signout)
+  res.send(result)
+});
 
+//Handling Signin Request
+app.post('/signin', user.login);
+//Handling user profile rendering
+app.get('/home', user.profile);
+//Handling image upload
+app.post('/imageUpload',user.imageUpload);
+//Signing out specific user
+app.get('/signout',user.signout);
+//Saving fetched url in mongodb
+app.post('/fetchurl',user.fetchurl);
+//Saving html in mongodb
+app.post('/savehtml',user.saveHtml)
+
+
+//Server starting
  app.listen(5000,()=>{
-  console.log("Listening 5000")
+  console.log("Listening 5000");
 });

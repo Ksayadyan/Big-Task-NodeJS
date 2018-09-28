@@ -3,7 +3,7 @@ const bodyParser=require("body-parser");
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
 
-
+//Server full configuration
 module.exports= (app) => {
     app.use(express.static(`${__dirname}/../public`));
     app.use(bodyParser.json());

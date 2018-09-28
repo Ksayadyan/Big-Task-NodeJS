@@ -1,14 +1,15 @@
 const cryptPassword = require('./cryptPassword.js')
-
+//Module for updating users password(recover)
 module.exports = async (req,con)=>{
   try{
-    let user = await con.query(`SELECT * FROM users WHERE login = '${req.body.login}'`, {type: con.QueryTypes.SELECT });
+    let user = await con.query(`SELECT answer FROM users WHERE login = '${req.body.login}'`, {type: con.QueryTypes.SELECT });
     if(user[0]['answer'] === req.body.answer){
       let newPassword = cryptPassword(req.body.newPassword);
-      con.query(`UPDATE users SET password = '${newPassword}' WHERE login = '${user[0]['login']}'`)
+      await con.query(`UPDATE users SET password = '${newPassword}' WHERE login = '${user[0]['login']}'`)
       .spread((results,metadata)=>{
        console.log('Password updated');
       });
+      return 'Password has been reset'
     }else{
       return 'Answer is incorrect';
     }
