@@ -128,12 +128,12 @@ const saveHtml = async (id,group,urlToSave,html)=>{
     let historyArray = user.history[`${group}`];
     let index;
     for(let i = 0; i < historyArray.length; i++){
-      if(historyArray[i].url === urlToSave){
+      if(historyArray[i]['url'] === urlToSave){
         index = i;
         break;
       }
     }
-    historyArray[index].html = html;
+    historyArray[`${index}`].html = html;
     await db.collection('history and images').update({
       id: `${id}`
     }, {
@@ -146,8 +146,10 @@ const saveHtml = async (id,group,urlToSave,html)=>{
   })
 }
 
-module.exports.mongo = mongo;
-module.exports.findAndSendUserInfo = findAndSendUserInfo;
-module.exports.updateImages = updateImages;
-module.exports.saveFetchedUrl = saveFetchedUrl;
-module.exports.saveHtml = saveHtml;
+module.exports = {
+  mongo,
+  findAndSendUserInfo,
+  updateImages,
+  saveFetchedUrl,
+  saveHtml,
+}

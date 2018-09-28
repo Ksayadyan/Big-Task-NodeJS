@@ -6,7 +6,7 @@ const {
 const mongod = require("./mongo.js")
 const ClassUser = require('./classUserDb.js')
 
-module.exports.signup = async (req, res) => {
+const signup = async (req, res) => {
   let value = req.body;
   let password = cryptPassword(value.password);
   try {
@@ -54,7 +54,7 @@ module.exports.signup = async (req, res) => {
 }
 
 
-module.exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     console.log('signin requrest');
     let message = '';
@@ -84,7 +84,7 @@ module.exports.login = async (req, res) => {
 }
 
 //Profile Information sending
-module.exports.profile = async (req, res) => {
+const profile = async (req, res) => {
   try {
     let userId = req.session.userId;
     if (!userId) {
@@ -108,7 +108,7 @@ module.exports.profile = async (req, res) => {
 }
 
 //Image upload handler
-module.exports.imageUpload = (req, res) => {
+const imageUpload = (req, res) => {
   if (!req.session.userId) {
     console.log('Not authentificated');
     res.send('Not authentificated');
@@ -131,7 +131,7 @@ module.exports.imageUpload = (req, res) => {
 }
 
 //Signing out specific user
-module.exports.signout = async (req, res) => {
+const signout = async (req, res) => {
   if (req.session.userId) {
     req.session.destroy();
     res.send('Logged out');
@@ -141,7 +141,7 @@ module.exports.signout = async (req, res) => {
 }
 
 //Saving fetched url in MongoDB
-module.exports.fetchurl = async (req, res) => {
+const fetchurl = async (req, res) => {
   try {
     if (req.session.userId) {
       const fetchedUrl = new URL(req.body.url);
@@ -159,7 +159,7 @@ module.exports.fetchurl = async (req, res) => {
 }
 
 //Saveing fetched url's html in mogodb
-module.exports.saveHtml = async (req, res) => {
+const saveHtml = async (req, res) => {
   try {
     if (req.session.userId) {
       const fetchedUrl = new URL(req.body.url);
@@ -174,4 +174,14 @@ module.exports.saveHtml = async (req, res) => {
     console.log('Error occured while saving html', e);
     res.send('Error');
   }
+}
+
+module.exports = {
+  signup,
+  login,
+  profile,
+  imageUpload,
+  signout,
+  fetchurl,
+  saveHtml,
 }
