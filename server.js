@@ -10,6 +10,7 @@ const authcon = require('./utilities/authcon.js');
 const getSecretQuestion = require('./utilities/getSecretQuestion.js');
 const recoverPassword = require('./utilities/recoverPassword.js');
 const user = require('./utilities/user.js');
+const editProfile = require('./utilities/editProfileInfo.js')
 
 //Server creation and configuration
 let app = express();
@@ -129,7 +130,9 @@ app.get('/signout',user.signout);
 //Saving fetched url in mongodb
 app.post('/fetchurl',user.fetchurl);
 //Saving html in mongodb
-app.post('/savehtml',user.saveHtml)
+app.post('/savehtml',user.saveHtml);
+//Change user information
+app.post('/editprofile',editProfile);
 
 
 //Server starting
