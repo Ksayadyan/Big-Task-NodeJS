@@ -43,8 +43,6 @@ class SignIn extends React.Component {
         .then (res => res.json())
         .then(get => console.log(get))
         .catch(err => console.log("err", err));
-        
-
     }
 
     render(){
