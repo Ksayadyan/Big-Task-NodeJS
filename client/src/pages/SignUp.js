@@ -129,19 +129,7 @@ class SignUp extends React.Component {
                     </div>
                 </div>
                 <form onSubmit = {this.handleSubmit} className = 'form'>
-                    <div className = 'form-field'>
-                        <TextField  
-                            variant = 'outlined'
-                            label = 'Last Name'
-                            type = 'text'
-                            // placeholder = 'Enter your Last Name...'
-                            value = {this.state.lastName}
-                            onChange = {this.handleChange}
-                            TextField = {this.state.lastNameError}
-                            name = 'lastName' 
-                            required />
-                            <small className = 'error'>{this.state.lastNameError}</small>
-                    </div>
+             
                     <div className = 'form-field'>
                 
                         <TextField
@@ -155,6 +143,19 @@ class SignUp extends React.Component {
                             required />
                             <small className = 'error'>{this.state.firstNameError}</small>
 
+                    </div>
+                    <div className = 'form-field'>
+                        <TextField  
+                            variant = 'outlined'
+                            label = 'Last Name'
+                            type = 'text'
+                            // placeholder = 'Enter your Last Name...'
+                            value = {this.state.lastName}
+                            onChange = {this.handleChange}
+                            TextField = {this.state.lastNameError}
+                            name = 'lastName' 
+                            required />
+                            <small className = 'error'>{this.state.lastNameError}</small>
                     </div>
 
                     <div className = 'form-field'>

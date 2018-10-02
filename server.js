@@ -17,7 +17,7 @@ let app = express();
 serverConfig(app);
 
 //Establish connection between server and Mysql Database
-let connection=new Sequelize('users','root','k199923',{
+let connection=new Sequelize('users','root','datamysql',{
  dialect:'mysql',
 })
 //Global referance to Mysql Connection

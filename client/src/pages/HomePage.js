@@ -12,9 +12,6 @@ import Input from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
 
 
-
-
-
 const styles = {
   root: {
     flexGrow: 1
@@ -111,6 +108,7 @@ class HomePage extends React.Component {
                             role="button"
                             onClick={this.toggleDrawer('left', false)}
                             onKeyDown={this.toggleDrawer('left', false)}
+                            className = 'sidelist'
                           >
                             {sideList}
                           </div>
@@ -130,11 +128,13 @@ class HomePage extends React.Component {
           </AppBar>
                    <div className = 'left-content'>
                       <div className = 'profile-picture'>
-                          <img src = 'http://archbreastcancer.com/public/site/images/admin/img_avatar.png'/>
+                          <img src = {this.props.user.profileImage}/>
                           <span className = 'user-name'>
-                          Name : Davit <br/>
-                          Surname : Sargsyan <br/>
-                          Phone : 041-777-955 <br/>
+                          Name : {this.props.user.name} <br/>
+                          Surname : {this.props.user.lastname} <br/>
+                          Total Fetched : {this.props.user.totalFetched} <br/>
+                          Total Images : {this.props.user.totalFetched} <br/>
+
                           </span>
 
                       </div>

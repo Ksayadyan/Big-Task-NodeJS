@@ -20,10 +20,9 @@ class App extends React.Component{
       <div className = 'container'>
              
         <Route exact path = '/' component = {firstPage}>
-
         </Route>
+        
         <Route exact path = '/sign-in' component = {SignIn}>
-             
         </Route>
        
         <Route exact path = '/sign-up' component = {SignUp}> 

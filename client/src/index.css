@@ -62,10 +62,12 @@ a {
   width: 100%;
   border-radius: 50%;
   margin-top: 20px;
+  height: 303px;
 }
 .user-name{
   color: #A20E2E;
   font-size: 20px;
+
 
 }
 .profile-picture{
