@@ -1,5 +1,7 @@
-const cryptPassword = require('./cryptPassword.js')
 //Module for updating users password(recover)
+
+const cryptPassword = require('../../helpers/cryptPassword.js')
+
 module.exports = async (req,con)=>{
   try{
     const user = await con.query(`SELECT answer FROM users WHERE login = '${req.body.login}'`, {type: con.QueryTypes.SELECT });

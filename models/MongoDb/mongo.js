@@ -69,7 +69,7 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
       });
       let number = user.totalFetched;
       if (user.history[`${hostname}`]) {
-        let group = user.history[`${hostname}`];
+        const group = user.history[`${hostname}`];
         for(let i = 0; i < group.length; i++){
           if(group[i]['url'] === urlToSave){
             console.log('Fieled with same url found, no changes performed');

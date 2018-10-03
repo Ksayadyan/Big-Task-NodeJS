@@ -5,109 +5,38 @@ const Sequelize = require('sequelize');
 const mysql = require('mysql');
 const session = require('express-session');
 //Utility modules
-const serverConfig = require('./utilities/serverConfig.js');
-const authcon = require('./utilities/authcon.js');
-const getSecretQuestion = require('./utilities/getSecretQuestion.js');
-const recoverPassword = require('./utilities/recoverPassword.js');
-const user = require('./utilities/user.js');
-const editProfile = require('./utilities/editProfileInfo.js')
+const serverConfig = require('./middleware/serverConfig.js');
+const authcon = require('./helpers/authcon.js');
+const getSecretQuestion = require('./controllers/recovering/getSecretQuestion.js');
+const recoverPassword = require('./controllers/recovering/recoverPassword.js');
+const UsersHistory = require('./controllers/BasicLogic/UsersHistory.js')
+const user = require('./controllers/BasicLogic/user.js');
+const UsersProfile = require('./controllers/Basiclogic/UsersProfile.js')
+const { db } = require('./models/MySQL/MySQLDb.js')
+
 //Env config
-require('dotenv').config();
+
 
 //Server creation and configuration
 const app = express();
 serverConfig(app);
 
 //Establish connection between server and Mysql Database
-const connection=new Sequelize('users','root',`${process.env.DB_PASSWORD}`,{
- dialect:'mysql',
-})
-//Global referance to Mysql Connection
-global.db = connection;
+
 
 //Creating Mysql table if table  doesn't exists
 //Validating properties for every column
-const Users=connection.define('users',{
-  lastname:  {
-  type:Sequelize.STRING,   //type String
-  allowNull:false,         //Value can't be null
-},
- login:    {
-  type: Sequelize.STRING,
-  allowNull: false,
-  unique:true,             //This value is unique in whole table
-  validate: {
-    notEmpty:true,         //Additional validation(Field can't be empty)
-    }
- },
- name:     {
-   type:Sequelize.STRING,
-   allowNull:false,
-   validate: {
-    notEmpty:true,
-    }
-},
- password: {
-  type:Sequelize.STRING,
-  allowNull:false,
-  validate: {
-    notEmpty:true,
-    }
-},
- gender:    {
-  type:Sequelize.STRING,
-  allowNull:false,
-  validate: {
-    notEmpty:true,
-    }
-},
- birthday: {
-  type:Sequelize.STRING,
-  allowNull:false,
-  validate: {
-    notEmpty:true,
-    }
-},
- question:  {
-  type:Sequelize.STRING,
-  allowNull:false,
-},
- answer:    {
-  type:Sequelize.STRING,
-  allowNull:false,
-  validate: {
-    notEmpty:true,
-    }
-},
- mail:      {
-  type:Sequelize.STRING,
-  allowNull:false,
-  validate: {
-    notEmpty:true,
-    }
-},
- phone:     {
-  type:Sequelize.STRING,
-  allowNull:false,
-  validate: {
-    notEmpty:true,
-    }
-},
-})
+
 
 //Global referance to mysql table
-global.Users=Users;
 //Authenticate connection
-authcon(connection);
-
-//Handling registration(every user function can be found in utilities/users.js)
-app.post('/api',user.signup);
+authcon(db);
 
 
 
 //Sending back secret question for specific user
 app.post('/recoverpassword',async (req,res)=>{
-    const result = await getSecretQuestion(req.body.login,connection);
+    const result = await getSecretQuestion(req.body.login , db);
     res.send(result);
   });
 
@@ -117,27 +46,34 @@ app.post('/recoverpassword',async (req,res)=>{
 //2.req.body.answer,
 //3.req.body.newpassword,
 app.post('/recoverpasswordattempt',async (req,res)=>{
-  const result = await recoverPassword(req,connection);
+  const result = await recoverPassword(req , db );
   res.send(result)
 });
 
+//Handling registration(every user function can be found in ./controllers/BasicLogic/user.js)
+app.post('/api',user.signup);
 //Handling Signin Request
 app.post('/signin', user.login);
 //Handling user profile rendering
-app.get('/home', user.profile);
+app.get('/home', UsersProfile.profile);
 //Handling image upload
-app.post('/imageUpload',user.imageUpload);
+app.post('/imageUpload',UsersProfile.imageUpload);
 //Signing out specific user
 app.get('/signout',user.signout);
 //Saving fetched url in mongodb
-app.post('/fetchurl',user.fetchurl);
+app.post('/fetchurl',UsersHistory.fetchurl);
 //Saving html in mongodb
-app.post('/savehtml',user.saveHtml);
+app.post('/savehtml',UsersHistory.saveHtml);
 //Change user information
-app.post('/editprofile',editProfile);
+app.post('/editprofile',UsersProfile.editProfile);
 
 
 //Server starting
  app.listen(5000,()=>{
   console.log("Listening 5000");
 });
+
+
+module.exports={
+  app,
+}
