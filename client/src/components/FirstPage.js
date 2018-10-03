@@ -1,15 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
-import './firstPage.css'
-
-
 
 
 class firstPage extends React.Component{
     render(){
         return (
-            <div className = 'form-container'>
+            <div className = 'form-container test'>
                 <div className = 'logo'>
                     <NavLink to = '/'><img src = '../logo.png' alt = 'logo'/></NavLink>
                 </div>

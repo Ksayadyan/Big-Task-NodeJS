@@ -13,8 +13,9 @@ import SearchIcon from '@material-ui/icons/Search';
 
 
 const styles = {
-  root: {
-    flexGrow: 1
+  input: {
+    color: 'red',
+    fontSize: 30
   },
   grow: {
     flexGrow: 1,
@@ -84,6 +85,8 @@ class HomePage extends React.Component {
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
+      console.log(classes);
+
     return (
       <div>
           <AppBar position="static" style = {styles.AppBar}>
@@ -119,7 +122,7 @@ class HomePage extends React.Component {
                       <Input
                         placeholder="Search…"
                         disableUnderline
-                        style = {styles.Search} />
+                        className={classes.input} />
                             <button className = 'search-button'><SearchIcon/></button>
                   </div>
                     

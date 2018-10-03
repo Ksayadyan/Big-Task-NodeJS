@@ -2,10 +2,8 @@ import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { HashRouter as Router, Route } from 'react-router-dom';
-
-import './signIn.css';
 import HomePage from './HomePage';
+import X from './Validation'
 
 
 
@@ -17,7 +15,7 @@ class SignIn extends React.Component {
             login : '',
             password : '',
             user : null,
-            errors :'',
+            errors : {}
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,17 +45,20 @@ class SignIn extends React.Component {
     }
 
 
-
-
     validate = ()=>{
         let errors = {};
-          
-            if(this.state.login.length === 0){
-                errors.loginError = 'login must be at least 1 charecter long'
-                }
+        
+            if(this.state.login.length < 5){
+                errors.loginError = 'login must be at least 5 charecter long';
+                } else{
+                    errors.loginError = '';
+                } 
             if(!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)){
                 errors.passwordError = 'Password must be at least 6 characters long and contain at least one numeric digit, one uppercase and one lowercase letter';
+                } else{
+                    errors.passwordError = '';
                 }
+            
            
 
         if (Object.keys(errors).length){
@@ -67,13 +68,11 @@ class SignIn extends React.Component {
             });
         } 
      
-        return Object.keys(errors).length
+        return 
     }
     handleSubmit(event) {
         event.preventDefault();
-        const err = this.validate();
 
-            if(!err){
         {
             event.preventDefault();
     
@@ -103,8 +102,9 @@ class SignIn extends React.Component {
         .then (res => res.json())
         .then(get => this.checkUser(get))
         .catch(err => console.log("err", err));
-    }
+
 }
+
 
     render(){
         if (this.state.user){
@@ -140,7 +140,7 @@ class SignIn extends React.Component {
                 <div className = 'form-field'>
 
                     <TextField
-                            autoFocus
+                        onBlur = {this.validate}
                         variant="outlined"
                         type ='text'
                         label = 'login'
@@ -154,6 +154,7 @@ class SignIn extends React.Component {
                 <div className = 'form-field'>
 
                     <TextField
+                        onBlur = {this.validate}
                         type = 'password'
                         label="Password"
                         placeholder = 'Enter your Password...'

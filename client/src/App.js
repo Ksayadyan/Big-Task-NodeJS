@@ -1,11 +1,12 @@
 import React from 'react';
+import Router0 from './components/Router'
 import { HashRouter as Router, Route } from 'react-router-dom';
-import SignUp from './pages/SignUp';
-import SignIn from './pages/SignIn';
-import HomePage from './pages/HomePage'
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
+import HomePage from './components/HomePage'
 import './App.css'
-import ParticlesStyle from './particles/particles'
-import firstPage from './pages/firstPage';
+import ParticlesStyle from './components/particles/particles'
+import firstPage from './components/FirstPage';
 
 // import ReactDom from 'react-dom';
 
@@ -16,25 +17,8 @@ class App extends React.Component{
       <div>
          
       <ParticlesStyle/>
-      <Router>
-      <div className = 'container'>
-             
-        <Route exact path = '/' component = {firstPage}>
-        </Route>
-        
-        <Route exact path = '/sign-in' component = {SignIn}>
-        </Route>
-       
-        <Route exact path = '/sign-up' component = {SignUp}> 
-          
-        </Route>
-        <Route exact path = '/Home_page' component = {HomePage}>
+      <Router0/>
 
-        </Route>
-
-    
-      </div>
-    </Router>
     </div>
     )
 
