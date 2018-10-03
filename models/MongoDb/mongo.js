@@ -5,7 +5,7 @@ const url = "mongodb://localhost:27017/"; //Default url for MongoDB server
 const mongo = (a) => {
   MongoClient.connect(url, (err, client) => {
     if (err) throw err;
-    let db = client.db("userhistory");
+    const db = client.db("userhistory");
     db.createCollection("history and images", (err, res) => {
       if (err) throw err;
       console.log("Collection created!");
@@ -23,8 +23,8 @@ const mongo = (a) => {
 const findAndSendUserInfo = (id, res, obj) => {
   MongoClient.connect(url, async (err, client) => {
     if (err) throw err;
-    let db = client.db('userhistory');
-    let user = await db.collection('history and images').findOne({
+    const db = client.db('userhistory');
+    const user = await db.collection('history and images').findOne({
       id: `${id}`
     });
     console.log(user, 'this is mongodb user info');
@@ -40,8 +40,8 @@ const findAndSendUserInfo = (id, res, obj) => {
 const updateImages = (id, path) => {
   MongoClient.connect(url, async (err, client) => {
     if (err) throw err;
-    let db = client.db('userhistory');
-    let user = await db.collection('history and images').findOne({
+    const db = client.db('userhistory');
+    const user = await db.collection('history and images').findOne({
       id: `${id}`
     });
     user.images.push(path);
@@ -51,7 +51,7 @@ const updateImages = (id, path) => {
     }, {
       $set: {
         images: user.images,
-        totalImages: ++number
+        totalImages: ++number,
       }
     }, (err, res) => {
       if (err) throw err;
@@ -63,13 +63,13 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
   try {
     MongoClient.connect(url, async (err, client) => {
       if (err) throw err;
-      let db = client.db('userhistory');
-      let user = await db.collection('history and images').findOne({
+      const db = client.db('userhistory');
+      const user = await db.collection('history and images').findOne({
         id: `${id}`
       });
       let number = user.totalFetched;
       if (user.history[`${hostname}`]) {
-        let group = user.history[`${hostname}`];
+        const group = user.history[`${hostname}`];
         for(let i = 0; i < group.length; i++){
           if(group[i]['url'] === urlToSave){
             console.log('Fieled with same url found, no changes performed');
@@ -121,11 +121,11 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
 const saveHtml = async (id,group,urlToSave,html)=>{
   MongoClient.connect(url,async (err,client)=>{
     if(err) throw err;
-    let db = client.db('userhistory');
-    let user = await db.collection('history and images').findOne({
+    const db = client.db('userhistory');
+    const user = await db.collection('history and images').findOne({
       id: `${id}`
     });
-    let historyArray = user.history[`${group}`];
+    const historyArray = user.history[`${group}`];
     let index;
     for(let i = 0; i < historyArray.length; i++){
       if(historyArray[i]['url'] === urlToSave){
