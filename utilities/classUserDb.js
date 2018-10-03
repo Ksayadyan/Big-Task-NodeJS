@@ -1,5 +1,5 @@
 //Class for making new User Object(mongodb)
-module.exports = class{
+module.exports = class UsersMongoObject{
   constructor(id,path){
     this.id = id;
     this.history = {};

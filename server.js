@@ -11,13 +11,15 @@ const getSecretQuestion = require('./utilities/getSecretQuestion.js');
 const recoverPassword = require('./utilities/recoverPassword.js');
 const user = require('./utilities/user.js');
 const editProfile = require('./utilities/editProfileInfo.js')
+//Env config
+require('dotenv').config();
 
 //Server creation and configuration
-let app = express();
+const app = express();
 serverConfig(app);
 
 //Establish connection between server and Mysql Database
-let connection=new Sequelize('users','root','datamysql',{
+const connection=new Sequelize('users','root',`${process.env.DB_PASSWORD}`,{
  dialect:'mysql',
 })
 //Global referance to Mysql Connection
@@ -25,7 +27,7 @@ global.db = connection;
 
 //Creating Mysql table if table  doesn't exists
 //Validating properties for every column
-let Users=connection.define('users',{
+const Users=connection.define('users',{
   lastname:  {
   type:Sequelize.STRING,   //type String
   allowNull:false,         //Value can't be null
@@ -35,7 +37,7 @@ let Users=connection.define('users',{
   allowNull: false,
   unique:true,             //This value is unique in whole table
   validate: {
-    notEmpty:true,         //Additional validation(Filed can't be empty)
+    notEmpty:true,         //Additional validation(Field can't be empty)
     }
  },
  name:     {
@@ -105,7 +107,7 @@ app.post('/api',user.signup);
 
 //Sending back secret question for specific user
 app.post('/recoverpassword',async (req,res)=>{
-    let result = await getSecretQuestion(req.body.login,connection);
+    const result = await getSecretQuestion(req.body.login,connection);
     res.send(result);
   });
 
@@ -115,7 +117,7 @@ app.post('/recoverpassword',async (req,res)=>{
 //2.req.body.answer,
 //3.req.body.newpassword,
 app.post('/recoverpasswordattempt',async (req,res)=>{
-  let result = await recoverPassword(req,connection);
+  const result = await recoverPassword(req,connection);
   res.send(result)
 });
 

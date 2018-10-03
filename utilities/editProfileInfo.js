@@ -4,9 +4,9 @@ const cryptPassword = require('./cryptPassword.js');
 module.exports = async (req, res) => {
   if (req.session.userId) {
     try {
-      let value = req.body;
-      let newPassword = cryptPassword(value.password);
-      let sql = `UPDATE users SET
+      const value = req.body;
+      const newPassword = cryptPassword(value.password);
+      const sql = `UPDATE users SET
       mail = '${value.mail}',
    name = '${value.firstName}',
    lastname = '${value.lastName}',

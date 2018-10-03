@@ -1,4 +1,4 @@
-//password Encryp, signin and signup
+//Password encrypt, signin and signup
 
 const crypto = require('crypto-js');
 
