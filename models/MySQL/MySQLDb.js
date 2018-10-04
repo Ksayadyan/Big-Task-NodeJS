@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const mysql = require('mysql');
-require('dotenv').config();
+require('dotenv').config(); 
 
 const connection=new Sequelize('users','root',`${process.env.DB_PASSWORD}`,{
   dialect:'mysql',

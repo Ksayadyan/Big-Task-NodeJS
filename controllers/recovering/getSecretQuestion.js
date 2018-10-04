@@ -1,11 +1,23 @@
 //Get secret question for given login
+const router = require('../BasicLogic/router.js')
+const {db} = require('../../models/MySQL/MySQLDb.js')
 
-module.exports = async (login,con)=>{
+
+const  getSecretQuestion = async (login,db)=>{
   try{
   const query = `SELECT question FROM users WHERE login = '${login}'`; //SQL query
-  const result = await con.query(query, { type: con.QueryTypes.SELECT }); //Result after SQL query
+  const result = await db.query(query, { type: db.QueryTypes.SELECT }); //Result after SQL query
   return result[0]['question'];
 }catch(e){
     console.log('User not found');
+    
   }
 }
+
+//Sending back secret question for specific user
+router.post('/recoverpassword',async (req,res)=>{
+  const result = await getSecretQuestion(req.body.login , db);
+  res.send(result);
+});
+
+

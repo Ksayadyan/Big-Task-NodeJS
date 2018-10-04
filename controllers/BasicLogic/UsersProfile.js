@@ -6,6 +6,8 @@ const mongod = require('../../models/MongoDb/mongo.js')
 
 const {db} = require('../../models/MySQL/MySQLDb.js')
 
+const router = require('./router.js')
+
 
 
 
@@ -79,6 +81,15 @@ const profile = async (req, res) => {
     res.send('Not authorized');
   }
 }
-module.exports={
-  profile,imageUpload,editProfile
+
+module.exports = {
+  profile
 }
+
+//Handling user profile rendering
+router.get('/home', profile);
+//Handling image upload
+router.post('/imageUpload',imageUpload);
+//Signing out specific user
+//Change user information
+router.post('/editprofile',editProfile);

@@ -2,7 +2,9 @@ const cryptPassword = require('../../helpers/cryptPassword.js');
 const folderCreator = require('../../helpers/UsersImageFolder.js')
 const mongod = require("../../models/MongoDb/mongo.js")
 const ClassUser = require('../../models/MongoDb/classUserDb.js')
+const {profile} = require('../BasicLogic/UsersProfile.js')
 const { db,Users }  = require('../../models/MySQL/MySQLDb.js')
+const router = require('./router.js')
 
 
 const signup = async (req, res) => {
@@ -63,7 +65,9 @@ const login = async (req, res) => {
       if (user.length) {
         req.session.userId = user[0]['id'];
         console.log('User id is', user[0]['id']);
-        res.redirect('/home');
+        profile(req,res)
+        
+        
       } else {
         console.log('User is not found');
         res.send({
@@ -91,9 +95,8 @@ const signout = async (req, res) => {
 
 //Saving fetched url in MongoDB
 
-module.exports = {
-  signup,
-  login,
-  signout,
 
-}
+
+router.post('/api',signup);
+router.post('/signin', login);
+router.get('/signout', signout);

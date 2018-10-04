@@ -1,5 +1,6 @@
 const {URL} = require('url')
 const mongod = require ('../../models/MongoDb/mongo.js')
+const router = require('./router.js')
 
 const fetchurl = async (req, res) => {
     try {
@@ -36,6 +37,7 @@ const fetchurl = async (req, res) => {
     }
   }
 
-  module.exports={
-      saveHtml,fetchurl
-  }
+//Saving fetched url in mongodb
+router.post('/fetchurl',fetchurl);
+//Saving html in mongodb
+router.post('/savehtml',saveHtml);
