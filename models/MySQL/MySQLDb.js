@@ -6,8 +6,8 @@ const connection=new Sequelize('users','root',`${process.env.DB_PASSWORD}`,{
   dialect:'mysql',
  })
  //Global referance to Mysql Connection
- const db = connection;
-
+ const db = connection
+ 
 const Users=connection.define('users',{
     lastname:  {
     type:Sequelize.STRING,   //type String
@@ -79,9 +79,3 @@ const Users=connection.define('users',{
   module.exports={
     Users,db
   }
-
-
-
-
-
-  

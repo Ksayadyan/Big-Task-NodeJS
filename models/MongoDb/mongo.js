@@ -1,52 +1,48 @@
 const MongoClient = require('mongodb').MongoClient;
+const findUserById = require('./findUserById.js')
 const url = "mongodb://localhost:27017/"; //Default url for MongoDB server
+
+let db;
+
+
+//Connect to mongodb database
+MongoClient.connect(url, function(err,client){
+  if(err){
+    console.log('Unable to connect to database')
+  }
+  const database = client.db('userhistory');
+  const collection = database.collection('history and images');
+  db = collection;
+  console.log('Connected to MongoDb database');
+})
+
 
 
 const mongo = (a) => {
-  MongoClient.connect(url, (err, client) => {
-    if (err) throw err;
-    const db = client.db("userhistory");
-    db.createCollection("history and images", (err, res) => {
-      if (err) throw err;
-      console.log("Collection created!");
-      db.collection("history and images").insertOne(a, (err, res) => {
-        if (err) throw err;
+      db.insertOne(a, (err, res) => {
+        if (err) throw new Error('Error while unserting user object in mongodb');
         console.log("User inserted");
       });
-      client.close();
-    });
-  });
 }
 
 
 
-const findAndSendUserInfo = (id, res, obj) => {
-  MongoClient.connect(url, async (err, client) => {
-    if (err) throw err;
-    const db = client.db('userhistory');
-    const user = await db.collection('history and images').findOne({
-      id: `${id}`
-    });
+const findAndSendUserInfo = async (id, res, obj) => {
+    const user = await findUserById(id, db);
     console.log(user, 'this is mongodb user info');
     obj.totalFetched = user.totalFetched;
     obj.profileImage = user.profileImage;
     obj.totalImages = user.totalImages;
     res.send(obj);
-    client.close();
-  })
 }
 
 
-const updateImages = (id, path) => {
-  MongoClient.connect(url, async (err, client) => {
-    if (err) throw err;
-    const db = client.db('userhistory');
-    const user = await db.collection('history and images').findOne({
-      id: `${id}`
-    });
+const updateImages = async (id, path) => {
+
+    const user = await findUserById(id, db);
     user.images.push(path);
     let number = user.totalImages;
-    db.collection('history and images').update({
+    db.update({
       id: `${id}`
     }, {
       $set: {
@@ -56,17 +52,11 @@ const updateImages = (id, path) => {
     }, (err, res) => {
       if (err) throw err;
     });
-  });
 }
 
 const saveFetchedUrl = async (id, urlToSave, hostname) => {
   try {
-    MongoClient.connect(url, async (err, client) => {
-      if (err) throw err;
-      const db = client.db('userhistory');
-      const user = await db.collection('history and images').findOne({
-        id: `${id}`
-      });
+      const user = await findUserById(id, db);
       let number = user.totalFetched;
       if (user.history[`${hostname}`]) {
         const group = user.history[`${hostname}`];
@@ -81,7 +71,7 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
           url: urlToSave,
           html: '',
         });
-        await db.collection('history and images').update({
+        await db.update({
           id: `${id}`
         }, {
           $set: {
@@ -99,7 +89,7 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
           url: urlToSave,
           html: '',
         });
-        await db.collection('history and images').update({
+        await db.update({
           id: `${id}`
         }, {
           $set: {
@@ -111,7 +101,6 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
         });
         console.log('Created and pushed Succesfully');
       }
-    });
   } catch (e) {
     console.log('Something happend while trying to save fetched url');
   }
@@ -119,12 +108,7 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
 
 
 const saveHtml = async (id,group,urlToSave,html)=>{
-  MongoClient.connect(url,async (err,client)=>{
-    if(err) throw err;
-    const db = client.db('userhistory');
-    const user = await db.collection('history and images').findOne({
-      id: `${id}`
-    });
+    const user = await findUserById(id,db);
     const historyArray = user.history[`${group}`];
     let index;
     for(let i = 0; i < historyArray.length; i++){
@@ -134,7 +118,7 @@ const saveHtml = async (id,group,urlToSave,html)=>{
       }
     }
     historyArray[`${index}`].html = html;
-    await db.collection('history and images').update({
+    await db.update({
       id: `${id}`
     }, {
       $set: {
@@ -143,7 +127,6 @@ const saveHtml = async (id,group,urlToSave,html)=>{
     }, (err, res) => {
       if (err) throw err;
     });
-  })
 }
 
 module.exports = {

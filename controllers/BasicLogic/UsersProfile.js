@@ -27,12 +27,12 @@ const profile = async (req, res) => {
         lastname: user[0]['lastname']
       }
       //Find information about specific user in mongo database
-      mongod.findAndSendUserInfo(userId, res, obj);
+      await mongod.findAndSendUserInfo(userId, res, obj);
     } catch (e) {
       console.log('Error while redirecting',e );
     }
   }
-  
+
   //Image upload handler
   const imageUpload = (req, res) => {
     if (!req.session.userId) {
@@ -56,7 +56,7 @@ const profile = async (req, res) => {
       }
     }
   }
-  
+
    const editProfile = async (req, res) => {
   if (req.session.userId) {
     try {
