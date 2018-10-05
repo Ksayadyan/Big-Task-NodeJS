@@ -18,12 +18,14 @@ const recoverPassword = async (req,con)=>{
       return 'Answer is incorrect';
     }
   }catch(e){
-      console.log('There was an error while trying to update password');
-      return 'Error occuered';
+      // console.log('There was an error while trying to update password');
+      res.sendStatus(501)
+      // return 'Error occuered';
   }
 }
 
 router.post('/recoverpasswordattempt',async (req,res)=>{
   const result = await recoverPassword(req , db );
-  res.send(result)
+  res.setStatus(200);
+  res.send(result);
 });

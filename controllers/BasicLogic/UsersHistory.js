@@ -8,14 +8,15 @@ const fetchurl = async (req, res) => {
         const fetchedUrl = new URL(req.body.url);
         const hostname = fetchedUrl.hostname;
         await mongod.saveFetchedUrl(req.session.userId, req.body.url, hostname);
-        res.send('Url saved');
+        res.sendStatus(201);
   
       } else {
-        res.send('Not authorized');
+        res.sendStatus(401);
       }
     } catch (e) {
       console.log('Error occured while trying to save fetched url');
-      console.log(e);
+      res.sendStatus(507);
+      // console.log(e);
     }
   }
   
@@ -27,13 +28,13 @@ const fetchurl = async (req, res) => {
         const html = req.body.html;
         const hostname = fetchedUrl.hostname;
         await mongod.saveHtml(req.session.userId, hostname, req.body.url, html);
-        res.send('OK');
+        res.sendStatus(201);
       } else {
-        res.send('Not authorized');
+        res.sendStatus(401);
       }
     } catch (e) {
       console.log('Error occured while saving html', e);
-      res.send('Error');
+      res.sendStatus(507);
     }
   }
 

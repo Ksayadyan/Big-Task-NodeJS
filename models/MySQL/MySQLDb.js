@@ -12,13 +12,18 @@ const Users=connection.define('users',{
     lastname:  {
     type:Sequelize.STRING,   //type String
     allowNull:false,         //Value can't be null
+    validate :{
+      notEmpty: true,
+      isAlpha:true,
+    }    
   },
    login:    {
     type: Sequelize.STRING,
     allowNull: false,
     unique:true,             //This value is unique in whole table
     validate: {
-      notEmpty:true,         //Additional validation(Field can't be empty)
+      notEmpty:true,   
+      min : 5,      //Additional validation(Field can't be empty)
       }
    },
    name:     {
@@ -26,6 +31,8 @@ const Users=connection.define('users',{
      allowNull:false,
      validate: {
       notEmpty:true,
+      isAlpha:true,
+      len : [4 , 15]
       }
   },
    password: {
@@ -33,6 +40,7 @@ const Users=connection.define('users',{
     allowNull:false,
     validate: {
       notEmpty:true,
+      min : 6
       }
   },
    gender:    {
@@ -42,7 +50,7 @@ const Users=connection.define('users',{
       notEmpty:true,
       }
   },
-   birthday: {
+   birthday: {  
     type:Sequelize.STRING,
     allowNull:false,
     validate: {
@@ -50,11 +58,14 @@ const Users=connection.define('users',{
       }
   },
    question:  {
-    type:Sequelize.STRING,
+    type:Sequelize.TEXT,
     allowNull:false,
+    validate: {
+      notEmpty:true,
+      }
   },
    answer:    {
-    type:Sequelize.STRING,
+    type:Sequelize.TEXT,
     allowNull:false,
     validate: {
       notEmpty:true,
@@ -65,6 +76,7 @@ const Users=connection.define('users',{
     allowNull:false,
     validate: {
       notEmpty:true,
+      isEmail : true,
       }
   },
    phone:     {
@@ -72,6 +84,7 @@ const Users=connection.define('users',{
     allowNull:false,
     validate: {
       notEmpty:true,
+      isNumeric:true,
       }
   },
   })

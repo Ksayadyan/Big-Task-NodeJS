@@ -31,7 +31,8 @@ const profile = async (req, res) => {
       //Find information about specific user in mongo database
       await mongod.findAndSendUserInfo(userId, res, obj);
     } catch (e) {
-      console.log('Error while redirecting',e );
+      res.sendStatus(500);
+      // console.log('Error while redirecting',e );
     }
   }
 
@@ -39,20 +40,20 @@ const profile = async (req, res) => {
   const imageUpload = (req, res) => {
     if (!req.session.userId) {
       console.log('Not authentificated');
-      res.send('Not authentificated');
+      res.sendStatus(401);
     } else {
       if (!req.files) {
         console.log('No files uploaded');
-        res.send('No files');
+        res.sendStatus(415);
       } else {
         const image = req.files.image;
         image.mv(`./user-images/Client${req.session.userId}/${req.files.image.name}`, (err) => {
           if (err) {
-            // res.send('Internal error',)
+            res.sendStatus(500)
             console.log(err)
             return;
           }
-          res.send('File uploaded')
+          res.sendStatus(201)
           mongod.updateImages(req.session.userId, `../../../user-images/Client${req.session.userId}/${req.files.image.name}`)
         })
       }
@@ -73,12 +74,12 @@ const profile = async (req, res) => {
       await db.query(sql).spread((results, metadata) => {
           console.log('information changed');
         });
-        res.send('information changed');
+        res.sendStatus(205);
     } catch (e) {
       console.log('Error happend while changing user data');
     }
   } else {
-    res.send('Not authorized');
+    res.sendStatus(401);
   }
 }
 

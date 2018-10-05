@@ -9,6 +9,7 @@ const  getSecretQuestion = async (login,db)=>{
   const result = await db.query(query, { type: db.QueryTypes.SELECT }); //Result after SQL query
   return result[0]['question'];
 }catch(e){
+    res.sendStatus(404)
     console.log('User not found');
     
   }
@@ -17,7 +18,7 @@ const  getSecretQuestion = async (login,db)=>{
 //Sending back secret question for specific user
 router.post('/recoverpassword',async (req,res)=>{
   const result = await getSecretQuestion(req.body.login , db);
-  res.send(result);
+  res.setStatus(200);
+  res.send(result)
 });
-
 
