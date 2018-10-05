@@ -1,10 +1,10 @@
 //Module for checking the connection between Nodejs Server and MySQL database
-
+const errorHandler = require('./errorhandler.js');
 module.exports = async (connection) => {
   try {
     await connection.authenticate();
     console.log('Connected to database');
   } catch (e) {
-    throw new Error('Unable to connect to database');
+    errorHandler('Unable to connect to MySQL database','connection.authenticate','authcon.js',__dirname);
   }
 }

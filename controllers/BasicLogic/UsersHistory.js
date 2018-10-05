@@ -1,6 +1,7 @@
 const {URL} = require('url')
 const mongod = require ('../../models/MongoDb/mongo.js')
 const router = require('./router.js')
+const errorHandler = require('../../helpers/errorhandler.js');
 
 const fetchurl = async (req, res) => {
     try {
@@ -9,17 +10,16 @@ const fetchurl = async (req, res) => {
         const hostname = fetchedUrl.hostname;
         await mongod.saveFetchedUrl(req.session.userId, req.body.url, hostname);
         res.sendStatus(201);
-  
+
       } else {
         res.sendStatus(401);
       }
     } catch (e) {
-      console.log('Error occured while trying to save fetched url');
       res.sendStatus(507);
-      // console.log(e);
+      errorHandler('Error occured while trying to save fetched url','fetchurl','UsersHistory.js',__dirname);
     }
   }
-  
+
   //Saveing fetched url's html in mogodb
   const saveHtml = async (req, res) => {
     try {
@@ -33,8 +33,8 @@ const fetchurl = async (req, res) => {
         res.sendStatus(401);
       }
     } catch (e) {
-      console.log('Error occured while saving html', e);
       res.sendStatus(507);
+      errorHandler('Error occured while saving html','saveHtml','UsersHistory',__dirname);
     }
   }
 

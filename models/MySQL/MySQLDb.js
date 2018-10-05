@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 const mysql = require('mysql');
-require('dotenv').config(); 
+require('dotenv').config();
 
 const connection=new Sequelize('users','root',`${process.env.DB_PASSWORD}`,{
   dialect:'mysql',
  })
  //Global referance to Mysql Connection
  const db = connection
- 
+
 const Users=connection.define('users',{
     lastname:  {
     type:Sequelize.STRING,   //type String
@@ -15,14 +15,14 @@ const Users=connection.define('users',{
     validate :{
       notEmpty: true,
       isAlpha:true,
-    }    
+    }
   },
    login:    {
     type: Sequelize.STRING,
     allowNull: false,
     unique:true,             //This value is unique in whole table
     validate: {
-      notEmpty:true,   
+      notEmpty:true,
       min : 5,      //Additional validation(Field can't be empty)
       }
    },
@@ -50,7 +50,7 @@ const Users=connection.define('users',{
       notEmpty:true,
       }
   },
-   birthday: {  
+   birthday: {
     type:Sequelize.STRING,
     allowNull:false,
     validate: {

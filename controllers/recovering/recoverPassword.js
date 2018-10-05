@@ -1,8 +1,10 @@
 //Module for updating users password(recover)
 
-const cryptPassword = require('../../helpers/cryptPassword.js')
-const router = require('../BasicLogic/router.js')
-const {db} = require('../../models/MySQL/MySQLDb.js')
+const cryptPassword = require('../../helpers/cryptPassword.js');
+const router = require('../BasicLogic/router.js');
+const {db} = require('../../models/MySQL/MySQLDb.js');
+const errorHandler = require('../../helpers/errorhandler.js');
+
 
 const recoverPassword = async (req,con)=>{
   try{
@@ -18,9 +20,9 @@ const recoverPassword = async (req,con)=>{
       return 'Answer is incorrect';
     }
   }catch(e){
-      // console.log('There was an error while trying to update password');
-      res.sendStatus(501)
-      // return 'Error occuered';
+      res.sendStatus(501);
+      errorHandler('Error happend while updating user data','recoverPassword','recoverPassword.js',__dirname);
+
   }
 }
 

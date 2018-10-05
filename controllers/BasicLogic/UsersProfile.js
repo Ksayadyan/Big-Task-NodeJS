@@ -1,12 +1,9 @@
 const mysql = require('sequelize');
-
 const cryptPassword = require('../../helpers/cryptPassword.js');
-
 const mongod = require('../../models/MongoDb/mongo.js')
-
 const {db} = require('../../models/MySQL/MySQLDb.js')
-
 const router = require('./router.js')
+const errorHandler = require('../../helpers/errorhandler.js');
 
 
 
@@ -32,7 +29,7 @@ const profile = async (req, res) => {
       await mongod.findAndSendUserInfo(userId, res, obj);
     } catch (e) {
       res.sendStatus(500);
-      // console.log('Error while redirecting',e );
+      errorHandler('Unable to retrieve data from MySQL','profile','UsersProfile.js',__dirname);
     }
   }
 
@@ -50,8 +47,7 @@ const profile = async (req, res) => {
         image.mv(`./user-images/Client${req.session.userId}/${req.files.image.name}`, (err) => {
           if (err) {
             res.sendStatus(500)
-            console.log(err)
-            return;
+            errorHandler('Unable to save uploaded image','imageUpload','UsersProfile.js',__dirname);
           }
           res.sendStatus(201)
           mongod.updateImages(req.session.userId, `../../../user-images/Client${req.session.userId}/${req.files.image.name}`)
@@ -76,7 +72,8 @@ const profile = async (req, res) => {
         });
         res.sendStatus(205);
     } catch (e) {
-      console.log('Error happend while changing user data');
+      res.sendStatus(503);
+      errorHandler('Error happend while changing user data','editProfile','UsersProfile',__dirname);
     }
   } else {
     res.sendStatus(401);
@@ -91,6 +88,5 @@ module.exports = {
 router.get('/home', profile);
 //Handling image upload
 router.post('/imageUpload',imageUpload);
-//Signing out specific user
 //Change user information
 router.post('/editprofile',editProfile);

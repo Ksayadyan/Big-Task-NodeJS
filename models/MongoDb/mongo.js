@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
-const findUserById = require('./findUserById.js')
+const findUserById = require('./findUserById.js');
+const errorHandler = require('../../helpers/errorhandler.js');
 const url = "mongodb://localhost:27017/"; //Default url for MongoDB server
 
 let db;
@@ -8,7 +9,8 @@ let db;
 //Connect to mongodb database
 MongoClient.connect(url, function(err,client){
   if(err){
-    console.log('Unable to connect to database')
+    console.log()
+    errorHandler('Unable to connect to MongoDB','MongoClient.connect','mongo.js',__dirname);
   }
   const database = client.db('userhistory');
   const collection = database.collection('history and images');
@@ -20,7 +22,9 @@ MongoClient.connect(url, function(err,client){
 
 const mongo = (a) => {
       db.insertOne(a, (err, res) => {
-        if (err) throw new Error('Error while unserting user object in mongodb');
+        if (err){
+          errorHandler('Error while unserting user object in mongodb','mongo','mongo.js',__dirname);
+        }
         console.log("User inserted");
       });
 }
@@ -50,7 +54,9 @@ const updateImages = async (id, path) => {
         totalImages: ++number,
       }
     }, (err, res) => {
-      if (err) throw err;
+      if (err){
+        errorhandler('Erro while trying to update images','updateImages','mongo.js',__dirname);
+      }
     });
 }
 

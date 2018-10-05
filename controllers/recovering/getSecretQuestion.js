@@ -11,7 +11,6 @@ const  getSecretQuestion = async (login,db)=>{
 }catch(e){
     res.sendStatus(404)
     console.log('User not found');
-    
   }
 }
 
@@ -21,4 +20,3 @@ router.post('/recoverpassword',async (req,res)=>{
   res.setStatus(200);
   res.send(result)
 });
-
