@@ -4,8 +4,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {NavLink} from 'react-router-dom';
-import Validate from './Validation';
 
+let errors = {}
 class SignUp extends React.Component {
     constructor(){
         super();
@@ -26,6 +26,15 @@ class SignUp extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changeState = this.changeState.bind(this);
+        this.firstNameValidation = this.firstNameValidation.bind(this);
+        this.lastNameValidation = this.lastNameValidation.bind(this);
+        this.loginValidation = this.loginValidation.bind(this);
+        this.passwordValidation = this.passwordValidation.bind(this);
+        this.emailValidation = this.emailValidation.bind(this);
+        this.phoneValidation = this.phoneValidation.bind(this);
+        this.questionValidation = this.questionValidation.bind(this);
+        this.answerValidation= this.answerValidation.bind(this);
     }
 
     handleChange(event) {
@@ -37,51 +46,87 @@ class SignUp extends React.Component {
         });
      
     }
-  
 
-    validate = ()=>{
-        let errors = {};
-        let phoneNumber = Number(this.state.phone);
-
-            if(this.state.lastName.length < 3 || /[0-9]/.test(this.state.lastName)){
-            errors.lastNameError = 'Last Name must be at least 3 character long and does not contain numbers';
-                } else{
-                    errors.lastNameError = '';
-                } 
-            if(this.state.firstName.length < 3|| /[0-9]/.test(this.state.firstName)){
-                errors.firstNameError = 'First Name must be at least 3 character long and does not contain numbers';
-                } else{
-                    errors.firstNameError = '';
-                }   
-            if(this.state.login.length < 5){
-                errors.loginError = 'login must be at least 5 charecter long'
-                } else{
-                    errors.loginError = '';
-                } 
-            if(!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)){
-                errors.passwordError = 'Password must be at least 6 characters long and contain at least one numeric digit, one uppercase and one lowercase letter';
-                } else{
-                    errors.passwordError = '';
-                } 
-            if(!this.state.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
-                    errors.emailError = 'Please enter correct email address';
-                } else{
-                    errors.emailError = '';
-                } 
-            if(isNaN(phoneNumber)){
-                    errors.phoneError = 'Phone must contain only digits';
-                }else{
-                    errors.phoneError = '';
-                } 
-
+    changeState = ()=>{
         if (Object.keys(errors).length){
             this.setState({
                ...this.state.errors, 
                ...errors
             });
         } 
-     
-        return Object.keys(errors).length
+        return
+    }
+
+    firstNameValidation = ()=>{
+        if(this.state.firstName.length < 3|| /[0-9]/.test(this.state.firstName)){
+            errors.firstNameError = 'First Name must be at least 3 character long and does not contain numbers';
+            } else{
+                errors.firstNameError = '';
+            }   
+            this.changeState();
+    }
+    lastNameValidation = ()=>{
+        if(this.state.lastName.length < 3 || /[0-9]/.test(this.state.lastName)){
+            errors.lastNameError = 'Last Name must be at least 3 character long and does not contain numbers';
+                } else{
+                    errors.lastNameError = '';
+                } 
+            this.changeState();
+    }
+
+    loginValidation = ()=>{
+        if(this.state.login.length < 5){
+            errors.loginError = 'login must be at least 5 charecter long';
+            } else{
+                errors.loginError = '';
+            } 
+            this.changeState();
+    }
+
+    passwordValidation = ()=>{
+        if(!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)){
+            errors.passwordError = 'Password must be at least 6 characters long and contain at least one numeric digit, one uppercase and one lowercase letter';
+        } else{
+                errors.passwordError = '';
+            }
+            this.changeState();
+    }
+
+    emailValidation = ()=>{
+        if(!this.state.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+            errors.emailError = 'Please enter correct email address';
+        } else{
+            errors.emailError = '';
+        } 
+            this.changeState();
+    }
+
+    phoneValidation = ()=>{
+        let phoneNumber = Number(this.state.phone);
+
+        if(isNaN(phoneNumber)){
+            errors.phoneError = 'Phone must contain only digits';
+        }else{
+            errors.phoneError = '';
+        } 
+            this.changeState();
+}
+    questionValidation = ()=>{
+        if(this.state.question.length === 0){
+            errors.questionError = 'Question cant be empty';
+        }else{
+            errors.questionError = '';
+        } 
+            this.changeState();
+    }
+
+    answerValidation = ()=>{
+        if(this.state.answer.length === 0){
+            errors.answerError = 'Question cant be empty';
+        }else{
+            errors.answerError = '';
+        } 
+            this.changeState();
     }
 
     handleSubmit(event) {
@@ -109,7 +154,6 @@ class SignUp extends React.Component {
     //  }
         
     }
-
 
     render(){
         return(
@@ -140,7 +184,7 @@ class SignUp extends React.Component {
                     <div className = 'form-field'>
                 
                         <TextField
-                            onBlur = {this.validate}
+                            onKeyDown = {this.firstNameValidation}
                             variant= 'outlined'
                             label = 'First Name'
                             type = 'text'
@@ -154,7 +198,7 @@ class SignUp extends React.Component {
                     </div>
                     <div className = 'form-field'>
                         <TextField  
-                            onBlur = {this.validate}
+                            onKeyDown = {this.lastNameValidation}
                             variant = 'outlined'
                             label = 'Last Name'
                             type = 'text'
@@ -169,7 +213,7 @@ class SignUp extends React.Component {
 
                     <div className = 'form-field'>
                         <TextField
-                            onBlur = {this.validate}
+                            onKeyDown = {this.loginValidation}
                             variant= 'outlined'
                             label = 'Login' 
                             type = 'text'
@@ -184,7 +228,7 @@ class SignUp extends React.Component {
           
                     <div className = 'form-field'>
                         <TextField 
-                            onBlur = {this.validate}
+                            onKeyDown = {this.passwordValidation}
                             variant= 'outlined'
                             label = 'Password'
                             type = 'password'
@@ -230,7 +274,7 @@ class SignUp extends React.Component {
               
                     <div className = 'form-field'>
                     <TextField
-                            onBlur = {this.validate}
+                            onKeyDown = {this.emailValidation}
                             variant = 'outlined'
                             label = 'E-Mail' 
                             type = 'email'
@@ -245,7 +289,7 @@ class SignUp extends React.Component {
                     </div>
                     <div className = 'form-field'>
                         <TextField 
-                            onBlur = {this.validate}
+                            onKeyDown = {this.phoneValidation}
                             variant='outlined'
                             label = 'phone'
                             type = 'text'
@@ -258,7 +302,8 @@ class SignUp extends React.Component {
 
                     </div>
                     <div className = 'form-field'>
-                        <TextField  
+                        <TextField 
+                            onKeyDown = {this.questionValidation} 
                             variant='outlined'
                             label = 'Secret Question'
                             type = 'text' 
@@ -270,6 +315,7 @@ class SignUp extends React.Component {
                     </div>
                     <div className = 'form-field'>
                         <TextField
+                            onKeyDown = {this.answerValidation}
                             variant= 'outlined'
                             label = 'Answer'
                             type = 'text'

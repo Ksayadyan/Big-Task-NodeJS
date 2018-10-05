@@ -3,11 +3,8 @@ import {Link, NavLink} from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import HomePage from './HomePage';
-import X from './Validation'
 
-
-
-
+let errors = {}
 class SignIn extends React.Component {
     constructor(){
         super();
@@ -20,6 +17,9 @@ class SignIn extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.checkUser = this.checkUser.bind(this);
+        this.loginValidation = this.loginValidation.bind(this);
+        this.changeState = this.changeState.bind(this);
+        this.passwordValidation = this.passwordValidation.bind(this);
     }
 
     handleChange(e) {
@@ -43,24 +43,7 @@ class SignIn extends React.Component {
             console.log('error')
         }
     }
-
-
-    validate = ()=>{
-        let errors = {};
-        
-            if(this.state.login.length < 5){
-                errors.loginError = 'login must be at least 5 charecter long';
-                } else{
-                    errors.loginError = '';
-                } 
-            if(!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)){
-                errors.passwordError = 'Password must be at least 6 characters long and contain at least one numeric digit, one uppercase and one lowercase letter';
-                } else{
-                    errors.passwordError = '';
-                }
-            
-           
-
+    changeState = ()=>{
         if (Object.keys(errors).length){
             this.setState({
                ...this.state.errors, 
@@ -70,6 +53,25 @@ class SignIn extends React.Component {
      
         return 
     }
+    loginValidation = ()=>{
+        if(this.state.login.length < 5){
+            errors.loginError = 'login must be at least 5 charecter long';
+            } else{
+                errors.loginError = '';
+            } 
+            this.changeState();
+    }
+
+
+    passwordValidation = ()=>{
+            if(!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)){
+                errors.passwordError = 'Password must be at least 6 characters long and contain at least one numeric digit, one uppercase and one lowercase letter';
+                } else{
+                    errors.passwordError = '';
+                }
+                this.changeState();
+    }
+
     handleSubmit(event) {
         event.preventDefault();
 
@@ -140,7 +142,7 @@ class SignIn extends React.Component {
                 <div className = 'form-field'>
 
                     <TextField
-                        onBlur = {this.validate}
+                        onKeyDown = {this.loginValidation}
                         variant="outlined"
                         type ='text'
                         label = 'login'
@@ -154,7 +156,7 @@ class SignIn extends React.Component {
                 <div className = 'form-field'>
 
                     <TextField
-                        onBlur = {this.validate}
+                        onKeyDown = {this.passwordValidation}
                         type = 'password'
                         label="Password"
                         placeholder = 'Enter your Password...'
