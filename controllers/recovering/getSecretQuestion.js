@@ -17,6 +17,6 @@ const  getSecretQuestion = async (login,db)=>{
 //Sending back secret question for specific user
 router.post('/recoverpassword',async (req,res)=>{
   const result = await getSecretQuestion(req.body.login , db);
-  res.setStatus(200);
+  res.status(200);
   res.send(result)
 });

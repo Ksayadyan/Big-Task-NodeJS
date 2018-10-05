@@ -32,7 +32,7 @@ const Users=connection.define('users',{
      validate: {
       notEmpty:true,
       isAlpha:true,
-      len : [4 , 15]
+      min : 3
       }
   },
    password: {

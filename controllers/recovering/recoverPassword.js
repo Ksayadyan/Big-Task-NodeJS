@@ -6,7 +6,7 @@ const {db} = require('../../models/MySQL/MySQLDb.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 
 
-const recoverPassword = async (req,con)=>{
+const recoverPassword = async (req,con,res)=>{
   try{
     const user = await con.query(`SELECT answer FROM users WHERE login = '${req.body.login}'`, {type: con.QueryTypes.SELECT });
     if(user[0]['answer'] === req.body.answer){
@@ -15,9 +15,11 @@ const recoverPassword = async (req,con)=>{
       .spread((results,metadata)=>{
        console.log('Password updated');
       });
-      return 'Password has been reset'
+      res.sendStatus(205);
+      console.log('Password has been reset');
     }else{
-      return 'Answer is incorrect';
+      res.sendStatus(409);
+      console.log('Answer is incorrect');
     }
   }catch(e){
       res.sendStatus(501);
@@ -26,8 +28,6 @@ const recoverPassword = async (req,con)=>{
   }
 }
 
-router.post('/recoverpasswordattempt',async (req,res)=>{
-  const result = await recoverPassword(req , db );
-  res.setStatus(200);
-  res.send(result);
+router.post('/recoverpasswordattempt',(req,res)=>{
+  recoverPassword(req , db , res);
 });

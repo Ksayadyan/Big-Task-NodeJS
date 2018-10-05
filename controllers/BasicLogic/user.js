@@ -9,8 +9,8 @@ const errorHandler = require('../../helpers/errorhandler.js');
 
 
 const signup = async (req, res) => {
+  const values = req.body;
   try {
-    const values = req.body;
     const password = cryptPassword(values.password);
     db.sync();
     //Creating user row in mysql database
@@ -51,7 +51,7 @@ const signup = async (req, res) => {
     console.log("Succesfully registered");
     res.sendStatus(201)
   } catch (e) {
-    console.log(`User with login "${values.login}" already exists`);
+    console.log(`User with login "${values.login}" exists`);
     res.sendStatus(409)
   }
 }
