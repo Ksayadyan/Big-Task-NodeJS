@@ -22,9 +22,11 @@
     "express-session": "^1.15.6",
     "express-upload": "^0.1.0",
     "g": "^2.0.1",
+    "html-parse-stringify": "^1.0.3",
     "mongodb": "^3.1.6",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
+    "request": "^2.88.0",
     "sequelize": "^4.38.1"
   },
   "devDependencies": {

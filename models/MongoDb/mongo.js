@@ -2,8 +2,10 @@ const MongoClient = require('mongodb').MongoClient;
 const findUserById = require('./findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 const url = "mongodb://localhost:27017/"; //Default url for MongoDB server
+const HTML = require('html-parse-stringify');
 
 let db;
+let dbHtml;
 
 
 //Connect to mongodb database
@@ -15,6 +17,8 @@ MongoClient.connect(url, function(err,client){
   const database = client.db('userhistory');
   const collection = database.collection('history and images');
   db = collection;
+  const collectionHtml = database.collection('htmls');
+  dbHtml = collectionHtml;
   console.log('Connected to MongoDb database');
 })
 
@@ -60,7 +64,7 @@ const updateImages = async (id, path) => {
     });
 }
 
-const saveFetchedUrl = async (id, urlToSave, hostname) => {
+const saveFetchedUrl = async (id, urlToSave, hostname,res) => {
   try {
       const user = await findUserById(id, db);
       let number = user.totalFetched;
@@ -69,13 +73,13 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
         for(let i = 0; i < group.length; i++){
           if(group[i]['url'] === urlToSave){
             console.log('Fieled with same url found, no changes performed');
+            res.sendStatus(304);
             throw new Error('Duplicate url found')
           }
         }
         console.log(`Group ${hostname} exists.Trying to push`);
         user.history[`${hostname}`].push({
           url: urlToSave,
-          html: '',
         });
         await db.update({
           id: `${id}`
@@ -85,15 +89,21 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
             totalFetched: ++number
           }
         }, (err, res) => {
-          if (err) throw err;
+          if (err) {
+            errorHandler('Error while updating document', 'saveFetchedUrl','mongo.js', __dirname)
+          }
         });
         console.log('Succesfully pushed');
+        dbHtml.insertOne({id:id, url:urlToSave, html: ''},(err,res)=>{
+          if(err){
+            errorHandler('Unable to insert document in userHtml database','saveFetchedUrl','mongo.js',__dirname)
+          }
+        })
       } else {
         console.log(`Group ${hostname} doesn't exists. Trying to create`);
         user.history[`${hostname}`] = [];
         user.history[`${hostname}`].push({
           url: urlToSave,
-          html: '',
         });
         await db.update({
           id: `${id}`
@@ -103,36 +113,54 @@ const saveFetchedUrl = async (id, urlToSave, hostname) => {
             totalFetched: ++number
           }
         }, (err, res) => {
-          if (err) throw err;
+          if (err){
+            errorHandler('Error while updating document(second section)', 'saveFetchedUrl','mongo.js', __dirname)
+          }
         });
         console.log('Created and pushed Succesfully');
+        dbHtml.insertOne({id:id, url:urlToSave, html: ''},(err,res)=>{
+          if(err){
+            errorHandler('Unable to insert document in userHtml database','saveFetchedUrl','mongo.js',__dirname)
+          }
+        })
       }
   } catch (e) {
-    console.log('Something happend while trying to save fetched url');
+    console.log('Duplicate found',e);
   }
 }
 
 
 const saveHtml = async (id,group,urlToSave,html)=>{
-    const user = await findUserById(id,db);
-    const historyArray = user.history[`${group}`];
-    let index;
-    for(let i = 0; i < historyArray.length; i++){
-      if(historyArray[i]['url'] === urlToSave){
-        index = i;
-        break;
-      }
-    }
-    historyArray[`${index}`].html = html;
-    await db.update({
-      id: `${id}`
-    }, {
+    dbHtml.update({id:id, url: urlToSave},{
       $set: {
-        history: user.history,
+        html: html
       }
-    }, (err, res) => {
-      if (err) throw err;
+    },(err,res)=>{
+      if(err){
+        errorHandler('Error while updating document', 'saveHtml','mongo.js', __dirname)
+      }
     });
+}
+
+
+const fetchHistory = async (id,res) => {
+  const history = await db.find({id:`${id}`}).project({ _id: 0, history: 1}).toArray();
+
+  //{$and: [{id:id},{history:{$elemMatch:{url:{$ne:""}}}}]}
+  //{id:id},{history:{$elemMatch:{url:{$ne:""}}}}
+  res.send(history);
+  await  console.log(history);
+}
+
+
+const getSavedHtml = async (req,res)=>{
+  if(req.session.userId){
+    const user = await dbHtml.findOne({id: req.session.userId, url: req.body.url});
+    const html = HTML.parse(user.html)
+    res.send(html);
+  }else{
+    res.sendStatus(401);
+  }
 }
 
 module.exports = {
@@ -141,4 +169,6 @@ module.exports = {
   updateImages,
   saveFetchedUrl,
   saveHtml,
+  fetchHistory,
+  getSavedHtml
 }
