@@ -1,0 +1,46 @@
+
+.not-found{
+    width: auto;
+    font-size: 50px;
+    text-align:center;
+    color: rgb(230,99,143);
+    background-color: rgba(238, 238, 238, 0.911);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: Verdana;
+  }
+
+
+.go-back-to-FirstPage{
+    width: 28%;
+    margin-left:36%;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: Verdana;
+    text-align:center;
+    color: rgb(230,99,143);
+    background-color: rgba(238, 238, 238, 0.911);
+    margin-top: 10px;
+    border-radius: 7px;
+    animation-name: out;
+    animation-fill-mode: forwards;
+    animation-duration: 0.4s;
+  }
+  .go-back-to-FirstPage:hover{
+    animation-name: in;
+    animation-duration: 0.4s;
+    cursor: pointer;
+  }
+  
+  @keyframes in {
+    0%{transform: scale(1);}
+    100%{transform: scale(1.1);}
+  }
+  @keyframes out {
+    0%{transform: scale(0.7);}
+    25%{transform: scale(1.1);}
+    50%{transform: scale(0.9);}
+    75%{transform: scale(1.05);}
+    100%{transform: scale(1.0);}
+  }

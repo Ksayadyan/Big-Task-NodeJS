@@ -73,8 +73,9 @@ const saveFetchedUrl = async (id, urlToSave, hostname,res) => {
         for(let i = 0; i < group.length; i++){
           if(group[i]['url'] === urlToSave){
             console.log('Fieled with same url found, no changes performed');
-            res.sendStatus(304);
-            throw new Error('Duplicate url found')
+            return;
+            // res.sendStatus(304);
+            // throw new Error('Duplicate url found')
           }
         }
         console.log(`Group ${hostname} exists.Trying to push`);

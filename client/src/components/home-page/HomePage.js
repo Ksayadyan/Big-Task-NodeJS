@@ -11,9 +11,8 @@ import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
-import './homePage.css'
-
-
+import {Redirect} from 'react-router-dom'
+import './homePage.css';
 
 const styles = {
   grow: {
@@ -45,7 +44,6 @@ const styles = {
     width: 'auto',
   },
 };
-
 class HomePage extends React.Component {
   constructor(){
     super();
@@ -59,9 +57,10 @@ class HomePage extends React.Component {
     user: null,
     search : '',
   };
-  this.handleChange = this.handleChange.bind(this);
+          this.handleChange = this.handleChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
-          this.handleSubmit = this.handleSubmit.bind(this);
+          this.attributes = this.attributes.bind(this);
+          this.drawer = this.drawer.bind(this);
 
 
 }
@@ -73,7 +72,6 @@ class HomePage extends React.Component {
     this.setState({
       [name]: value
     });
-    console.log(this.state.search)
 }
 
   toggleDrawer = (side, open) => () => {
@@ -92,12 +90,47 @@ class HomePage extends React.Component {
 
   componentWillMount = ()=>{
     let user = JSON.parse(localStorage.getItem('user'));
-    console.log('i am gonna mount');
-    console.log(user);
     this.setState({user:user});
-
   }
 
+  attributes = (obj)=>{
+    let string = '';
+    for(let x in obj){
+      string += x + '=' + '"' + obj[x] + '"' + ' ';
+    }
+    return string;
+  }
+  drawer = (arr,context)=>{
+    for(let i = 0; i < arr.length; i++){
+      if(arr[i].type == 'tag' && arr[i].name !== "--"){
+        let p = document.createElement("P");                        // Create a <p> node
+        let t = document.createTextNode(`   <${arr[i].name} ${this.attributes(arr[i].attrs)}> `);
+        p.appendChild(t)
+        context.appendChild(p);
+        if(arr[i].children){
+          this.drawer(arr[i].children,context.lastElementChild);
+          if(!arr[i].voidElement){
+            let p = document.createElement("P");
+            let t = document.createTextNode(` </${arr[i].name}> `);
+            p.appendChild(t);
+            context.appendChild(p);
+  
+          }
+        }else{
+          return;
+        }
+      }else{
+        if(arr[i].content){
+          let p = document.createElement("P");
+          let t = document.createTextNode(` ${arr[i].content}  `);
+          p.appendChild(t);
+        context.appendChild(p);
+      }
+      }
+  
+  
+    }
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -106,13 +139,13 @@ class HomePage extends React.Component {
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify(this.state.search)
+            body : JSON.stringify({url: this.state.search})
         })
         .then (res => res.json())
-        .then()
+        .then((get)=>{this.drawer(get,document.getElementsByClassName('inspector-source-code')[0])})
         .catch(err => console.log("err", err));
 }
-
+  
   handleLogOut = () => {
     localStorage.clear();
     this.props.history.push('/sign-in');
@@ -120,7 +153,7 @@ class HomePage extends React.Component {
 
   render() {
     const sideList = (
-      <div>
+      <div className = 'list-container'>
         <List style = {styles.list}>
           <Button color="secondary">
               My Account
@@ -151,7 +184,12 @@ class HomePage extends React.Component {
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
-      console.log(classes);
+    if(!this.state.user){
+      console.log('gagaga');
+      return(
+        <Redirect exact to="/" />
+      )
+    }else
 
     return (
       <div>
@@ -218,7 +256,7 @@ class HomePage extends React.Component {
             <h2 className = 'url-header'>URL search results </h2>
             <div className = 'search-results'>
                   <div className = 'source-code'>
-
+                  {this.serverRes}
                   </div>
                   <div className = 'inspector-source-code'>
 

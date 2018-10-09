@@ -1,10 +1,14 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
-import './firstPage.css';
 
 
-class FirstPage extends React.Component{
+class firstPage extends React.Component{
+  componentWillMount(){
+    if(localStorage.length){
+      this.props.history.push('/Home_page');
+    }
+  }
     render(){
         return (
             <div className = 'form-container test'>
@@ -35,4 +39,4 @@ class FirstPage extends React.Component{
     }
 }
 
-export default FirstPage
+export default firstPage
