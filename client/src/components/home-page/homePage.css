@@ -1,0 +1,53 @@
+.left-content{
+    height: 90vh;
+    width: 20%;
+    background-color:#897A75;
+    display: inline-block;
+  }
+
+  .user-name{
+    color: #A20E2E;
+    font-size: 20px;
+  }
+
+
+  .profile-picture img{
+    width: 100%;
+    margin-top: 20px;
+    height: 303px;
+  }
+
+  .search-button{
+    height: 42px;
+    float: right;
+  }
+  
+  
+  
+  .profile-picture{
+    text-align: center
+  }
+  .url-header{
+    font-size: 30px;
+    font-family: Verdana;
+    text-align: center; 
+  }
+  .source-code{
+    height: auto;
+    min-height: 50px;
+    width: 45%;
+    background-color: #A10D2B;
+    display: inline-block;
+  }
+  .inspector-source-code{
+    height: auto;
+    min-height: 50px;
+    width: 45%;
+    background-color: aliceblue;
+    display: inline-block;
+    margin-left: 5px;
+  
+  }
+  .search-results{
+    text-align: center;
+  }
