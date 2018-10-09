@@ -8,7 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import './homePage.css'
@@ -47,7 +47,9 @@ const styles = {
 };
 
 class HomePage extends React.Component {
-  state = {
+  constructor(){
+    super();
+  this.state = {
     auth: true,
     anchorEl: null,
     top: false,
@@ -55,7 +57,24 @@ class HomePage extends React.Component {
     bottom: false,
     right: false,
     user: null,
+    search : '',
   };
+  this.handleChange = this.handleChange.bind(this);
+          this.handleSubmit = this.handleSubmit.bind(this);
+          this.handleSubmit = this.handleSubmit.bind(this);
+
+
+}
+
+  handleChange(e) {
+    let target = e.target;
+    let value = target.value;
+    let name = target.name;
+    this.setState({
+      [name]: value
+    });
+    console.log(this.state.search)
+}
 
   toggleDrawer = (side, open) => () => {
     this.setState({
@@ -79,6 +98,21 @@ class HomePage extends React.Component {
 
   }
 
+
+  handleSubmit(event) {
+    event.preventDefault();
+        fetch ('/fetchurl', {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(this.state.search)
+        })
+        .then (res => res.json())
+        .then()
+        .catch(err => console.log("err", err));
+}
+
   handleLogOut = () => {
     localStorage.clear();
     this.props.history.push('/sign-in');
@@ -87,11 +121,30 @@ class HomePage extends React.Component {
   render() {
     const sideList = (
       <div>
-        <List style = {styles.list}>Profile</List>
+        <List style = {styles.list}>
+          <Button color="secondary">
+              My Account
+          </Button>
+        </List>  
         <Divider />
-        <List style = {styles.list}>My Account</List>
+        <List style = {styles.list}>
+          <Button color="secondary">
+              My Account
+          </Button>
+        </List>
         <Divider/>
-        <List style = {styles.list}>Search History</List>
+        <List style = {styles.list}>
+          <Button color="secondary">
+              Search History
+          </Button>
+        </List>
+        <List style = {styles.list} >  
+          <Button
+            color="secondary"
+            onClick = {this.handleLogOut}>
+                          Sign Out
+          </Button>
+        </List>
       </div>
     );
     const { classes } = this.props;
@@ -132,20 +185,20 @@ class HomePage extends React.Component {
                   </div>
 
                   <div className= 'search'>
-                      <Input
+                      <TextField
+                        type = 'text'
+                        name = 'search'
                         placeholder="Search…"
                         disableUnderline
-                        className={classes.input} />
-                            <button className = 'search-button'><SearchIcon/></button>
+                        className={classes.input}
+                        value = {this.state.search} 
+                        onChange = {this.handleChange}/>
+                            <Button 
+                              className = 'search-button'>
+                                <SearchIcon
+                                  onClick = {this.handleSubmit}/>
+                            </Button>
                   </div>
-                        <div className = 'sign-out'>
-                        <Button
-                          variant="outlined"
-                          color="secondary"
-                          onClick = {this.handleLogOut}>
-                         Sign Out
-                        </Button>
-                        </div>
               </Toolbar>
 
           </AppBar>
