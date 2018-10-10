@@ -5,9 +5,11 @@ import SignIn from '../components/sign-in-page/SignIn';
 import HomePage from '../components/home-page/HomePage'
 import firstPage from '../components/first-page/FirstPage';
 import NotFound from '../components/not-found/NotFound';
+import MyAccount from '../components/my-account/MyAccount';
+import SearchHistory from '../components/search-history/Search-History';
 
 
-class Router0 extends React.Component{
+class MyRouter extends React.Component{
 
 render(){
     return(
@@ -23,6 +25,10 @@ render(){
             
               <Route exact path = '/Home_page' component = {HomePage}/>
 
+              <Route exact path = '/my_account' component = {MyAccount}/>
+
+              <Route exact path = '/search_history' component = {SearchHistory}/>
+
               <Route component={NotFound}/>
           </Switch>
         </div>
@@ -30,4 +36,4 @@ render(){
     )
     }
 }
-export default Router0
+export default MyRouter

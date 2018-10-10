@@ -1,0 +1,13 @@
+.left-content{
+    height: 100vh;
+    width: auto;
+}
+
+
+.profile-picture {
+    width: 350px;
+}
+
+.backHomePage{
+    float: right;
+}

@@ -61,8 +61,6 @@ class HomePage extends React.Component {
           this.handleSubmit = this.handleSubmit.bind(this);
           this.attributes = this.attributes.bind(this);
           this.drawer = this.drawer.bind(this);
-
-
 }
 
   handleChange(e) {
@@ -134,6 +132,7 @@ class HomePage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const context = document.getElementsByClassName('inspector-source-code')[0];
         fetch ('/fetchurl', {
             method : 'POST',
             headers : {
@@ -142,7 +141,7 @@ class HomePage extends React.Component {
             body : JSON.stringify({url: this.state.search})
         })
         .then (res => res.json())
-        .then((get)=>{this.drawer(get,document.getElementsByClassName('inspector-source-code')[0])})
+        .then((get)=>{this.drawer(get, context)})
         .catch(err => console.log("err", err));
 }
   
@@ -151,33 +150,41 @@ class HomePage extends React.Component {
     this.props.history.push('/sign-in');
   }
 
+  moveToMyAccount = ()=>{
+    this.props.history.push('/my_account')
+  }
+  moveToSearchHistory = ()=>{
+    this.props.history.push('/search_history')
+  }
+
   render() {
     const sideList = (
       <div className = 'list-container'>
         <List style = {styles.list}>
-          <Button color="secondary">
+          <Button
+            color="secondary"
+            onClick = {this.moveToMyAccount}>
               My Account
           </Button>
         </List>  
         <Divider />
         <List style = {styles.list}>
-          <Button color="secondary">
-              My Account
-          </Button>
-        </List>
-        <Divider/>
-        <List style = {styles.list}>
-          <Button color="secondary">
+          <Button 
+            color='secondary'
+            onClick = {this.moveToSearchHistory}
+          >
               Search History
           </Button>
         </List>
+        <Divider/>
         <List style = {styles.list} >  
           <Button
             color="secondary"
             onClick = {this.handleLogOut}>
-                          Sign Out
+                Sign Out
           </Button>
         </List>
+        <Divider/>
       </div>
     );
     const { classes } = this.props;
@@ -205,7 +212,7 @@ class HomePage extends React.Component {
                           // onClick={this.handleMenu}
                           onClick={this.toggleDrawer('left', true)}
                           color="inherit">
-                              <Avatar alt="Remy Sharp" src = 'http://archbreastcancer.com/public/site/images/admin/img_avatar.png' />
+                              <Avatar alt="Remy Sharp" src = {this.state.user.profileImage} />
                       </IconButton>
 
 
@@ -255,11 +262,11 @@ class HomePage extends React.Component {
         <div className = 'home-page-body'>
             <h2 className = 'url-header'>URL search results </h2>
             <div className = 'search-results'>
-                  <div className = 'source-code'>
-                  {this.serverRes}
-                  </div>
+
                   <div className = 'inspector-source-code'>
 
+                  </div>
+                  <div className = 'source-code'>
                   </div>
             </div>
         </div>
