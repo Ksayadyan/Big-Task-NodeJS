@@ -2,6 +2,7 @@ const express=require("express");
 const bodyParser=require("body-parser");
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
+const router = require('../routes/router.js');
 
 //Server full configuration
 module.exports= (app) => {
@@ -19,4 +20,5 @@ module.exports= (app) => {
       }
   }));
   app.use(fileUpload());
+  app.use( '/',router);
 };

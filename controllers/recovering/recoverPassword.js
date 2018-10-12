@@ -1,17 +1,16 @@
 //Module for updating users password(recover)
 
 const cryptPassword = require('../../helpers/cryptPassword.js');
-const router = require('../BasicLogic/router.js');
 const {db} = require('../../models/MySQL/MySQLDb.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 
 
-const recoverPassword = async (req,con,res)=>{
+const recoverPassword = async (req,db,res)=>{
   try{
-    const user = await con.query(`SELECT answer FROM users WHERE login = '${req.body.login}'`, {type: con.QueryTypes.SELECT });
+    const user = await db.query(`SELECT answer FROM users WHERE login = '${req.body.login}'`, {type: db.QueryTypes.SELECT });
     if(user[0]['answer'] === req.body.answer){
       const newPassword = cryptPassword(req.body.newPassword);
-      await con.query(`UPDATE users SET password = '${newPassword}' WHERE login = '${req.body.login}'`)
+      await db.query(`UPDATE users SET password = '${newPassword}' WHERE login = '${req.body.login}'`)
       .spread((results,metadata)=>{
        console.log('Password updated');
       });
@@ -28,6 +27,10 @@ const recoverPassword = async (req,con,res)=>{
   }
 }
 
-router.post('/recoverpasswordattempt',(req,res)=>{
-  recoverPassword(req , db , res);
-});
+const handlePasswordReset = (req, res)=>{
+  recoverPassword(req, db, res)
+}
+
+module.exports = {
+  handlePasswordReset,
+}

@@ -4,7 +4,6 @@ const mongod = require("../../models/MongoDb/mongo.js")
 const ClassUser = require('../../models/MongoDb/classUserDb.js')
 const {profile} = require('../BasicLogic/UsersProfile.js')
 const { db,Users }  = require('../../models/MySQL/MySQLDb.js')
-const router = require('./router.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 
 
@@ -98,8 +97,9 @@ const signout = async (req, res) => {
 }
 
 
+module.exports = {
+  signup,
+  signout,
+  login,
+}
 
-
-router.post('/api',signup);
-router.post('/signin', login);
-router.get('/signout', signout);

@@ -2,7 +2,6 @@ const mysql = require('sequelize');
 const cryptPassword = require('../../helpers/cryptPassword.js');
 const mongod = require('../../models/MongoDb/mongo.js')
 const {db} = require('../../models/MySQL/MySQLDb.js')
-const router = require('./router.js')
 const errorHandler = require('../../helpers/errorhandler.js');
 
 
@@ -81,12 +80,10 @@ const profile = async (req, res) => {
 }
 
 module.exports = {
-  profile
+  profile,
+  imageUpload,
+  editProfile,
 }
 
 //Handling user profile rendering
-router.get('/home', profile);
-//Handling image upload
-router.post('/imageUpload',imageUpload);
-//Change user information
-router.post('/editprofile',editProfile);
+

@@ -1,7 +1,6 @@
 const {URL} = require('url');
 const request = require('request');
 const mongod = require ('../../models/MongoDb/mongo.js')
-const router = require('./router.js')
 const errorHandler = require('../../helpers/errorhandler.js');
 const HTML = require('html-parse-stringify');
 
@@ -74,11 +73,18 @@ const fetchurl = async (req, res) => {
 
 
 
-//Saving fetched url in mongodb
-router.post('/fetchurl',fetchurl);
-//Saving html in mongodb
-router.post('/savehtml',saveHtml);
-//fetching history
-router.get('/browseHistory',browseHistory);
-//getting saved html
-router.post('/getSavedHtml',mongod.getSavedHtml);
+// //Saving fetched url in mongodb
+// router.post('/fetchurl',fetchurl);
+// //Saving html in mongodb
+// router.post('/savehtml',saveHtml);
+// //fetching history
+// router.get('/browseHistory',browseHistory);
+// //getting saved html
+//router.post('/getSavedHtml',mongod.getSavedHtml);
+
+module.exports = {
+  fetchurl,
+  saveHtml,
+  browseHistory,
+
+}
