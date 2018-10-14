@@ -1,7 +1,7 @@
 //Module for updating users password(recover)
 
 const cryptPassword = require('../../helpers/cryptPassword.js');
-const {db} = require('../../models/MySQL/MySQLDb.js');
+const {db} = require('../../models/MySQL/MySQLTableDefine.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 
 

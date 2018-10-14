@@ -1,5 +1,5 @@
 //Get secret question for given login
-const {db} = require('../../models/MySQL/MySQLDb.js')
+const {db} = require('../../models/MySQL/MySQLTableDefine.js')
 
 
 const  getSecretQuestion = async (req, res, db)=>{

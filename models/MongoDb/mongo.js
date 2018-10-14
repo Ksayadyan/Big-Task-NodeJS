@@ -14,7 +14,7 @@ const {
 const HTML = require('html-parse-stringify');
 let url;
 if(MONGO_DATABASE_PASSWORD){
-  url = `mongodb://${MONGO_DATABASE_USER_NAME}:${MONGO_DATABASE_PASSWORD}@localhost:27017`;
+  url = `mongodb://${MONGO_DATABASE_USER_NAME}:${MONGO_DATABASE_PASSWORD}@${MONGO_DATABASE_HOST}`;
 }else{
   url = `mongodb://localhost:27017`
 }
@@ -24,12 +24,12 @@ let dbHtml;
 
 
 //Connect to mongodb database
-MongoClient.connect(url, function(err,client){
+MongoClient.connect(url,{useNewUrlParser:true}, function(err,client){
   if(err){
     console.log()
     errorHandler('Unable to connect to MongoDB','MongoClient.connect','mongo.js',__dirname);
   }
-  const database = client.db('userhistory');
+  const database = client.db(MONGO_DATABASE_NAME);
   const collection = database.collection('history and images');
   db = collection;
   const collectionHtml = database.collection('htmls');

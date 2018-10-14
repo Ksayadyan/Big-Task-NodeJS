@@ -3,7 +3,7 @@ const folderCreator = require('../../helpers/UsersImageFolder.js')
 const mongod = require("../../models/MongoDb/mongo.js")
 const ClassUser = require('../../models/MongoDb/classUserDb.js')
 const {profile} = require('../BasicLogic/UsersProfile.js')
-const { db,Users }  = require('../../models/MySQL/MySQLDb.js')
+const { db,Users }  = require('../../models/MySQL/MySQLTableDefine.js')
 const errorHandler = require('../../helpers/errorhandler.js');
 
 

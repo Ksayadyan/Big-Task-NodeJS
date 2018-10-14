@@ -85,7 +85,7 @@ class SignIn extends React.Component {
                 body : JSON.stringify(this.state)
             })
             .then (res => res.json())
-            .then(get => this.checkUser(get))
+            .then(get => this.checkUser(get))       
             .catch(err => console.log("err", err));
 
 }

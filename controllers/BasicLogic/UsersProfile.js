@@ -1,7 +1,7 @@
 const mysql = require('sequelize');
 const cryptPassword = require('../../helpers/cryptPassword.js');
 const mongod = require('../../models/MongoDb/mongo.js')
-const {db} = require('../../models/MySQL/MySQLDb.js')
+const {db} = require('../../models/MySQL/MySQLTableDefine.js')
 const errorHandler = require('../../helpers/errorhandler.js');
 
 

@@ -23,7 +23,7 @@ const configureSettingsObject = (settings)=>{
     settings.mysqlDataBaseName = readline.question('Mysql Database Name (default: users) >>') || 'users';
     settings.mysqlUserName = readline.question('Mysql Database User Name (dafualt: root) >>') || 'root';
     settings.mysqlPassword = readline.question('Mysql database password (default: 123456) >>') || '123456';
-    settings.mongoDataBaseHost = readline.question('Mongo Data Base Host (default: localhost:27017) >>') || 'localhost: 27017';
+    settings.mongoDataBaseHost = readline.question('Mongo Data Base Host (default: localhost:27017) >>') || 'localhost:27017';
     settings.mongoDataBaseName = readline.question('Mongo Data Base Name (default: userhistory) >>') || 'userhistory';
     settings.mongoDataBaseUserName = readline.question('Mongo DB Username (default: "") >>');
     settings.mongoDataBasePassword = readline.question('Mongo DB passowrd (default: "") >>');
