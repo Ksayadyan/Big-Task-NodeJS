@@ -4,8 +4,8 @@ const express = require('express');
 const serverConfig = require('./middleware/serverConfig.js');
 const authenticateMysqlConnection = require('./helpers/authenticateMysqlConnection.js');
 const { db } = require('./models/MySQL/MySQLDb.js');
-
-const port = process.env.PORT || 5000 
+//Environmnet configs
+const {PORT} = require('./constants/constants.js');
 
 //Server creation and configuration
 const app = express();
@@ -15,8 +15,6 @@ serverConfig(app);
 authenticateMysqlConnection(db);
 
 //Server starting
- app.listen(port,()=>{
-  console.log("Listening 5000");
+ app.listen(PORT,()=>{
+  console.log(`Listening ${PORT}`);
 });
-
-

@@ -20,5 +20,5 @@ module.exports= (app) => {
       }
   }));
   app.use(fileUpload());
-  app.use( '/',router);
+  app.use('/',router);
 };

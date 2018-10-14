@@ -1,8 +1,23 @@
 const MongoClient = require('mongodb').MongoClient;
 const findUserById = require('./findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
-const url = "mongodb://localhost:27017/"; //Default url for MongoDB server
+
+
+const {
+  MONGO_DATABASE_NAME,
+  MONGO_DATABASE_HOST,
+  MONGO_DATABASE_USER_NAME,
+  MONGO_DATABASE_PASSWORD
+} = require('../../constants/constants.js')
+
+
 const HTML = require('html-parse-stringify');
+let url;
+if(MONGO_DATABASE_PASSWORD){
+  url = `mongodb://${MONGO_DATABASE_USER_NAME}:${MONGO_DATABASE_PASSWORD}@localhost:27017`;
+}else{
+  url = `mongodb://localhost:27017`
+}
 
 let db;
 let dbHtml;

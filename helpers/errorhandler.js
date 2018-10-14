@@ -1,7 +1,7 @@
 const colors = require('colors/safe')
 
 module.exports = (message,errorFunction,errorModule,dirname)=>{
-  console.log(colors.red(
+  console.log(colors.rainbow(
 `|-----------------Error-----------------|
 |-Message: ${message}
 |-Function: ${errorFunction}

@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
 const mysql = require('mysql');
-require('dotenv').config();
+const {MYSQL_DATABASE_NAME, MYSQL_USER_NAME, MYSQL_PASSWORD} = require('../../constants/constants.js');
 
-const connection=new Sequelize('users','root',`${process.env.DB_PASSWORD}`,{
+
+const connection=new Sequelize(MYSQL_DATABASE_NAME, MYSQL_USER_NAME, MYSQL_PASSWORD,{
   dialect:'mysql',
  })
  //Global referance to Mysql Connection
