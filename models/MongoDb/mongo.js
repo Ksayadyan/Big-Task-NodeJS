@@ -147,11 +147,7 @@ const saveFetchedUrl = async (id, urlToSave, hostname,res) => {
 
 
 const saveHtml = async (id,group,urlToSave,html)=>{
-    dbHtml.update({id:id, url: urlToSave},{
-      $set: {
-        html: html
-      }
-    },(err,res)=>{
+    dbHtml.insert({id:id, url: urlToSave, html:html},(err,res)=>{
       if(err){
         errorHandler('Error while updating document', 'saveHtml','mongo.js', __dirname)
       }

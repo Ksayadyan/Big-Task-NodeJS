@@ -3,13 +3,41 @@ const request = require('request');
 const mongod = require ('../../models/MongoDb/mongo.js')
 const errorHandler = require('../../helpers/errorhandler.js');
 const HTML = require('html-parse-stringify');
+const history = require('../../models/MySQL/MySQLDbHistoryTableDefine.js');
+const groups = require('../../models/MySQL/MysqlGroupTableDefine.js');
+
+groups.hasMany(history,{
+  foreignKey: 'groupName',
+  as: 'urls',
+  
+});
+history.belongsTo(groups,{
+  foreignKey: 'groupName',
+  as: 'content'
+})
 
 const fetchurl = async (req, res) => {
     try {
       if (req.session.userId) {
         const fetchedUrl = new URL(req.body.url);
         const hostname = fetchedUrl.hostname;
-        await mongod.saveFetchedUrl(req.session.userId, req.body.url, hostname,res);
+        await groups.findOrCreate({
+          defaults: {groupName: hostname},
+          where:{groupName: hostname},
+        });
+
+        await history.findOrCreate({
+          defaults:{
+            groupName: hostname,
+            userId: req.session.userId,
+            url: req.body.url,
+          },
+          where:{
+            userId: req.session.userId,
+            url: req.body.url,
+          }
+        });
+        //await mongod.saveFetchedUrl(req.session.userId, req.body.url, hostname,res);
         await request({
           uri: `${req.body.url}/`,
         },(err,response,body)=>{
@@ -34,7 +62,6 @@ const fetchurl = async (req, res) => {
       if (req.session.userId) {
         const fetchedUrl = new URL(req.body.url);
         const hostname = fetchedUrl.hostname;
-        let html;
         await request({
           uri: `${req.body.url}/`,
         },async (err,response,body)=>{
@@ -62,11 +89,31 @@ const fetchurl = async (req, res) => {
   const browseHistory = async (req,res)=>{
     try{
       if(req.session.userId){
-        await mongod.fetchHistory(req.session.userId,res);
+        const result = await groups.findAll({
+          attributes:['groupName'],
+          include:[{
+              attributes:['url','createdAt','updatedAt'],
+              where:{
+                  userId: req.session.userId,
+              },
+              model: history,
+              as: 'urls',
+              //order: ['groupname','ASC'],
+              limit: 2,
+              duplicating: false,
+              
+          }],
+          //yorder:['groupName', 'ASC'],
+          limit:3,
+          duplicating: false,
+          
+      },);
+      res.send(result);
       }else{
         res.sendStatus(401);
       }
     }catch(e){
+      console.log(e);
       errorHandler('Unable to fetch history','browseHistory','UsersHistory',__dirname);
     }
   }
