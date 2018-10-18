@@ -1,7 +1,7 @@
 const mysql = require('sequelize');
 const cryptPassword = require('../../helpers/cryptPassword.js');
 const mongod = require('../../models/MongoDb/mongo.js')
-const {db} = require('../../models/MySQL/MySQLTableDefine.js')
+const {db,Users} = require('../../models/MySQL/MySQLTableDefine.js')
 const errorHandler = require('../../helpers/errorhandler.js');
 
 
@@ -15,14 +15,17 @@ const profile = async (req, res) => {
         res.redirect('/login');
         return;
       }
-      const sql = `SELECT * FROM users WHERE id='${userId}'`;
-      const user = await db.query(sql, {
-        type: db.QueryTypes.SELECT
-      });
+     const user= await Users.findOne(
+        {where: {   
+        id : userId
+      },
+      raw : true,
+    }) 
+      
       console.log('User found');
       const obj = {
-        name: user[0]['name'],
-        lastname: user[0]['lastname']
+        name: user.name,
+        lastname: user.lastname
       }
       //Find information about specific user in mongo database
       await mongod.findAndSendUserInfo(userId, res, obj);
@@ -59,16 +62,17 @@ const profile = async (req, res) => {
   if (req.session.userId) {
     try {
       const value = req.body;
-      const newPassword = cryptPassword(value.password);
-      const sql = `UPDATE users SET
-   mail = '${value.mail}',
-   name = '${value.firstName}',
-   lastname = '${value.lastName}',
-   birthday = '${value.birthday}',
-   phone = '${value.phone}' WHERE id = '${req.session.userId}'`;
-      await db.query(sql).spread((results, metadata) => {
+      await Users.update({
+        mail : value.mail,
+        name : value.name,
+        lastname : value.lastname,
+        birthday : value.birthday,
+        phone: value.phone
+      },
+      {where:{id:req.session.userId}})
+      
           console.log('information changed');
-        });
+
         res.sendStatus(205);
     } catch (e) {
       res.sendStatus(503);

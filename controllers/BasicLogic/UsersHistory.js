@@ -92,14 +92,15 @@ const fetchurl = async (req, res) => {
         const result = await groups.findAll({
           attributes:['groupName'],
           include:[{
-              attributes:['url','createdAt','updatedAt'],
+            
+              attributes:['url','createdAt','updatedAt','id'],
               where:{
                   userId: req.session.userId,
-              },
+                  },
               model: history,
               as: 'urls',
               //order: ['groupname','ASC'],
-              limit: 2,
+              // limit: 2,
               duplicating: false,
               
           }],
