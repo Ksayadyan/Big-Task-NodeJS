@@ -8,12 +8,12 @@ const groups = require('../../models/MySQL/MysqlGroupTableDefine.js');
 
 groups.hasMany(history,{
   foreignKey: 'groupName',
-  as: 'urls',
+  // as: 'urls',
   
 });
 history.belongsTo(groups,{
   foreignKey: 'groupName',
-  as: 'content'
+  // as: 'content'
 })
 
 const fetchurl = async (req, res) => {
@@ -86,29 +86,58 @@ const fetchurl = async (req, res) => {
   }
 
 
-  const browseHistory = async (req,res)=>{
+  // const browseHistory = async (req,res)=>{
+  //   try{
+  //     if(req.session.userId){
+  //       const result = await groups.findAll({
+  //         attributes:['groupName'],
+  //         include:[{
+            
+  //             attributes:['url','createdAt','updatedAt','id'],
+  //             where:{
+  //                 userId: req.session.userId,
+  //                 },
+  //             model: history,
+  //             as: 'urls',
+  //             //order: ['groupname','ASC'],
+  //             // limit: 2,
+  //             duplicating: false,
+              
+  //         }],
+  //         //yorder:['groupName', 'ASC'],
+  //         limit:3,
+  //         duplicating: false,
+          
+  //     },);
+  //     res.send(result);
+  //     }else{
+  //       res.sendStatus(401);
+  //     }
+  //   }catch(e){
+  //     console.log(e);
+  //     errorHandler('Unable to fetch history','browseHistory','UsersHistory',__dirname);
+  //   }
+  // }
+
+
+
+  const browseGroupHistory = async (req,res)=>{
     try{
       if(req.session.userId){
-        const result = await groups.findAll({
+        const result = await groups.findAndCountAll({
           attributes:['groupName'],
+          distinct: true,
           include:[{
             
-              attributes:['url','createdAt','updatedAt','id'],
+              attributes:[],
               where:{
                   userId: req.session.userId,
                   },
               model: history,
-              as: 'urls',
-              //order: ['groupname','ASC'],
-              // limit: 2,
-              duplicating: false,
-              
           }],
-          //yorder:['groupName', 'ASC'],
-          limit:3,
-          duplicating: false,
-          
-      },);
+          limit:2,
+          offset: (parseInt(req.query.page) - 1)*2,
+      });
       res.send(result);
       }else{
         res.sendStatus(401);
@@ -118,8 +147,6 @@ const fetchurl = async (req, res) => {
       errorHandler('Unable to fetch history','browseHistory','UsersHistory',__dirname);
     }
   }
-
-
 
 // //Saving fetched url in mongodb
 // router.post('/fetchurl',fetchurl);
@@ -133,6 +160,6 @@ const fetchurl = async (req, res) => {
 module.exports = {
   fetchurl,
   saveHtml,
-  browseHistory,
+  browseGroupHistory,
 
 }
