@@ -8,12 +8,12 @@ const groups = require('../../models/MySQL/MysqlGroupTableDefine.js');
 
 groups.hasMany(history,{
   foreignKey: 'groupName',
-  // as: 'urls',
+
   
 });
 history.belongsTo(groups,{
   foreignKey: 'groupName',
-  // as: 'content'
+
 })
 
 const fetchurl = async (req, res) => {
@@ -85,42 +85,6 @@ const fetchurl = async (req, res) => {
     }
   }
 
-
-  // const browseHistory = async (req,res)=>{
-  //   try{
-  //     if(req.session.userId){
-  //       const result = await groups.findAll({
-  //         attributes:['groupName'],
-  //         include:[{
-            
-  //             attributes:['url','createdAt','updatedAt','id'],
-  //             where:{
-  //                 userId: req.session.userId,
-  //                 },
-  //             model: history,
-  //             as: 'urls',
-  //             //order: ['groupname','ASC'],
-  //             // limit: 2,
-  //             duplicating: false,
-              
-  //         }],
-  //         //yorder:['groupName', 'ASC'],
-  //         limit:3,
-  //         duplicating: false,
-          
-  //     },);
-  //     res.send(result);
-  //     }else{
-  //       res.sendStatus(401);
-  //     }
-  //   }catch(e){
-  //     console.log(e);
-  //     errorHandler('Unable to fetch history','browseHistory','UsersHistory',__dirname);
-  //   }
-  // }
-
-
-
   const browseGroupHistory = async (req,res)=>{
     try{
       if(req.session.userId){
@@ -148,6 +112,30 @@ const fetchurl = async (req, res) => {
     }
   }
 
+
+
+
+  const browsUrlHistory =async (req,res)=>{
+    try {
+      if (req.session.userId){
+        const result = await history.findAndCountAll({
+          where : {
+            userId : req.session.userId,
+          },
+        attributes : ['url'], 
+        order : ['groupName'] ,
+        // distinct : true,
+        limit : 5,
+
+        })
+        res.send(result);
+      }
+    }catch(e){
+      console.log(e);
+
+    }
+  }
+
 // //Saving fetched url in mongodb
 // router.post('/fetchurl',fetchurl);
 // //Saving html in mongodb
@@ -161,5 +149,6 @@ module.exports = {
   fetchurl,
   saveHtml,
   browseGroupHistory,
+  browsUrlHistory
 
 }
