@@ -1,6 +1,7 @@
 const {URL} = require('url');
 const request = require('request');
-const mongod = require ('../../models/MongoDb/mongo.js')
+const mongod = require ('../../models/MongoDb/mongo.js');
+const findUserById = require('../../models/MongoDb/findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 const HTML = require('html-parse-stringify');
 const history = require('../../models/MySQL/MySQLDbHistoryTableDefine.js');
@@ -8,12 +9,9 @@ const groups = require('../../models/MySQL/MysqlGroupTableDefine.js');
 
 groups.hasMany(history,{
   foreignKey: 'groupName',
-
-  
 });
 history.belongsTo(groups,{
   foreignKey: 'groupName',
-
 })
 
 const fetchurl = async (req, res) => {
@@ -40,8 +38,9 @@ const fetchurl = async (req, res) => {
         //await mongod.saveFetchedUrl(req.session.userId, req.body.url, hostname,res);
         await request({
           uri: `${req.body.url}/`,
-        },(err,response,body)=>{
+        },async (err,response,body)=>{
             const result = HTML.parse(body);
+            await mongod.saveFetchedUrl(req.session.userId);
             res.send(result);
         });
 
@@ -99,7 +98,7 @@ const fetchurl = async (req, res) => {
                   },
               model: history,
           }],
-          limit:2,
+          limit: parseInt(req.query.perPage),
           offset: (parseInt(req.query.page) - 1)*2,
       });
       res.send(result);
@@ -115,7 +114,7 @@ const fetchurl = async (req, res) => {
 
 
 
-  const browsUrlHistory =async (req,res)=>{
+  const browseUrlHistory =async (req,res)=>{
     try {
       if (req.session.userId){
         const result = await history.findAndCountAll({
@@ -124,10 +123,9 @@ const fetchurl = async (req, res) => {
           },
         attributes : ['url'], 
         order : ['groupName'] ,
-        // distinct : true,
-        limit : 5,
-
-        })
+        limit : parseInt(req.query.perPage),
+        offset: parseInt(req.query.page) * parseInt(req.query.perPage)-parseInt(req.query.perPage),
+        }) 
         res.send(result);
       }
     }catch(e){
@@ -149,6 +147,6 @@ module.exports = {
   fetchurl,
   saveHtml,
   browseGroupHistory,
-  browsUrlHistory
+  browseUrlHistory
 
 }

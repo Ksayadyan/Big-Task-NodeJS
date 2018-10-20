@@ -79,24 +79,9 @@ const updateImages = async (id, path) => {
     });
 }
 
-const saveFetchedUrl = async (id, urlToSave, hostname,res) => {
-  try {
+const saveFetchedUrl = async (id) => {
       const user = await findUserById(id, db);
       let number = user.totalFetched;
-      if (user.history[`${hostname}`]) {
-        const group = user.history[`${hostname}`];
-        for(let i = 0; i < group.length; i++){
-          if(group[i]['url'] === urlToSave){
-            console.log('Fieled with same url found, no changes performed');
-            return;
-            // res.sendStatus(304);
-            // throw new Error('Duplicate url found')
-          }
-        }
-        console.log(`Group ${hostname} exists.Trying to push`);
-        user.history[`${hostname}`].push({
-          url: urlToSave,
-        });
         await db.update({
           id: `${id}`
         }, {
@@ -110,39 +95,6 @@ const saveFetchedUrl = async (id, urlToSave, hostname,res) => {
           }
         });
         console.log('Succesfully pushed');
-        dbHtml.insertOne({id:id, url:urlToSave, html: ''},(err,res)=>{
-          if(err){
-            errorHandler('Unable to insert document in userHtml database','saveFetchedUrl','mongo.js',__dirname)
-          }
-        })
-      } else {
-        console.log(`Group ${hostname} doesn't exists. Trying to create`);
-        user.history[`${hostname}`] = [];
-        user.history[`${hostname}`].push({
-          url: urlToSave,
-        });
-        await db.update({
-          id: `${id}`
-        }, {
-          $set: {
-            history: user.history,
-            totalFetched: ++number
-          }
-        }, (err, res) => {
-          if (err){
-            errorHandler('Error while updating document(second section)', 'saveFetchedUrl','mongo.js', __dirname)
-          }
-        });
-        console.log('Created and pushed Succesfully');
-        dbHtml.insertOne({id:id, url:urlToSave, html: ''},(err,res)=>{
-          if(err){
-            errorHandler('Unable to insert document in userHtml database','saveFetchedUrl','mongo.js',__dirname)
-          }
-        })
-      }
-  } catch (e) {
-    console.log('Duplicate found',e);
-  }
 }
 
 
@@ -152,16 +104,6 @@ const saveHtml = async (id,group,urlToSave,html)=>{
         errorHandler('Error while updating document', 'saveHtml','mongo.js', __dirname)
       }
     });
-}
-
-
-const fetchHistory = async (id,res) => {
-  const history = await db.find({id:`${id}`}).project({ _id: 0, history: 1}).toArray();
-
-  //{$and: [{id:id},{history:{$elemMatch:{url:{$ne:""}}}}]}
-  //{id:id},{history:{$elemMatch:{url:{$ne:""}}}}
-  res.send(history);
-  await  console.log(history);
 }
 
 
@@ -181,6 +123,5 @@ module.exports = {
   updateImages,
   saveFetchedUrl,
   saveHtml,
-  fetchHistory,
   getSavedHtml
 }
