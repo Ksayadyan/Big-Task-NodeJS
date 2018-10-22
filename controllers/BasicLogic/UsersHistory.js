@@ -6,6 +6,10 @@ const errorHandler = require('../../helpers/errorhandler.js');
 const HTML = require('html-parse-stringify');
 const history = require('../../models/MySQL/MySQLDbHistoryTableDefine.js');
 const groups = require('../../models/MySQL/MysqlGroupTableDefine.js');
+const queryToIntParser = require('../../helpers/queryToIntParser.js');
+const {checkGroupedUrlOrder,
+       checkGroupOrder,
+       checkUrlOrder,} = require('../../helpers/MysqlOrderChecker.js');
 
 groups.hasMany(history,{
   foreignKey: 'groupName',
@@ -87,6 +91,10 @@ const fetchurl = async (req, res) => {
   const browseGroupHistory = async (req,res)=>{
     try{
       if(req.session.userId){
+        if(!queryToIntParser(req.query.page, req.query.perPage)){
+          res.send(400);
+          return;
+        }
         const result = await groups.findAndCountAll({
           attributes:['groupName'],
           distinct: true,
@@ -98,8 +106,9 @@ const fetchurl = async (req, res) => {
                   },
               model: history,
           }],
-          limit: parseInt(req.query.perPage),
-          offset: (parseInt(req.query.page) - 1)*2,
+          limit: req.query.perPage,
+          offset: (req.query.page - 1)*2,
+          order: checkGroupOrder(req.query.order, req.query.type),
       });
       res.send(result);
       }else{
@@ -117,20 +126,53 @@ const fetchurl = async (req, res) => {
   const browseUrlHistory =async (req,res)=>{
     try {
       if (req.session.userId){
+        if(!queryToIntParser(req.query.page, req.query.perPage)){
+          res.send(400);
+          return;
+        }  
         const result = await history.findAndCountAll({
           where : {
             userId : req.session.userId,
           },
         attributes : ['url'], 
-        order : ['groupName'] ,
-        limit : parseInt(req.query.perPage),
-        offset: parseInt(req.query.page) * parseInt(req.query.perPage)-parseInt(req.query.perPage),
+        order : checkUrlOrder(req.query.order, req.query.type),
+        limit : req.query.perPage,
+        offset: req.query.page * req.query.perPage - req.query.perPage,
         }) 
         res.send(result);
       }
     }catch(e){
       console.log(e);
+      errorHandler('Unable to browse url history', 'browseUrlHistory', 'UsersHistory.js', __dirname);
 
+    }
+  }
+
+  const browseGroupedUrlHistory = async (req,res) => {
+    if(req.session.userId){
+      try{
+        if(!queryToIntParser(req.query.page, req.query.perPage)){
+          res.send(400);
+          return;
+        }
+      const result = await history.findAndCountAll({
+        where: {
+          groupName: req.query.groupName,
+          userId: req.session.userId,
+        },
+        attributes: ['url'],
+        limit: req.query.perPage,
+        offset: req.query.page * req.query.perPage - req.query.perPage,
+        order: checkGroupedUrlOrder(req.query.order, req.query.type),
+      });
+      res.send(result);
+    }catch(e){
+      console.log(e);
+      res.send(503);
+      errorHandler('Unable to retrieve history from "history" database', 'browseGroupedUrlHistory', 'Usershistory.js', __dirname);
+    }
+    }else{
+      res.sendStatus(401)
     }
   }
 
@@ -147,6 +189,6 @@ module.exports = {
   fetchurl,
   saveHtml,
   browseGroupHistory,
-  browseUrlHistory
-
+  browseUrlHistory,
+  browseGroupedUrlHistory,
 }

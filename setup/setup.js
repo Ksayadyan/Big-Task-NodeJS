@@ -44,6 +44,10 @@ const configureSettingsObject = (settings)=>{
         MONGO_DATABASE_USER_NAME=${settings.mongoDataBaseUserName}
         MONGO_DATABASE_PASSWORD=${settings.mongoDataBasePassword}
         PORT=${settings.serverPort}`;
+        if(fs.existsSync('../.env')){
+            console.log('.env file found. File will be deleted and created again !');
+            fs.unlinkSync('../.env');
+        }
         fs.appendFileSync('../.env',data);
         console.log(colors.green('File saved succesfully'));
     }else{
