@@ -5,5 +5,8 @@ module.exports = (page, perPage) => {
     perPage = parseInt(perPage);
 
     if(!Boolean(page) || !Boolean(perPage)) return;
-    else return true;
+    else return {
+        page,
+        perPage
+    }
 }

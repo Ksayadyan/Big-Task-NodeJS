@@ -91,10 +91,13 @@ const fetchurl = async (req, res) => {
   const browseGroupHistory = async (req,res)=>{
     try{
       if(req.session.userId){
-        if(!queryToIntParser(req.query.page, req.query.perPage)){
+        const parseResult = queryToIntParser(req.query.page, req.query.perPage);
+        if(!parseResult){
           res.send(400);
           return;
         }
+        req.query.page = parseResult.page;
+        req.query.perPage = parseResult.perPage;
         const result = await groups.findAndCountAll({
           attributes:['groupName'],
           distinct: true,
@@ -126,10 +129,13 @@ const fetchurl = async (req, res) => {
   const browseUrlHistory =async (req,res)=>{
     try {
       if (req.session.userId){
-        if(!queryToIntParser(req.query.page, req.query.perPage)){
+        const parseResult = queryToIntParser(req.query.page, req.query.perPage);
+        if(!parseResult){
           res.send(400);
           return;
-        }  
+        }
+        req.query.page = parseResult.page;
+        req.query.perPage = parseResult.perPage;
         const result = await history.findAndCountAll({
           where : {
             userId : req.session.userId,
@@ -151,10 +157,13 @@ const fetchurl = async (req, res) => {
   const browseGroupedUrlHistory = async (req,res) => {
     if(req.session.userId){
       try{
-        if(!queryToIntParser(req.query.page, req.query.perPage)){
+        const parseResult = queryToIntParser(req.query.page, req.query.perPage);
+        if(!parseResult){
           res.send(400);
           return;
         }
+        req.query.page = parseResult.page;
+        req.query.perPage = parseResult.perPage;
       const result = await history.findAndCountAll({
         where: {
           groupName: req.query.groupName,
