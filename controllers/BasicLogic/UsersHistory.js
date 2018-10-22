@@ -159,7 +159,7 @@ const fetchurl = async (req, res) => {
       try{
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
         if(!parseResult){
-          res.send(400);
+          res.sendStatus(400);
           return;
         }
         req.query.page = parseResult.page;

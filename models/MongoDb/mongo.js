@@ -1,6 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 const findUserById = require('./findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
+const queryToIntParser = require('../../helpers/queryToIntParser.js');
 
 
 const {
@@ -60,8 +61,10 @@ const findAndSendUserInfo = async (id, res, obj) => {
 }
 
 
-const updateImages = async (id, path) => {
 
+
+const updateImages = async (id, path) => {
+  if(req.session.userId){
     const user = await findUserById(id, db);
     user.images.push(path);
     let number = user.totalImages;
@@ -77,7 +80,54 @@ const updateImages = async (id, path) => {
         errorhandler('Erro while trying to update images','updateImages','mongo.js',__dirname);
       }
     });
+  }else{
+    res.sendStatus(401);
+  }
 }
+
+const editProfilePic = async (req, res) => {
+  if(req.session.userId){
+    try{
+    await db.update({
+      id: `${req.session.userId}`
+    }, {
+      $set: {
+        profileImage: req.body.path
+      }
+    });
+    res.send(205);
+  }catch(e){
+    res.sendStatus(503);
+    errorHandler('Unable to update profile pick','editProfilePick','mongo.js', __dirname);
+  }
+  }else{
+    res.sendStatus(401)
+  }
+}
+
+const getImages = async (req, res) => {
+  if(req.session.userId){
+    try{
+      req.query.page = parseInt(req.query.page);
+      if(!Boolean(req.query.page)){
+        res.send(400);
+        return;
+      }
+      const result = await db.find({id: `${req.session.userId}`})
+      .project({images: {$slice: [(req.query.page-1)*3,req.query.page*3]}, totalImages: 1, _id: 0}).toArray();
+      console.log(result);
+      res.send(result);     
+    }catch(e){
+      console.log(e);
+      res.sendStatus(503);
+      errorHandler('Unable to get images', 'getImages','mongo.js',__dirname)
+    }
+  }else{
+    res.sendStatus(401)
+  }
+}
+
+
 
 const saveFetchedUrl = async (id) => {
       const user = await findUserById(id, db);
@@ -123,5 +173,7 @@ module.exports = {
   updateImages,
   saveFetchedUrl,
   saveHtml,
-  getSavedHtml
+  getSavedHtml,
+  getImages,
+  editProfilePic,
 }

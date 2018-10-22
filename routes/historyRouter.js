@@ -1,7 +1,7 @@
 
 
 const {fetchurl,saveHtml,browseGroupHistory,browseUrlHistory,browseGroupedUrlHistory} = require('../controllers/BasicLogic/UsersHistory.js');
-const {getSavedHtml} = require('../models/MongoDb/mongo.js');
+const {getSavedHtml, getImages, editProfilePic} = require('../models/MongoDb/mongo.js');
 
 const configureHistoryRouter = (router) =>{
     //Saving fetched url in mongodb
@@ -16,6 +16,10 @@ router.get('/browseUrlHistory',browseUrlHistory);
 router.get('/browseGroupedUrlHistory', browseGroupedUrlHistory);
 // //getting saved html
 router.post('/getSavedHtml',getSavedHtml);
+
+router.get('/getImages', getImages);
+
+router.post('/editProfilePic',editProfilePic);
 
 console.log('history route configired');
 }

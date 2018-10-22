@@ -1,7 +1,6 @@
 const mysql = require('sequelize');
-const cryptPassword = require('../../helpers/cryptPassword.js');
 const mongod = require('../../models/MongoDb/mongo.js')
-const {db,Users} = require('../../models/MySQL/MySQLTableDefine.js')
+const {Users} = require('../../models/MySQL/MySQLTableDefine.js')
 const errorHandler = require('../../helpers/errorhandler.js');
 
 
@@ -58,8 +57,9 @@ const profile = async (req, res) => {
     }
   }
 
+
    const editProfile = async (req, res) => {
-  if (req.session.userId) {
+    if (req.session.userId) {
     try {
       const value = req.body;
       await Users.update({

@@ -80,7 +80,7 @@ const login = async (req, res) => {
 
       } else {
         console.log('User is not found');
-        res.sendStatus(404)
+        res.sendStatus(401);
       }
   } catch (e) {
     errorHandler('Unable to retrieve data from MySQL','login','user.js',__dirname);
