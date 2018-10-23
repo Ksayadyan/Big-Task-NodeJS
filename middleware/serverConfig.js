@@ -1,6 +1,5 @@
 const express=require("express");
 const bodyParser=require("body-parser");
-const session = require('express-session');
 const fileUpload = require('express-fileupload');
 const router = require('../routes/router.js');
 
