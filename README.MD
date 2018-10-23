@@ -1,17 +1,17 @@
-#Social network with RESTful API 
+# Social network with RESTful API 
 
 <img src = 'https://sg.fiverrcdn.com/photos/109191227/original/c27eda97c44111cd8d2159d4629b91cc7bdabbbd.png?1521111272' alt = "poster" width="600"/>
 
 
 
-##Requirements
+## Requirements
  MySQL community server 
  MongoDB 
  NodeJs
 
 
 
-##Installation
+## Installation
 
 1. run  *npm install*  in root directory 
 
