@@ -7,9 +7,8 @@ const errorHandler = require('../../helpers/errorhandler.js');
 
 
 //Profile Information sending
-const profile = async (req, res) => {
+const profile = async (req, res, token, userId) => {
     try {
-      const userId = req.session.userId;
       if (!userId) {
         res.redirect('/login');
         return;
@@ -24,8 +23,12 @@ const profile = async (req, res) => {
       console.log('User found');
       const obj = {
         name: user.name,
-        lastname: user.lastname
+        lastname: user.lastname,
+        token: token,
+        userId: userId,
       }
+
+      console.log(obj);
       //Find information about specific user in mongo database
       await mongod.findAndSendUserInfo(userId, res, obj);
     } catch (e) {
@@ -36,30 +39,24 @@ const profile = async (req, res) => {
 
   //Image upload handler
   const imageUpload = (req, res) => {
-    if (!req.session.userId) {
-      console.log('Not authentificated');
-      res.sendStatus(401);
-    } else {
       if (!req.files) {
         console.log('No files uploaded');
         res.sendStatus(415);
       } else {
         const image = req.files.image;
-        image.mv(`./user-images/Client${req.session.userId}/${req.files.image.name}`, (err) => {
+        image.mv(`./user-images/Client${req.userId}/${req.files.image.name}`, (err) => {
           if (err) {
             res.sendStatus(500)
             errorHandler('Unable to save uploaded image','imageUpload','UsersProfile.js',__dirname);
           }
           res.sendStatus(201)
-          mongod.updateImages(req.session.userId, `../../../user-images/Client${req.session.userId}/${req.files.image.name}`)
+          mongod.updateImages(req.userId, `../../../user-images/Client${req.userId}/${req.files.image.name}`)
         })
       }
-    }
   }
 
 
    const editProfile = async (req, res) => {
-    if (req.session.userId) {
     try {
       const value = req.body;
       await Users.update({
@@ -69,18 +66,16 @@ const profile = async (req, res) => {
         birthday : value.birthday,
         phone: value.phone
       },
-      {where:{id:req.session.userId}})
+      {where:{id:req.userId}})
       
           console.log('information changed');
 
         res.sendStatus(205);
     } catch (e) {
       res.sendStatus(503);
+      console.log(e);
       errorHandler('Error happend while changing user data','editProfile','UsersProfile',__dirname);
     }
-  } else {
-    res.sendStatus(401);
-  }
 }
 
 module.exports = {

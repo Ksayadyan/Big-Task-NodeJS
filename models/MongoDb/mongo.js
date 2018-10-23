@@ -1,7 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const findUserById = require('./findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
-const queryToIntParser = require('../../helpers/queryToIntParser.js');
 
 
 const {
@@ -64,7 +63,6 @@ const findAndSendUserInfo = async (id, res, obj) => {
 
 
 const updateImages = async (id, path) => {
-  if(req.session.userId){
     const user = await findUserById(id, db);
     user.images.push(path);
     let number = user.totalImages;
@@ -80,16 +78,12 @@ const updateImages = async (id, path) => {
         errorhandler('Erro while trying to update images','updateImages','mongo.js',__dirname);
       }
     });
-  }else{
-    res.sendStatus(401);
-  }
 }
 
 const editProfilePic = async (req, res) => {
-  if(req.session.userId){
     try{
     await db.update({
-      id: `${req.session.userId}`
+      id: `${req.userId}`
     }, {
       $set: {
         profileImage: req.body.path
@@ -100,20 +94,16 @@ const editProfilePic = async (req, res) => {
     res.sendStatus(503);
     errorHandler('Unable to update profile pick','editProfilePick','mongo.js', __dirname);
   }
-  }else{
-    res.sendStatus(401)
-  }
 }
 
 const getImages = async (req, res) => {
-  if(req.session.userId){
     try{
       req.query.page = parseInt(req.query.page);
       if(!Boolean(req.query.page)){
         res.send(400);
         return;
       }
-      const result = await db.find({id: `${req.session.userId}`})
+      const result = await db.find({id: `${req.userId}`})
       .project({images: {$slice: [(req.query.page-1)*3,req.query.page*3]}, totalImages: 1, _id: 0}).toArray();
       console.log(result);
       res.send(result);     
@@ -122,9 +112,6 @@ const getImages = async (req, res) => {
       res.sendStatus(503);
       errorHandler('Unable to get images', 'getImages','mongo.js',__dirname)
     }
-  }else{
-    res.sendStatus(401)
-  }
 }
 
 
@@ -158,13 +145,9 @@ const saveHtml = async (id,group,urlToSave,html)=>{
 
 
 const getSavedHtml = async (req,res)=>{
-  if(req.session.userId){
-    const user = await dbHtml.findOne({id: req.session.userId, url: req.body.url});
-    const html = HTML.parse(user.html)
+    const user = await dbHtml.findOne({id: req.userId, url: req.body.url});
+    const html = HTML.parse(user.html);
     res.send(html);
-  }else{
-    res.sendStatus(401);
-  }
 }
 
 module.exports = {

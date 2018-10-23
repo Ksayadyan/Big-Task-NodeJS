@@ -9,6 +9,7 @@ const {
         MONGO_DATABASE_USER_NAME,
         MONGO_DATABASE_PASSWORD,
         PORT,
+        SECRET_KEY,
 } = process.env;
 
 module.exports = {
@@ -20,5 +21,6 @@ module.exports = {
         MONGO_DATABASE_USER_NAME,
         MONGO_DATABASE_PASSWORD,
         PORT,
+        SECRET_KEY,
 }
 

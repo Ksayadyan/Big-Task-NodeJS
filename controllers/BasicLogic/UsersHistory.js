@@ -20,7 +20,6 @@ history.belongsTo(groups,{
 
 const fetchurl = async (req, res) => {
     try {
-      if (req.session.userId) {
         const fetchedUrl = new URL(req.body.url);
         const hostname = fetchedUrl.hostname;
         await groups.findOrCreate({
@@ -31,11 +30,11 @@ const fetchurl = async (req, res) => {
         await history.findOrCreate({
           defaults:{
             groupName: hostname,
-            userId: req.session.userId,
+            userId: req.userId,
             url: req.body.url,
           },
           where:{
-            userId: req.session.userId,
+            userId: req.userId,
             url: req.body.url,
           }
         });
@@ -44,13 +43,9 @@ const fetchurl = async (req, res) => {
           uri: `${req.body.url}/`,
         },async (err,response,body)=>{
             const result = HTML.parse(body);
-            await mongod.saveFetchedUrl(req.session.userId);
+            await mongod.saveFetchedUrl(req.userId);
             res.send(result);
         });
-
-      } else {
-        res.sendStatus(401);
-      }
     } catch (e) {
       res.sendStatus(507);
       console.log(e);
@@ -62,7 +57,6 @@ const fetchurl = async (req, res) => {
 
   const saveHtml = async (req, res) => {
     try {
-      if (req.session.userId) {
         const fetchedUrl = new URL(req.body.url);
         const hostname = fetchedUrl.hostname;
         await request({
@@ -73,15 +67,12 @@ const fetchurl = async (req, res) => {
             errorHandler('Error occured while making a request','saveHtml','UsersHistory', __dirname);
           }
           try{
-            await mongod.saveHtml(req.session.userId, hostname, req.body.url, body);
+            await mongod.saveHtml(req.userId, hostname, req.body.url, body);
           }catch(e){
             errorHandler('Error occured while saving html','saveHtml','UsersHistory',__dirname);
           }
         });
         res.sendStatus(201);
-      } else {
-        res.sendStatus(401);
-      }
     } catch (e) {
       res.sendStatus(507);
       errorHandler('Unknown error while saving html','saveHtml','UsersHistory',__dirname);
@@ -90,7 +81,6 @@ const fetchurl = async (req, res) => {
 
   const browseGroupHistory = async (req,res)=>{
     try{
-      if(req.session.userId){
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
         if(!parseResult){
           res.send(400);
@@ -105,7 +95,7 @@ const fetchurl = async (req, res) => {
             
               attributes:[],
               where:{
-                  userId: req.session.userId,
+                  userId: req.userId,
                   },
               model: history,
           }],
@@ -114,9 +104,6 @@ const fetchurl = async (req, res) => {
           order: checkGroupOrder(req.query.order, req.query.type),
       });
       res.send(result);
-      }else{
-        res.sendStatus(401);
-      }
     }catch(e){
       console.log(e);
       errorHandler('Unable to fetch history','browseHistory','UsersHistory',__dirname);
@@ -128,7 +115,7 @@ const fetchurl = async (req, res) => {
 
   const browseUrlHistory =async (req,res)=>{
     try {
-      if (req.session.userId){
+      
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
         if(!parseResult){
           res.send(400);
@@ -138,7 +125,7 @@ const fetchurl = async (req, res) => {
         req.query.perPage = parseResult.perPage;
         const result = await history.findAndCountAll({
           where : {
-            userId : req.session.userId,
+            userId : req.userId,
           },
         attributes : ['url'], 
         order : checkUrlOrder(req.query.order, req.query.type),
@@ -146,7 +133,7 @@ const fetchurl = async (req, res) => {
         offset: req.query.page * req.query.perPage - req.query.perPage,
         }) 
         res.send(result);
-      }
+      
     }catch(e){
       console.log(e);
       errorHandler('Unable to browse url history', 'browseUrlHistory', 'UsersHistory.js', __dirname);
@@ -155,7 +142,6 @@ const fetchurl = async (req, res) => {
   }
 
   const browseGroupedUrlHistory = async (req,res) => {
-    if(req.session.userId){
       try{
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
         if(!parseResult){
@@ -167,7 +153,7 @@ const fetchurl = async (req, res) => {
       const result = await history.findAndCountAll({
         where: {
           groupName: req.query.groupName,
-          userId: req.session.userId,
+          userId: req.userId,
         },
         attributes: ['url'],
         limit: req.query.perPage,
@@ -179,9 +165,6 @@ const fetchurl = async (req, res) => {
       console.log(e);
       res.send(503);
       errorHandler('Unable to retrieve history from "history" database', 'browseGroupedUrlHistory', 'Usershistory.js', __dirname);
-    }
-    }else{
-      res.sendStatus(401)
     }
   }
 

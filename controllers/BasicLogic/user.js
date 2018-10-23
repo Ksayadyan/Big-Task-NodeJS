@@ -5,6 +5,7 @@ const ClassUser = require('../../models/MongoDb/classUserDb.js')
 const {profile} = require('../BasicLogic/UsersProfile.js')
 const { db,Users }  = require('../../models/MySQL/MySQLTableDefine.js')
 const errorHandler = require('../../helpers/errorhandler.js');
+const {generateToken} = require('../../middleware/tokenGenerator.js');
 
 
 const signup = async (req, res) => {
@@ -73,9 +74,9 @@ const login = async (req, res) => {
       
       //Generate user id
       if (user) {
-        req.session.userId = user.id;
+        const token = await generateToken(user);
         console.log('User id is', user.id);
-        profile(req,res)
+        profile(req, res, token, user.id);
 
 
       } else {
@@ -83,6 +84,7 @@ const login = async (req, res) => {
         res.sendStatus(401);
       }
   } catch (e) {
+    console.log(e);
     errorHandler('Unable to retrieve data from MySQL','login','user.js',__dirname);
     res.sendStatus(503);
   }

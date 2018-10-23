@@ -1,6 +1,5 @@
 const {login,signout,signup} = require('../controllers/BasicLogic/user.js');
 
-
 const configureUserRouter = (router)=>{
     router.post('/api',signup);
     router.post('/signin', login);

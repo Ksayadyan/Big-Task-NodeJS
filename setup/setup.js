@@ -27,8 +27,9 @@ const configureSettingsObject = (settings)=>{
     settings.mongoDataBaseName = readline.question('Mongo Data Base Name (default: userhistory) >>') || 'userhistory';
     settings.mongoDataBaseUserName = readline.question('Mongo DB Username (default: "") >>');
     settings.mongoDataBasePassword = readline.question('Mongo DB passowrd (default: "") >>');
+    settings.tokenSecretKey = readline.question('Secret key for token generation (default: nexttimewework)') || 'lasttimewehope';
     settings.serverPort = readline.question('Port for server to run (default: 5000) >>') || 5000;
-
+    
     console.log(colors.green('Configuration file will be saved with this settings'));
     console.log(settings);
 
@@ -43,7 +44,8 @@ const configureSettingsObject = (settings)=>{
         MONGO_DATABASE_NAME=${settings.mongoDataBaseName}
         MONGO_DATABASE_USER_NAME=${settings.mongoDataBaseUserName}
         MONGO_DATABASE_PASSWORD=${settings.mongoDataBasePassword}
-        PORT=${settings.serverPort}`;
+        PORT=${settings.serverPort}
+        SECRET_KEY=${settings.tokenSecretKey}`;
         if(fs.existsSync('../.env')){
             console.log('.env file found. File will be deleted and created again !');
             fs.unlinkSync('../.env');

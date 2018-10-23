@@ -1,12 +1,13 @@
 
 const {profile,imageUpload,editProfile} = require('../controllers/BasicLogic/UsersProfile.js');
+const {AuthenticateToken} = require('../middleware/tokenAuthenticator.js');
 
 const configureProfileRouter = (router)=>{
-    router.get('/home', profile);
 //Handling image upload
-router.post('/imageUpload',imageUpload);
+router.post('/imageUpload', AuthenticateToken, imageUpload);
 //Change user information
-router.post('/editprofile',editProfile);
+router.post('/editprofile', AuthenticateToken, editProfile);
+
 console.log('profile router configured');
 }
 

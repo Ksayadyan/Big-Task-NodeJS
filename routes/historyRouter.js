@@ -2,24 +2,25 @@
 
 const {fetchurl,saveHtml,browseGroupHistory,browseUrlHistory,browseGroupedUrlHistory} = require('../controllers/BasicLogic/UsersHistory.js');
 const {getSavedHtml, getImages, editProfilePic} = require('../models/MongoDb/mongo.js');
+const {AuthenticateToken} = require('../middleware/tokenAuthenticator.js');
 
 const configureHistoryRouter = (router) =>{
     //Saving fetched url in mongodb
-router.post('/fetchurl',fetchurl);
+router.post('/fetchurl', AuthenticateToken,fetchurl);
 //Saving html in mongodb
-router.post('/savehtml',saveHtml);
+router.post('/savehtml', AuthenticateToken, saveHtml);
 //fetching history
-router.get('/browseGroupHistory',browseGroupHistory);
+router.get('/browseGroupHistory', AuthenticateToken, browseGroupHistory);
 
-router.get('/browseUrlHistory',browseUrlHistory);
+router.get('/browseUrlHistory', AuthenticateToken, browseUrlHistory);
 
-router.get('/browseGroupedUrlHistory', browseGroupedUrlHistory);
+router.get('/browseGroupedUrlHistory', AuthenticateToken, browseGroupedUrlHistory);
 // //getting saved html
-router.post('/getSavedHtml',getSavedHtml);
+router.post('/getSavedHtml', AuthenticateToken, getSavedHtml);
 
-router.get('/getImages', getImages);
+router.get('/getImages', AuthenticateToken, getImages);
 
-router.post('/editProfilePic',editProfilePic);
+router.post('/editProfilePic', AuthenticateToken, editProfilePic);
 
 console.log('history route configired');
 }

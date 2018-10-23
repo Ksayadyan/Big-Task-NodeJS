@@ -11,14 +11,6 @@ module.exports= (app) => {
     app.use(bodyParser.urlencoded({
   extended:false,
   }));
-  app.use(session({
-      secret: 'cat',
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        maxAge: 600000000000,
-      }
-  }));
   app.use(fileUpload());
   app.use('/',router);
 };
