@@ -5,9 +5,11 @@
 
 
 ## Requirements
- MySQL community server 
- MongoDB 
- NodeJs
+ - MySQL community server
+ 
+ - MongoDB 
+ 
+ - NodeJs
 
 
 
