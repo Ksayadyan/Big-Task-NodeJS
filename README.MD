@@ -17,7 +17,7 @@
 
 1. run  *npm install*  in root directory 
 
-2. run  *npm install*  in clinet folder 
+2. run  *npm install*  in client folder 
 
 3. run *node setup.js* in setup folder and follow installation steps
 

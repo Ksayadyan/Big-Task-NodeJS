@@ -13,8 +13,8 @@ const profile = async (req, res, token, userId) => {
         res.redirect('/login');
         return;
       }
-     const user= await Users.findOne(
-        {where: {   
+     const user= await Users.findOne({
+       where: {   
         id : userId
       },
       raw : true,
@@ -55,7 +55,7 @@ const profile = async (req, res, token, userId) => {
       }
   }
 
-
+  
    const editProfile = async (req, res) => {
     try {
       const value = req.body;
@@ -66,11 +66,10 @@ const profile = async (req, res, token, userId) => {
         birthday : value.birthday,
         phone: value.phone
       },
-      {where:{id:req.userId}})
+      {where:{id:req.userId}});
       
-          console.log('information changed');
-
-        res.sendStatus(205);
+      console.log('information changed');
+      res.sendStatus(205);
     } catch (e) {
       res.sendStatus(503);
       console.log(e);

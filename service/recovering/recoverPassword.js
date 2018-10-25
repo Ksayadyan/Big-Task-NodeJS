@@ -8,12 +8,13 @@ const errorHandler = require('../../helpers/errorhandler.js');
 const recoverPassword = async (req,db,res)=>{
   try{
     const result = await Users.findOne(
-      {where: {   
-      login : req.body.login
-    },
-    attributes : ['answer'],
-    raw : true,
-  })
+    {
+      where: {   
+        login : req.body.login
+      },
+      attributes : ['answer'],
+      raw : true,
+    })
        if(result.answer === req.body.answer){
         const newPassword = cryptPassword(req.body.newPassword);
         await Users.update(

@@ -1,7 +1,6 @@
 const {URL} = require('url');
 const request = require('request');
 const mongod = require ('../../models/MongoDb/mongo.js');
-const findUserById = require('../../models/MongoDb/findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 const HTML = require('html-parse-stringify');
 const history = require('../../models/MySQL/MySQLDbHistoryTableDefine.js');
@@ -11,6 +10,8 @@ const {checkGroupedUrlOrder,
        checkGroupOrder,
        checkUrlOrder,} = require('../../helpers/MysqlOrderChecker.js');
 
+
+//Joining history and groups tables       
 groups.hasMany(history,{
   foreignKey: 'groupName',
 });
@@ -18,6 +19,8 @@ history.belongsTo(groups,{
   foreignKey: 'groupName',
 })
 
+
+//getting html, parsing html, saving url in Mysql database
 const fetchurl = async (req, res) => {
     try {
         const fetchedUrl = new URL(req.body.url);
@@ -38,10 +41,14 @@ const fetchurl = async (req, res) => {
             url: req.body.url,
           }
         });
-        //await mongod.saveFetchedUrl(req.session.userId, req.body.url, hostname,res);
+
         await request({
           uri: `${req.body.url}/`,
         },async (err,response,body)=>{
+          if(err){
+            res.sendStatus(400);
+            return;
+          }
             const result = HTML.parse(body);
             await mongod.saveFetchedUrl(req.userId);
             res.send(result);
@@ -79,6 +86,8 @@ const fetchurl = async (req, res) => {
     }
   }
 
+
+  //browse users history as groups
   const browseGroupHistory = async (req,res)=>{
     try{
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
@@ -112,7 +121,7 @@ const fetchurl = async (req, res) => {
 
 
 
-
+ //browse user history as urls
   const browseUrlHistory =async (req,res)=>{
     try {
       
@@ -127,7 +136,7 @@ const fetchurl = async (req, res) => {
           where : {
             userId : req.userId,
           },
-        attributes : ['url'], 
+        attributes : ['url', 'createdAt', 'updatedAt'], 
         order : checkUrlOrder(req.query.order, req.query.type),
         limit : req.query.perPage,
         offset: req.query.page * req.query.perPage - req.query.perPage,
@@ -141,6 +150,8 @@ const fetchurl = async (req, res) => {
     }
   }
 
+
+  //browse users history grouped by url for specific group
   const browseGroupedUrlHistory = async (req,res) => {
       try{
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
@@ -155,7 +166,7 @@ const fetchurl = async (req, res) => {
           groupName: req.query.groupName,
           userId: req.userId,
         },
-        attributes: ['url'],
+        attributes: ['url', 'createdAt'],
         limit: req.query.perPage,
         offset: req.query.page * req.query.perPage - req.query.perPage,
         order: checkGroupedUrlOrder(req.query.order, req.query.type),
@@ -167,15 +178,6 @@ const fetchurl = async (req, res) => {
       errorHandler('Unable to retrieve history from "history" database', 'browseGroupedUrlHistory', 'Usershistory.js', __dirname);
     }
   }
-
-// //Saving fetched url in mongodb
-// router.post('/fetchurl',fetchurl);
-// //Saving html in mongodb
-// router.post('/savehtml',saveHtml);
-// //fetching history
-// router.get('/browseHistory',browseHistory);
-// //getting saved html
-//router.post('/getSavedHtml',mongod.getSavedHtml);
 
 module.exports = {
   fetchurl,

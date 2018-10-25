@@ -11,8 +11,8 @@ const checkGroupedUrlOrder = (order,type) => {
         }else return ['url'];
     }else if(order === 'date'){
         if(type === 'DESC'){
-            return [['CreatedAt', 'DESC']];
-        }else return [['CreatedAt']];
+            return [['createdAt', 'DESC']];
+        }else return [['createdAt']];
     }
     return ['url']; 
 }
@@ -22,10 +22,10 @@ const checkGroupOrder = (order, type) => {
         if(type === 'DESC'){
             return [['groupName', 'DESC']]
         }else return ['groupName'];
-    }else if(order === 'CreatedAt'){
+    }else if(order === 'createdAt'){
         if(type === 'DESC'){
-            return [['CreatedAt', 'DESC']];
-        }else return ['CreatedAt'];
+            return [['createdAt', 'DESC']];
+        }else return ['createdAt'];
     }
     return ['groupName'];
 }
@@ -39,13 +39,13 @@ const checkUrlOrder = (order, type) => {
         if(type === 'DESC'){
             return [['url', 'DESC']];
         }else return ['url'];
-    }else if(order === 'CreatedAt'){
+    }else if(order === 'createdAt'){
         if(type === 'DESC'){
-            return [['CreatedAt', 'DESC']];
-        }else return ['CreatedAT'];
+            return [['createdAt', 'DESC']];
+        }else return ['createdAT'];
     }
 
-    return ['CreatedAt'];
+    return ['createdAt'];
 }
 
 module.exports = {

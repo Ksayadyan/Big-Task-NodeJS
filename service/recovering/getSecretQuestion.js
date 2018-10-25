@@ -5,7 +5,8 @@ const {db,Users} = require('../../models/MySQL/MySQLTableDefine.js')
 const  getSecretQuestion = async (req, res, db)=>{
   try{
    const result = await Users.findOne(
-      {where: {   
+      {
+      where: {   
       login : req.body.login
     },
     attributes: ['question'],

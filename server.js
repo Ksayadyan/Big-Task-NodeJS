@@ -16,5 +16,5 @@ authenticateMysqlConnection(db);
 
 //Server starting
  app.listen(PORT,()=>{
-  console.log(`Listening ${PORT}`);
+  console.log(`Listening on port${PORT}`);
 });

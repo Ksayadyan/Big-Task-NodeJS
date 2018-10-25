@@ -12,8 +12,7 @@ const settings = {
     mongoDataBaseUserName: '',
     mongoDataBasePassword: '',
     serverPort: '',
-
-}
+};
 
 
  console.log(colors.green('This is first time project setup'));
@@ -62,10 +61,3 @@ const configureSettingsObject = (settings)=>{
  
 
 configureSettingsObject(settings);
- 
-
-
- 
-
- 
-

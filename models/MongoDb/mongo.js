@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const findUserById = require('./findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
 
-
+//Getting configuration constrants
 const {
   MONGO_DATABASE_NAME,
   MONGO_DATABASE_HOST,
@@ -12,7 +12,9 @@ const {
 
 
 const HTML = require('html-parse-stringify');
+
 let url;
+
 if(MONGO_DATABASE_PASSWORD){
   url = `mongodb://${MONGO_DATABASE_USER_NAME}:${MONGO_DATABASE_PASSWORD}@${MONGO_DATABASE_HOST}`;
 }else{
@@ -38,7 +40,7 @@ MongoClient.connect(url,{useNewUrlParser:true}, function(err,client){
 })
 
 
-
+//Insterting user object in mongodb database
 const mongo = (a) => {
       db.insertOne(a, (err, res) => {
         if (err){
@@ -49,7 +51,7 @@ const mongo = (a) => {
 }
 
 
-
+//find user object from mongodb database and send back to client
 const findAndSendUserInfo = async (id, res, obj) => {
     const user = await findUserById(id, db);
     console.log(user, 'this is mongodb user info');
@@ -61,7 +63,7 @@ const findAndSendUserInfo = async (id, res, obj) => {
 
 
 
-
+//updating the number of total images (after image upload) 
 const updateImages = async (id, path) => {
     const user = await findUserById(id, db);
     user.images.push(path);
@@ -80,6 +82,7 @@ const updateImages = async (id, path) => {
     });
 }
 
+//change the profile picture path in mongodb database for user
 const editProfilePic = async (req, res) => {
     try{
     await db.update({
@@ -96,6 +99,8 @@ const editProfilePic = async (req, res) => {
   }
 }
 
+
+//Getting image paths form mongodb database
 const getImages = async (req, res) => {
     try{
       req.query.page = parseInt(req.query.page);
@@ -115,7 +120,7 @@ const getImages = async (req, res) => {
 }
 
 
-
+//Updating totalFetched number mongodb database (after url fetch);
 const saveFetchedUrl = async (id) => {
       const user = await findUserById(id, db);
       let number = user.totalFetched;
@@ -134,7 +139,7 @@ const saveFetchedUrl = async (id) => {
         console.log('Succesfully pushed');
 }
 
-
+//Saving HTML in mongodb database
 const saveHtml = async (id,group,urlToSave,html)=>{
     dbHtml.insert({id:id, url: urlToSave, html:html},(err,res)=>{
       if(err){
@@ -143,7 +148,7 @@ const saveHtml = async (id,group,urlToSave,html)=>{
     });
 }
 
-
+//Getting already saved html from mongodb database
 const getSavedHtml = async (req,res)=>{
     const user = await dbHtml.findOne({id: req.userId, url: req.body.url});
     const html = HTML.parse(user.html);

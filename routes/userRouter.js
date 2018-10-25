@@ -1,10 +1,15 @@
-const {login,signout,signup} = require('../controllers/BasicLogic/user.js');
+const {login,signout,signup} = require('../service/BasicLogic/user.js');
+const {AuthenticateToken} = require('../middleware/tokenAuthenticator.js');
 
 const configureUserRouter = (router)=>{
+    //Sign up route
     router.post('/api',signup);
+    //Sign in route
     router.post('/signin', login);
-    router.get('/signout', signout);
-    console.log('user router configured');
+    //Sign out route
+    router.get('/signout', AuthenticateToken, signout);
+
+    console.log('User router configured');
 }
 
 module.exports = configureUserRouter;

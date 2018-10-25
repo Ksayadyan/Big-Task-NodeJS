@@ -8,7 +8,7 @@ const connection=new Sequelize(MYSQL_DATABASE_NAME, MYSQL_USER_NAME, MYSQL_PASSW
  })
  //Global referance to Mysql Connection
  
-
+  connection.sync();
 
   module.exports={
     connection,Sequelize
