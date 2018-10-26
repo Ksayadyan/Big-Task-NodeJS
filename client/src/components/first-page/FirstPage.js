@@ -1,9 +1,16 @@
+//react main imports
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import { NavLink } from 'react-router-dom';
+// component logo renders the logo of the website
+//component LogIn_LogOut renders Log-in Log-out buttons on the First-Page
+import Logo from '../shared/Logo/Logo';
+import LogIn_LogOut from '../shared/LogIn_LogOut';
 
 
-class firstPage extends React.Component{
+
+// FirstPage component renders Logo and Log-in Log-out buttons
+class FirstPage extends React.Component{
+
+// if the user is Loged in , the browser automatically will go to the home page 
   componentWillMount(){
     if(localStorage.length){
       this.props.history.push('/Home_page');
@@ -11,32 +18,12 @@ class firstPage extends React.Component{
   }
     render(){
         return (
-            <div className = 'form-container test'>
-                <div className = 'logo'>
-                    <NavLink to = '/'><img src = '../logo.png' alt = 'logo'/></NavLink>
-                </div>
-
-
-
-                <div className = 'login-form'>
-                    <div className = 'change-buttons'>
-                        <NavLink exact to ='/sign-in' >
-                            <Button  variant="outlined" color="secondary">
-                                Sign In
-                            </Button>
-                        </NavLink>
-                        <NavLink exact to ='/sign-up'>
-                            <Button variant="outlined" color="secondary">
-                                Sign Up
-                            </Button>
-                        </NavLink>
-
-
-                    </div>
-                </div>
-        </div>
+            <div>
+                <Logo/>
+                <LogIn_LogOut/>
+            </div>
         )
     }
 }
 
-export default firstPage
+export default FirstPage

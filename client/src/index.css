@@ -1,30 +1,18 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: linear-gradient(to right ,#FF6D00, #A10D2B
-  , #D95FB5); 
+  background-image: linear-gradient(to right ,#FF6D00, #A10D2B, #D95FB5); 
 }
 
 canvas{
   position : absolute;
   width: 100%;
   z-index:-1;
-  
 }
-
-
-.form div{
-  padding : 4px;
-}  
 
 a {
   color: #f50057;
 }
-.error{
-  display: block;
-  color: #A10D2B
-}
-
 
 .home-page-body{
   height:auto ;
@@ -32,7 +20,6 @@ a {
   position: absolute;
   opacity: 0.6;
   display: inline-block;
-
 }
 
 .user-info{
@@ -45,6 +32,4 @@ a {
 .search{
   display: flex;
   align-items: center;
-
-
 }

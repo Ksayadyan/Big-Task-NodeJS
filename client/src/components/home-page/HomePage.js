@@ -1,9 +1,6 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,37 +10,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import {Redirect} from 'react-router-dom'
 import './homePage.css';
+import SideList from './Sidelist/SideList' 
 
-const styles = {
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  AppBar :{
-    backgroundColor : 'grey',
-    opacity : '0.9',
-    height : '10vh'
-  },
-  Search : {
-    backgroundColor : '#BBC9C7',
-    width: '244px',
-    height: '42px',
-    lineHeight: '42px',
-    padding: '0 16px',
-    border: 0,
-    float : 'left',
-
-  },
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-};
 class HomePage extends React.Component {
   constructor(){
     super();
@@ -78,9 +46,7 @@ class HomePage extends React.Component {
     });
   };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+
 
   handleClose = () => {
     this.setState({ anchorEl: null });
@@ -123,10 +89,8 @@ class HomePage extends React.Component {
           let t = document.createTextNode(` ${arr[i].content}  `);
           p.appendChild(t);
         context.appendChild(p);
+          }
       }
-      }
-  
-  
     }
   }
 
@@ -158,35 +122,7 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const sideList = (
-      <div className = 'list-container'>
-        <List style = {styles.list}>
-          <Button
-            color="secondary"
-            onClick = {this.moveToMyAccount}>
-              My Account
-          </Button>
-        </List>  
-        <Divider />
-        <List style = {styles.list}>
-          <Button 
-            color='secondary'
-            onClick = {this.moveToSearchHistory}
-          >
-              Search History
-          </Button>
-        </List>
-        <Divider/>
-        <List style = {styles.list} >  
-          <Button
-            color="secondary"
-            onClick = {this.handleLogOut}>
-                Sign Out
-          </Button>
-        </List>
-        <Divider/>
-      </div>
-    );
+
     const { classes } = this.props;
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -200,16 +136,12 @@ class HomePage extends React.Component {
 
     return (
       <div>
-          <AppBar position="static" style = {styles.AppBar}>
+          <AppBar position="static">
               <Toolbar>
-
                   <div className = 'user-info'>
-
-
                       <IconButton
                           aria-owns={open ? 'menu-appbar' : null}
                           aria-haspopup="true"
-                          // onClick={this.handleMenu}
                           onClick={this.toggleDrawer('left', true)}
                           color="inherit">
                               <Avatar alt="Remy Sharp" src = {this.state.user.profileImage} />
@@ -221,10 +153,9 @@ class HomePage extends React.Component {
                             tabIndex={0}
                             role="button"
                             onClick={this.toggleDrawer('left', false)}
-                            onKeyDown={this.toggleDrawer('left', false)}
                             className = 'sidelist'
                           >
-                            {sideList}
+                            <SideList content="My Account" moveToMyAccount={this.moveToMyAccount}/>
                           </div>
                       </Drawer>
                   </div>
@@ -235,7 +166,6 @@ class HomePage extends React.Component {
                         name = 'search'
                         placeholder="Search…"
                         disableUnderline
-                        className={classes.input}
                         value = {this.state.search} 
                         onChange = {this.handleChange}/>
                             <Button 
@@ -247,6 +177,7 @@ class HomePage extends React.Component {
               </Toolbar>
 
           </AppBar>
+
                    <div className = 'left-content'>
                       <div className = 'profile-picture'>
                           <img src = {this.state.user.profileImage}/>
@@ -279,4 +210,4 @@ HomePage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(HomePage);
+export default (HomePage);

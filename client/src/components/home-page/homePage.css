@@ -7,7 +7,9 @@
 
   .user-name{
     color: #A20E2E;
-    font-size: 20px;
+    font-size: 25px;
+    font-family:Lobster;
+
   }
 
 
@@ -22,14 +24,12 @@
     float: right;
   }
   
-  
-  
   .profile-picture{
     text-align: center
   }
   .url-header{
     font-size: 30px;
-    font-family: Verdana;
+    font-family: cursive;
     text-align: center; 
   }
   .source-code{
