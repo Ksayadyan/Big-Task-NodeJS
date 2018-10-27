@@ -1,32 +1,9 @@
-.left-content{
-    height: 90vh;
-    width: 30%;
-    background-color:#897A75;
-    display: inline-block;
-  }
-
-  .user-name{
-    color: #A20E2E;
-    font-size: 25px;
-    font-family:Lobster;
-
-  }
-
-
-  .profile-picture img{
-    width: 100%;
-    margin-top: 20px;
-    height: 303px;
-  }
 
   .search-button{
     height: 42px;
     float: right;
   }
-  
-  .profile-picture{
-    text-align: center
-  }
+
   .url-header{
     font-size: 30px;
     font-family: cursive;

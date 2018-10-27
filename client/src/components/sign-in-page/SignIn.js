@@ -4,7 +4,9 @@ import React from 'react';
 // My shared components
 import LogIn_LogOut from '../shared/LogIn_LogOut';
 import Logo from '../shared/Logo/Logo';
-import Sign_in_Form from './sign-in-form/Sign_in_Form'
+import Sign_in_Form from './sign-in-form/Sign_in_Form';
+import ParticlesStyle from '../particles/particles'
+
 // CSS
 import './signIn.css'
 
@@ -18,6 +20,7 @@ class SignIn extends React.Component {
     render(){
         return(
             <div className="form-container">
+                <ParticlesStyle/>
                 <Logo/>
                 <LogIn_LogOut/>
                 <Sign_in_Form history={this.props.history}/>

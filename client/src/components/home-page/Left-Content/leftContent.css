@@ -1,0 +1,21 @@
+.left-content{
+    width : 25%;
+    background-color:#C1E2E6;
+    display: inline-block;    
+}
+
+.user-name{
+    text-align: center;
+    color:#629399;
+    font-size: 25px;
+    font-family:Lobster;
+    padding: 50px;
+}
+.profile-picture{
+    text-align: center;
+}
+
+.profile-picture img{
+    margin-top: 20px;
+    height: auto;
+}

@@ -14,22 +14,3 @@ a {
   color: #f50057;
 }
 
-.home-page-body{
-  height:auto ;
-  width: 70%;
-  position: absolute;
-  opacity: 0.6;
-  display: inline-block;
-}
-
-.user-info{
-  width: 50%;
-}
-.user-info span{
-  font-family: Verdana;
-  font-size: 20px;
-}
-.search{
-  display: flex;
-  align-items: center;
-}
