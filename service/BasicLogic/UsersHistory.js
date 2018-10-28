@@ -69,6 +69,7 @@ const fetchurl = async (req, res) => {
   //Saveing fetched url's html in mogodb
 
   const saveHtml = async (req, res) => {
+    console.log('saving html');
     try {
         const fetchedUrl = new URL(req.body.url);
         const hostname = fetchedUrl.hostname;

@@ -151,7 +151,14 @@ const saveHtml = async (id,group,urlToSave,html)=>{
 //Getting already saved html from mongodb database
 const getSavedHtml = async (req,res)=>{
     const user = await dbHtml.findOne({id: req.userId, url: req.body.url});
-    const html = HTML.parse(user.html);
+    let html;
+    try{
+      html = HTML.parse(user.html);
+    }catch(e){
+      console.log(e);
+      res.sendStatus(404);
+      return;
+    }
     res.send(html);
 }
 

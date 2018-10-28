@@ -23,8 +23,19 @@ class MyAccount extends React.Component{
   }
   handleSubmit = (event) => {
 
-    let body = this.state.image;
-    console.log( body)
+    const formdata = new FormData();
+    formdata.append('image', this.state.image);
+    fetch('/imageUpload',{
+      headers:{
+        'Authorization': this.state.user.token,
+      },
+      method: 'POST',
+      body: formdata,
+    }).then(res=>{
+      console.log(res);
+    }).catch((e)=>{
+      console.log(e);
+    })
 
     
   }

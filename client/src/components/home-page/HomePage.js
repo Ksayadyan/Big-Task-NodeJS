@@ -18,10 +18,12 @@ class HomePage extends React.Component {
     user: null,
     search : '',
   };
+          this.handleSavedHtml = this.handleSavedHtml.bind(this);
           this.handleChange = this.handleChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
           this.attributes = this.attributes.bind(this);
           this.drawer = this.drawer.bind(this);
+          this.saveHtml = this.saveHtml.bind(this);
 }
 
   handleChange(e) {
@@ -77,6 +79,7 @@ class HomePage extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const context = document.getElementsByClassName('inspector-source-code')[0];
+    context.innerHTML = '';
         fetch ('/fetchurl', {
             method : 'POST',
             headers : {
@@ -89,7 +92,39 @@ class HomePage extends React.Component {
         .then((get)=>{this.drawer(get, context)})
         .catch(err => console.log("err", err));
 }
+
+  handleSavedHtml(event) {
+    const context = document.getElementsByClassName('inspector-source-code')[0];
+    event.preventDefault();
+    fetch('/getSavedHtml',{
+      method: 'POST',
+      headers:{
+        'Authorization': this.state.user.token,
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify({url: this.state.search})
+    })
+    .then((res)=>{
+      console.log(res);
+      return res.json();
+    })
+    .then((get)=>{this.drawer(get,context)})
+    .catch(e => {console.log(e)});
+  }
   
+  saveHtml(event){
+    event.preventDefault();
+    fetch('/savehtml',{
+      headers:{
+        'Authorization': this.state.user.token,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({url: this.state.search})
+    })
+    .then((res)=>{console.log(res)})
+    .catch(e => {console.log(e)});
+  }
 
   render() {
 console.log(this.state.search)
@@ -105,7 +140,7 @@ console.log(this.state.search)
 
         <div className='home-page'>
           <LeftContent user={this.state.user}/>
-          <Body urlFetch={this.handleSubmit} change={this.handleChange} value={this.state.search}/>
+          <Body urlFetch={this.handleSubmit} change={this.handleChange} value={this.state.search} getSavedHtml={this.handleSavedHtml} saveHtml={this.saveHtml}/>
         </div>
       </div>
     );
