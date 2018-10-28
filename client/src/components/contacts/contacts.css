@@ -1,0 +1,35 @@
+.contact-container{
+    background-color:#D9C099;
+    height: 100vh;
+    width: 100%;
+
+}
+.contact-container ul{
+    margin-top: 0px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.contact-container li {
+    margin-top: 200px;
+    text-align: center;
+    font-size: 25px;
+    color: #112F41;
+}
+
+.contact-container img {
+    width: 200px;
+    border-radius: 50%;
+    margin-top: 10px;
+    transition-duration: 0.5s;
+    box-shadow: 0px 0px 19px 4px #403f3f;
+
+}
+.contact-container img:hover{
+    transform: scale(1.1);
+}
+.contact-container h2{
+    font-family: sans-serif;
+    color: #112F41;
+}

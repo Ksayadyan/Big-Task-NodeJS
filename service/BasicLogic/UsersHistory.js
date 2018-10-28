@@ -23,7 +23,13 @@ history.belongsTo(groups,{
 //getting html, parsing html, saving url in Mysql database
 const fetchurl = async (req, res) => {
     try {
-        const fetchedUrl = new URL(req.body.url);
+      let fetchedUrl;
+        try{
+          fetchedUrl = new URL(req.body.url);
+        }catch(e){
+          res.sendStatus(406);
+          return;
+        }
         const hostname = fetchedUrl.hostname;
         await groups.findOrCreate({
           defaults: {groupName: hostname},

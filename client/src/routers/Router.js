@@ -7,7 +7,8 @@ import firstPage from '../components/first-page/FirstPage';
 import NotFound from '../components/not-found/NotFound';
 import MyAccount from '../components/my-account/MyAccount';
 import SearchHistory from '../components/search-history/Search-History';
-import About from '../components/about/About'
+import About from '../components/about/About';
+import Contacts from '../components/contacts/Contacts';
 
 
 class MyRouter extends React.Component{
@@ -31,6 +32,8 @@ render(){
               <Route exact path = '/search_history' component = {SearchHistory}/>
 
               <Route exact path = "/about" component={About}/>
+
+              <Route exact path = "/contact" component={Contacts}/>
 
               <Route component={NotFound}/>
           </Switch>

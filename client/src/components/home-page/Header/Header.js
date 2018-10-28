@@ -2,9 +2,32 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import {NavLink} from 'react-router-dom';
 import './header.css';
-import SearchIcon from '@material-ui/icons/Search';
+import {withRouter} from 'react-router-dom'; 
+
+
+
 
 const Header = (props) => {
+    const moveToAbout = () => {
+        props.history.push('/about')
+      }
+    const moveToHomePage = () => {
+        props.history.push('/Home_page')
+    }
+    
+    const moveToMyAccount = ()=>{
+        props.history.push('/my_account')
+      }
+    const moveToContact = ()=>{
+        props.history.push('/contact')
+      }
+    const moveToSearchHistory = ()=>{
+        props.history.push('/search_history')
+      }
+    const handleLogOut = () => {
+        localStorage.clear();
+        props.history.push('/sign-in');
+      }
     return(
         <div className="header">
             <NavLink to="/Home_page">
@@ -12,35 +35,37 @@ const Header = (props) => {
             </NavLink>
             <nav>
                 <ul className="nav-bar">
-                <label className="search-label" >
-                    <input type="search" className='inp' placeholder="type URL"/>
-                        <SearchIcon onClick={props.urlFetch} onChange={props.onChange}/>
-                    </label>
+
                     <li>
-                        <Button onClick={props.myAccount}>
+                        <Button onClick={moveToHomePage}>
+                            Home Page
+                        </Button>
+                    </li>
+                    <li>
+                        <Button onClick={moveToMyAccount}>
                                 My Account
                         </Button>
                     </li>
                     <li>
-                        <Button onClick={props.history}>
+                        <Button onClick={moveToSearchHistory}>
                             Search History
                         </Button>
                     </li>
                     <li>
-                        <Button onClick={props.contact}>
+                        <Button onClick={moveToContact}>
                             Contact
                         </Button>
                     </li>
                     <li>
-                        <Button onClick={props.about}>
+                        <Button onClick={moveToAbout}>
                             About
                         </Button>
                     </li>
                  
-                    <li><Button onClick={props.logOut}>Sign Out</Button></li>
+                    <li><Button onClick={handleLogOut}>Sign Out</Button></li>
                 </ul>
             </nav>
         </div>
     )
 }
-export default Header;
+export default withRouter(Header);

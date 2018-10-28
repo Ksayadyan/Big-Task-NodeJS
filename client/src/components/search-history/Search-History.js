@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import './searchHistory.css';
+import Header from '../home-page/Header/Header'
 
 class MyAccount extends React.Component{
   constructor(){
@@ -8,7 +9,6 @@ class MyAccount extends React.Component{
     this.state = {
       history : null,
     }
-    this.handleClick = this.handleClick.bind(this);
     this.drawer = this.drawer.bind(this);
   }
   drawer(obj){
@@ -19,39 +19,13 @@ class MyAccount extends React.Component{
         } 
     }
   }
-  componentDidMount (){
-      fetch('/browseHistory',{
-        method : 'GET',
-        
-      })
-      .then(res => res.json())
-      .then((get)=>{
-        this.setState({
-          history : get[0].history,
-        })
-        this.drawer(this.state.history)
-      })
-      .catch((err)=>{
-        console.log('error', err)
-      })
-  }
-  handleClick(){
-    this.props.history.push('/Home_page');
-  }
+
+
   render() {
     return (
       <div>
-
-          Welcome to Search History page
-        <div className = 'backHomepage' >
-            <Button 
-                color = 'secondary'
-                onClick = {this.handleClick}>
-                Back to Home page
-            </Button>
-        </div>
-                  
-    </div>
+          <Header />
+      </div>
     );
   }
 };

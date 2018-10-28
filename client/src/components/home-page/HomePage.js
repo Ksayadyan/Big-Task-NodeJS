@@ -22,7 +22,6 @@ class HomePage extends React.Component {
           this.handleSubmit = this.handleSubmit.bind(this);
           this.attributes = this.attributes.bind(this);
           this.drawer = this.drawer.bind(this);
-          this.redir = this.redir.bind(this);
 }
 
   handleChange(e) {
@@ -34,8 +33,7 @@ class HomePage extends React.Component {
     });
 }
   componentWillMount = ()=>{
-    let user
-     = JSON.parse(localStorage.getItem('user'));
+    let user = JSON.parse(localStorage.getItem('user'));
     this.setState({user:user});
   }
 
@@ -82,7 +80,8 @@ class HomePage extends React.Component {
         fetch ('/fetchurl', {
             method : 'POST',
             headers : {
-                'Content-Type' : 'application/json'
+              'Content-Type' : 'application/json',
+              'Authorization' : this.state.user.token,
             },
             body : JSON.stringify({url: this.state.search})
         })
@@ -91,32 +90,10 @@ class HomePage extends React.Component {
         .catch(err => console.log("err", err));
 }
   
-  handleLogOut = () => {
-    localStorage.clear();
-    this.props.history.push('/sign-in');
-  }
-  redir = (url) => {
-    this.props.history.push(url)
-  }
-
-  moveToAbout = () => {
-    this.props.history.push('/about')
-  }
-
-  moveToMyAccount = ()=>{
-    this.props.history.push('/my_account')
-  }
-  moveToContact = ()=>{
-    this.props.history.push('/contact')
-  }
-  moveToSearchHistory = ()=>{
-    this.props.history.push('/search_history')
-  }
 
   render() {
-
+console.log(this.state.search)
     if(!this.state.user){
-      console.log('gagaga');
       return(
         <Redirect exact to="/" />
       )
@@ -124,17 +101,12 @@ class HomePage extends React.Component {
 
     return (
       <div>
-        <Header 
-          logOut={this.handleLogOut}
-          myAccount={this.moveToMyAccount}
-          contact={this.moveToContact}
-          about={this.moveToAbout}
-          history={this.moveToSearchHistory}
-          urlFetch={this.handleSubmit}
-          onChange={this.handleChange}
-          />
-        <LeftContent user={this.state.user}/>
-        <Body/>
+        <Header />
+
+        <div className='home-page'>
+          <LeftContent user={this.state.user}/>
+          <Body urlFetch={this.handleSubmit} change={this.handleChange} value={this.state.search}/>
+        </div>
       </div>
     );
   }

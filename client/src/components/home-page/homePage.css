@@ -17,13 +17,14 @@
     overflow: scroll;
   }
   .inspector-source-code{
-    max-height: 77.5vh;
-    width: 45%;
+    max-height: 65vh;
+    width: 55%;
     background-color: aliceblue;
     display: inline-block;
     margin-left: 5px;
     overflow: scroll;
-  
+    box-shadow: 0px 3px 8px #989898 inset;
+    border-radius: 2px;
   }
 
   .search-results{
@@ -32,7 +33,12 @@
   }
   .inspector-source-code p{
     height: auto;
+    padding-bottom: 0
   }
   ::-webkit-scrollbar{
     display: none;
+  }
+  .home-page{
+      height: 100vh;
+      display: flex;
   }
