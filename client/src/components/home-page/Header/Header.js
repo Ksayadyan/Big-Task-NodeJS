@@ -4,26 +4,12 @@ import {NavLink} from 'react-router-dom';
 import './header.css';
 import {withRouter} from 'react-router-dom'; 
 
-
-
-
 const Header = (props) => {
-    const moveToAbout = () => {
-        props.history.push('/about')
-      }
-    const moveToHomePage = () => {
-        props.history.push('/Home_page')
+
+    const move = (url) => {
+        props.history.push(url);
     }
-    
-    const moveToMyAccount = ()=>{
-        props.history.push('/my_account')
-      }
-    const moveToContact = ()=>{
-        props.history.push('/contact')
-      }
-    const moveToSearchHistory = ()=>{
-        props.history.push('/search_history')
-      }
+
     const handleLogOut = () => {
         localStorage.clear();
         props.history.push('/sign-in');
@@ -37,27 +23,27 @@ const Header = (props) => {
                 <ul className="nav-bar">
 
                     <li>
-                        <Button onClick={moveToHomePage}>
+                        <Button onClick={()=>{move('/Home_page')}}>
                             Home Page
                         </Button>
                     </li>
                     <li>
-                        <Button onClick={moveToMyAccount}>
+                        <Button onClick={() => move('/my_account')}>
                                 My Account
                         </Button>
                     </li>
                     <li>
-                        <Button onClick={moveToSearchHistory}>
+                        <Button onClick={() => move('/search_history')}>
                             Search History
                         </Button>
                     </li>
                     <li>
-                        <Button onClick={moveToContact}>
+                        <Button onClick={() => move('/contact')}>
                             Contact
                         </Button>
                     </li>
                     <li>
-                        <Button onClick={moveToAbout}>
+                        <Button onClick={() => move('/about')}>
                             About
                         </Button>
                     </li>

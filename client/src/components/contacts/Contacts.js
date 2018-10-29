@@ -1,6 +1,9 @@
+// React main imports
 import React from 'react';
+// Content components
 import Header from '../home-page/Header/Header';
 import Li from './Author'
+// CSS 
 import './contacts.css';
 const Contacts = () => {
     return(
@@ -29,7 +32,6 @@ const Contacts = () => {
                         email="sargsyandavit1999@gmail.com"
                         phone="+37493013485"/>
                 </ul>
-
             </div>
         </div>
     )

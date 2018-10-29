@@ -27,4 +27,4 @@ class FirstPage extends React.Component{
     }
 }
 
-export default FirstPage
+export default FirstPage;

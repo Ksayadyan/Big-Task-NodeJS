@@ -1,10 +1,11 @@
 class WS {
     constructor() {}
-    request(url, method, body) {
+    request(url, method, body, token ) {
         return fetch (url, {
             method,
             headers : {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Authorization' : token,
             },
             body: method === 'GET' ? {} : JSON.stringify(body)
         })

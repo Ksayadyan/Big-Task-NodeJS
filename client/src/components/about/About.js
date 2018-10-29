@@ -1,12 +1,17 @@
+// React main imports
 import React from 'react' ; 
+// Header component
 import Header from '../home-page/Header/Header';
+// CSS
 import './about.css'
+
+// About component returns a little information about web-page
 const About = () => {
     return(
         <div>
             <Header/>
             <div className="about-content">
-            <h2>Mihat teqst mtaceq vor stex grenq )))</h2>
+            <h2>A little bit info about our website</h2>
                  <p>
                  Hi Dear user 
                  Here we will talk a little bit about our website and will explain you how to use it

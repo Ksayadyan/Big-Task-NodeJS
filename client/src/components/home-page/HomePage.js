@@ -1,16 +1,20 @@
+// React main imports
 import React from 'react';
-import Header from './Header/Header';
 import {Redirect} from 'react-router-dom';
-import './homePage.css';
+// Home page content components
+import Header from './Header/Header';
 import LeftContent from './Left-Content/Left-Content';
 import Body from './Body/Body';
+import WebService from '../../services/WebService'
+// CSS
+import './homePage.css';
 
+// HomePage components includes all neccessary functions and components for rendering HomePage 
 class HomePage extends React.Component {
   constructor(){
     super();
   this.state = {
     auth: true,
-    anchorEl: null,
     top: false,
     left: false,
     bottom: false,
@@ -18,6 +22,7 @@ class HomePage extends React.Component {
     user: null,
     search : '',
   };
+    //binding all functions that containt this
           this.handleSavedHtml = this.handleSavedHtml.bind(this);
           this.handleChange = this.handleChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,7 +30,7 @@ class HomePage extends React.Component {
           this.drawer = this.drawer.bind(this);
           this.saveHtml = this.saveHtml.bind(this);
 }
-
+// handleChange takes value from the target and sets with the appropriate key to state
   handleChange(e) {
     let target = e.target;
     let value = target.value;
@@ -34,13 +39,14 @@ class HomePage extends React.Component {
       [name]: value
     });
 }
-  componentWillMount = ()=>{
+// gets user information from the localStorage and sets to the state 
+  componentWillMount = () => {
     let user = JSON.parse(localStorage.getItem('user'));
     this.setState({user:user});
   }
-
-  attributes = (obj)=>{
-    let string = '';
+//
+  attributes = (obj) => {
+    let string = '' ;
     for(let x in obj){
       string += x + '=' + '"' + obj[x] + '"' + ' ';
     }
@@ -76,19 +82,17 @@ class HomePage extends React.Component {
     }
   }
 
+
   handleSubmit(event) {
     event.preventDefault();
-    const context = document.getElementsByClassName('inspector-source-code')[0];
-    context.innerHTML = '';
-        fetch ('/fetchurl', {
-            method : 'POST',
-            headers : {
-              'Content-Type' : 'application/json',
-              'Authorization' : this.state.user.token,
-            },
-            body : JSON.stringify({url: this.state.search})
-        })
-        .then (res => res.json())
+    this.setState({
+      loading: true,
+    })
+    const context = document.getElementsByClassName("inspector-source-code")[0];
+    context.innerHTML = "";
+    const body = {url : this.state.search};
+    const token = this.state.user.token;
+    WebService.request('/fetchurl', 'POST', body, token)
         .then((get)=>{this.drawer(get, context)})
         .catch(err => console.log("err", err));
 }
@@ -96,38 +100,23 @@ class HomePage extends React.Component {
   handleSavedHtml(event) {
     const context = document.getElementsByClassName('inspector-source-code')[0];
     event.preventDefault();
-    fetch('/getSavedHtml',{
-      method: 'POST',
-      headers:{
-        'Authorization': this.state.user.token,
-        'Content-Type': 'application/json'
-      },
-      body : JSON.stringify({url: this.state.search})
-    })
-    .then((res)=>{
-      console.log(res);
-      return res.json();
-    })
+    const body = {url : this.state.search};
+    const token = this.state.user.token;
+    WebService.request('/getSavedHtml', 'POST', body, token )
     .then((get)=>{this.drawer(get,context)})
     .catch(e => {console.log(e)});
   }
   
   saveHtml(event){
     event.preventDefault();
-    fetch('/savehtml',{
-      headers:{
-        'Authorization': this.state.user.token,
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({url: this.state.search})
-    })
+    const body = {url : this.state.search};
+    const token = this.state.user.token;
+    WebService.request('/savehtml', 'POST', body, token)
     .then((res)=>{console.log(res)})
     .catch(e => {console.log(e)});
   }
 
   render() {
-console.log(this.state.search)
     if(!this.state.user){
       return(
         <Redirect exact to="/" />
@@ -137,10 +126,14 @@ console.log(this.state.search)
     return (
       <div>
         <Header />
-
-        <div className='home-page'>
+        <div className="home-page">
           <LeftContent user={this.state.user}/>
-          <Body urlFetch={this.handleSubmit} change={this.handleChange} value={this.state.search} getSavedHtml={this.handleSavedHtml} saveHtml={this.saveHtml}/>
+          <Body 
+              urlFetch={this.handleSubmit} 
+              change={this.handleChange} 
+              value={this.state.search} 
+              getSavedHtml={this.handleSavedHtml} 
+              saveHtml={this.saveHtml}/>
         </div>
       </div>
     );
