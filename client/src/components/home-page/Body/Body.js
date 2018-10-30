@@ -24,8 +24,10 @@ class Body extends  React.Component{
                 <div className="search-results">
                     <p className="inspector-source-code"></p>
                     <p className="source-code"></p>
+                
                     <button onClick={this.props.getSavedHtml}>Saved HTML</button>
                     <button onClick={this.props.saveHtml}>Save html</button>
+        
                 </div>
             </div>
         </div> 

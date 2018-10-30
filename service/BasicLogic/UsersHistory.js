@@ -116,7 +116,7 @@ const fetchurl = async (req, res) => {
               model: history,
           }],
           limit: req.query.perPage,
-          offset: (req.query.page - 1)*2,
+          offset: req.query.page * req.query.perPage - req.query.perPage,
           order: checkGroupOrder(req.query.order, req.query.type),
       });
       res.send(result);

@@ -5,7 +5,8 @@
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
-    min-height: 708px;
+    min-height: 700px;
+    min-width: 370px;
 }
 
 .user-name{

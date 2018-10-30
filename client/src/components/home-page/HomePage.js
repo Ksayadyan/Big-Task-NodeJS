@@ -102,7 +102,7 @@ class HomePage extends React.Component {
     event.preventDefault();
     const body = {url : this.state.search};
     const token = this.state.user.token;
-    WebService.request('/getSavedHtml', 'POST', body, token )
+    WebService.request('/getSavedHtml', 'POST', body, token)
     .then((get)=>{this.drawer(get,context)})
     .catch(e => {console.log(e)});
   }

@@ -2,10 +2,9 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import {NavLink} from 'react-router-dom';
 import './header.css';
-import {withRouter} from 'react-router-dom'; 
+import {withRouter} from 'react-router-dom';     
 
 const Header = (props) => {
-
     const move = (url) => {
         props.history.push(url);
     }

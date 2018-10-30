@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import './myAccount.css';
 import Header from '../home-page/Header/Header';
 import WebService from '../../services/WebService';

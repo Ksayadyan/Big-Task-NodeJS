@@ -1,0 +1,26 @@
+.Pagination{
+    display: none;
+
+}
+.block{
+    display: block;
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+}
+
+.block > button{
+    cursor: pointer;
+    background-color: brown;
+    border: none;
+    outline: none;
+    color: #fff;
+    padding: 5px;
+    transition-duration: 0.5s
+} 
+.block > button:hover{
+    transform: scale(1.1)
+}
+.block > button:active{
+    transform: scale(0.9)
+}
