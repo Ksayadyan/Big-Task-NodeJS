@@ -8,6 +8,7 @@ class Group_Url extends React.Component{
             urls : [],
         }
         this.handleGroupUrls = this.handleGroupUrls.bind(this);
+        this.clearField = this.clearField.bind(this);
     }
     handleGroupUrls = ()=>{
         const {value, token} = this.props;
@@ -31,12 +32,18 @@ class Group_Url extends React.Component{
         .catch(error => console.log(error))
 
     }
+
+    clearField = ()=>{
+        this.setState({
+            urls : []
+        })
+    }
     render(){
         const {urls} = this.state;
         const{value} = this.props;
         return(
             <div className="group-url-history">
-                <li onClick={this.handleGroupUrls}>{value}</li>
+                <li onMouseEnter={this.handleGroupUrls} onMouseLeave={this.clearField}>{value}</li>
                 <div className="group-history-container">
                     {urls.map((url)=>(
                         <ul>
