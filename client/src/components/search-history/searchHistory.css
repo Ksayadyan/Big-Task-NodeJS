@@ -53,6 +53,16 @@
     margin-left: 250px;
     margin-top: -74px;      
 }
+
+.group-history-container  ul li{
+    line-height: 50px;
+    height: 20px;
+              
+}
+.group-history-container  ul>li:hover{
+    transform: scale(1);
+    color: #908b8b;  
+}
 .search-history-body li:hover{
     transform: scale(1.2);
  
