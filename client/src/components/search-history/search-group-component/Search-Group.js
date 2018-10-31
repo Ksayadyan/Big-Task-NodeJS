@@ -1,5 +1,7 @@
 import React from 'react';
 import Pagination from '../pagination/Pagination';
+import Group_Url from './Search-Group-Url';
+import Loading from '../../shared/loading/Loading';
 
 class Search_Group extends React.Component{
     constructor(){
@@ -9,6 +11,7 @@ class Search_Group extends React.Component{
         page : 1,
         totalpages : 10,
         className : 'Pagination',
+        loading : false,
         }
         this.handlePaginationClick = this.handlePaginationClick.bind(this);
     }
@@ -27,6 +30,9 @@ class Search_Group extends React.Component{
   handeleGroupHistory = () => {
     const {page} = this.state
     const token = this.state.user.token;
+    this.setState({
+      loading : true,
+    })
     fetch(`/browseGroupHistory?page=${page}&perPage=5&order=groupName&type=DESC`,{
       method : 'GET',
       headers : {
@@ -40,7 +46,8 @@ class Search_Group extends React.Component{
       this.setState({
         groups : get.rows,
         counts : get.count,
-        className : "block"
+        className : "block",
+        loading : false,
       })
       console.log(get)
     })
@@ -49,7 +56,7 @@ class Search_Group extends React.Component{
     })
   } 
   render(){
-      const {page , totalpages , groups , className} = this.state;
+      const {page , totalpages , groups , className, loading} = this.state;
       return(
         <div className="search-history-body">
           <div className="groupHistory">
@@ -60,9 +67,14 @@ class Search_Group extends React.Component{
         })}}>clear</button>
       
         <div className="history-result">
+        {loading && 
+                    <div className = 'Search-loading'>
+                        <Loading/>
+                    </div>
+                 }
           {groups.map((group)=>(
             <ul>
-              <li>{group.groupName}</li>
+              <Group_Url value={group.groupName} token={this.state.user.token}/>
             </ul>
             ))}
               <Pagination className = {className} page={page} totalpages={totalpages} handlePaginationClick = {this.handlePaginationClick}/>

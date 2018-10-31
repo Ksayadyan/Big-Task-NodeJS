@@ -41,7 +41,23 @@
 .search-history-body li{
     width: auto;
     display: block;
+    font-family: sans-serif;
+    line-height: 50px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition-duration: 0.5s;
+    font-size: 20px;
 }
+.group-history-container{
+    position: absolute;
+    margin-left: 250px;
+    margin-top: -74px;      
+}
+.search-history-body li:hover{
+    transform: scale(1.2);
+ 
+}
+
 .history-result{
     width: 100%;
     display: flex;

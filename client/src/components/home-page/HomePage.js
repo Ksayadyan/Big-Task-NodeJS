@@ -21,6 +21,7 @@ class HomePage extends React.Component {
     right: false,
     user: null,
     search : '',
+    loading : false,
   };
     //binding all functions that containt this
           this.handleSavedHtml = this.handleSavedHtml.bind(this);
@@ -86,14 +87,19 @@ class HomePage extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.setState({
-      loading: true,
+      loading : true
     })
     const context = document.getElementsByClassName("inspector-source-code")[0];
     context.innerHTML = "";
     const body = {url : this.state.search};
     const token = this.state.user.token;
     WebService.request('/fetchurl', 'POST', body, token)
-        .then((get)=>{this.drawer(get, context)})
+        .then(
+          (get)=>{this.drawer(get, context);
+          this.setState({
+            loading: false
+          })
+        })
         .catch(err => console.log("err", err));
 }
 
@@ -133,7 +139,8 @@ class HomePage extends React.Component {
               change={this.handleChange} 
               value={this.state.search} 
               getSavedHtml={this.handleSavedHtml} 
-              saveHtml={this.saveHtml}/>
+              saveHtml={this.saveHtml}
+              loading = {this.state.loading}/>
         </div>
       </div>
     );
