@@ -1,6 +1,6 @@
 import React from 'react';
 import './slideShow.css';
-import '../../../../../user-images/Client30/upload.png';
+
 
 class SlideShow extends React.Component {
     constructor(props){
@@ -29,7 +29,7 @@ class SlideShow extends React.Component {
             {images.map((image) => (
                 <ul>
                     {console.log(image)}
-                    {/* <li><img alt="saved picture" src={require(image)}/></li> */}
+                    { <li><img alt="saved picture" src={image}/></li>}
                 </ul>
             ))}
             </div>

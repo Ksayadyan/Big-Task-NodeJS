@@ -49,8 +49,8 @@ const profile = async (req, res, token, userId) => {
             res.sendStatus(500)
             errorHandler('Unable to save uploaded image','imageUpload','UsersProfile.js',__dirname);
           }
-          res.sendStatus(201)
-          mongod.updateImages(req.userId, `../../../user-images/Client${req.userId}/${req.files.image.name}`)
+          res.sendStatus(201);
+          mongod.updateImages(req.userId, `Client${req.userId}/${req.files.image.name}`);
         })
       }
   }

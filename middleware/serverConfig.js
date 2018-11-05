@@ -5,7 +5,7 @@ const router = require('../routes/router.js');
 
 //Server full configuration
 module.exports = (app) => {
-    app.use(express.static(`${__dirname}/../public`));
+    app.use(express.static(`${__dirname}\\..\\user-images`));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
       extended:false,
