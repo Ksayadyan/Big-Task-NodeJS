@@ -11,13 +11,14 @@ class Body extends  React.Component{
         super(props);
     }
     render(){
+        const {urlFetch, change, value, getSavedHtml, saveHtml} = this.props;
     return(
         <div className="home-page-body">
             <div>
                 <div>
                     <label className="search-label">
-                    <input type="search" className="inp" placeholder="type URL" onChange={this.props.change} name="search" value={this.props.value}/>
-                        <SearchIcon onClick={this.props.urlFetch}/>
+                    <input type="search" className="inp" placeholder="type URL" onChange={change} name="search" value={value}/>
+                        <SearchIcon onClick={urlFetch}/>
 
                     </label>
                     <h2 className="url-header">Enter URL to get HTML code</h2>
@@ -32,8 +33,8 @@ class Body extends  React.Component{
                     <p className="inspector-source-code"></p>
                     <p className="source-code"></p>
                 
-                    <button onClick={this.props.getSavedHtml}>Saved HTML</button>
-                    <button onClick={this.props.saveHtml}>Save html</button>
+                    <button onClick={getSavedHtml}>Saved HTML</button>
+                    <button onClick={saveHtml}>Save html</button>
         
                 </div>
             </div>

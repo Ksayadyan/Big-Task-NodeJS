@@ -4,12 +4,10 @@ import React from 'react';
 //component LogIn_LogOut renders Log-in Log-out buttons on the First-Page
 import Logo from '../shared/Logo/Logo';
 import LogIn_LogOut from '../shared/LogIn_LogOut';
-import ParticlesStyle from '../particles/particles'
-
+import ParticlesStyle from '../particles/particles';
 
 // FirstPage component renders Logo and Log-in Log-out buttons
 class FirstPage extends React.Component{
-
 // if the user is Loged in , the browser automatically will go to the home page 
   componentWillMount(){
     if(localStorage.length){

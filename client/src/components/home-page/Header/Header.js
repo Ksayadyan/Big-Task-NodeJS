@@ -1,9 +1,13 @@
+//React main imports
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import {NavLink} from 'react-router-dom';
-import './header.css';
 import {withRouter} from 'react-router-dom';     
 
+// Material UI components
+import Button from '@material-ui/core/Button';
+import './header.css';
+
+// Header components renders header of the website , which contains NavBar 
 const Header = (props) => {
     const move = (url) => {
         props.history.push(url);

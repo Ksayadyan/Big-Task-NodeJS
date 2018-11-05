@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom';
 import Header from './Header/Header';
 import LeftContent from './Left-Content/Left-Content';
 import Body from './Body/Body';
-import WebService from '../../services/WebService'
+import WebService from '../../services/WebService';
 // CSS
 import './homePage.css';
 
@@ -45,7 +45,8 @@ class HomePage extends React.Component {
     let user = JSON.parse(localStorage.getItem('user'));
     this.setState({user:user});
   }
-//
+// function for drawing argumnents of html tags 
+// obj argument is an object which contains tag name and arguments list
   attributes = (obj) => {
     let string = '' ;
     for(let x in obj){
@@ -53,6 +54,10 @@ class HomePage extends React.Component {
     }
     return string;
   }
+
+  // function for drawing html source code 
+  // arr argument is responce from the request , which is array with tags list 
+  // context is the place where source code is going to draw 
   drawer = (arr,context) => {
     for(let i = 0; i < arr.length; i++){
       if(arr[i].type == 'tag' && arr[i].name !== "--"){
@@ -82,10 +87,10 @@ class HomePage extends React.Component {
       }
     }
   }
-
-
+  // making request to server and getting array(which contains objects with tags) as a responce 
   handleSubmit(event) {
     event.preventDefault();
+    // setting loading to true for loading icon popup
     this.setState({
       loading : true
     })
@@ -97,12 +102,13 @@ class HomePage extends React.Component {
         .then(
           (get)=>{this.drawer(get, context);
           this.setState({
-            loading: false
+            loading: false,
           })
+          console.log(get)
         })
         .catch(err => console.log("err", err));
 }
-
+// getting saved HTML from the server 
   handleSavedHtml(event) {
     const context = document.getElementsByClassName('inspector-source-code')[0];
     event.preventDefault();
@@ -112,7 +118,7 @@ class HomePage extends React.Component {
     .then((get)=>{this.drawer(get,context)})
     .catch(e => {console.log(e)});
   }
-  
+  // Saving HTML in database
   saveHtml(event){
     event.preventDefault();
     const body = {url : this.state.search};
@@ -123,6 +129,7 @@ class HomePage extends React.Component {
   }
 
   render() {
+    const {user, loading, search} = this.state;
     if(!this.state.user){
       return(
         <Redirect exact to="/" />
@@ -133,14 +140,21 @@ class HomePage extends React.Component {
       <div>
         <Header />
         <div className="home-page">
-          <LeftContent user={this.state.user}/>
+          <LeftContent user={user}/>
           <Body 
               urlFetch={this.handleSubmit} 
               change={this.handleChange} 
-              value={this.state.search} 
+              value={search} 
               getSavedHtml={this.handleSavedHtml} 
               saveHtml={this.saveHtml}
-              loading = {this.state.loading}/>
+              loading = {loading}/>
+        </div>
+
+        <div className="inspector">
+
+        <button onClick={this.showInspector}>Show inspector code</button>
+
+        
         </div>
       </div>
     );

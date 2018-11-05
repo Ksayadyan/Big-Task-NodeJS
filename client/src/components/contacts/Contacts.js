@@ -2,7 +2,7 @@
 import React from 'react';
 // Content components
 import Header from '../home-page/Header/Header';
-import Li from './Author'
+import Li from './Author';
 // CSS 
 import './contacts.css';
 const Contacts = () => {

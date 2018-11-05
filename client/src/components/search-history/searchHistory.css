@@ -51,13 +51,16 @@
 .group-history-container{
     position: absolute;
     margin-left: 250px;
-    margin-top: -74px;      
+    margin-top: -74px;  
+    width: 100%;    
 }
 
 .group-history-container  ul li{
-    line-height: 50px;
+    line-height: 20px;
     height: 20px;
-              
+    font-size: 10px;
+    width: auto;
+    list-style-type: circle;
 }
 .group-history-container  ul>li:hover{
     transform: scale(1);
@@ -81,5 +84,5 @@
     padding: 0
 }
 .history-result ul > li{
-    margin-top: 20px;
+    margin-top: 20px;    
 }

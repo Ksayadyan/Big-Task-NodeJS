@@ -11,7 +11,13 @@ class WS {
         })
         .then(response => {
             if (!response.ok) { throw response; }
-            return response.json();    
+            try{
+                const res = response.json();
+                return res;
+            }
+            catch(e){
+                return response;
+            }
         })
         .catch(error => {
             throw error;

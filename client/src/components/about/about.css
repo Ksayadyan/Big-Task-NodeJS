@@ -4,10 +4,20 @@
     min-height: 500px;
     background-color: #CDD6D5;
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column
+    flex-direction: column;
 }
 .about-content h2 {
     font-size: 40px;
+    margin-top: 100px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.about-content p{
+    width: 35%;
+    font-size: 25px;
+    color: #A10E2B;
+    text-align: justify;
+    border-style: outset;
+    padding: 20px;
+
 }

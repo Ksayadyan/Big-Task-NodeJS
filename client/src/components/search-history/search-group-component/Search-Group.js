@@ -72,11 +72,12 @@ class Search_Group extends React.Component{
                         <Loading/>
                     </div>
                  }
+                 <ul>
           {groups.map((group)=>(
-            <ul>
+            
               <Group_Url value={group.groupName} token={this.state.user.token}/>
-            </ul>
             ))}
+            </ul>
               <Pagination className = {className} page={page} totalpages={totalpages} handlePaginationClick = {this.handlePaginationClick}/>
         </div>
           </div> 

@@ -32,6 +32,7 @@ class SignUp extends React.Component {
             errors : {}, 
         }
         // binding all functions which contains this
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.firstNameValidation = this.firstNameValidation.bind(this);
         this.lastNameValidation = this.lastNameValidation.bind(this);
@@ -125,7 +126,19 @@ class SignUp extends React.Component {
     }
     handleSubmit(event){
         event.preventDefault();
-        WebService.request('/api', 'POST', this.state)
+        let body = {
+            lastName : this.state.lastName,
+            login : this.state.login,
+            firstName : this.state.firstName,
+            password : this.state.password,
+            gender : this.state.gender,
+            birthday : this.state.birthday,
+            email : this.state.email,
+            phone : this.state.phone,
+            question : this.state.question,
+            answer : this.state.answer
+        }
+        WebService.request('/api', 'POST', body)
                 .then(res => res.json())
                 .then(get => console.log(get))
                 .catch(err => console.log("err", err));

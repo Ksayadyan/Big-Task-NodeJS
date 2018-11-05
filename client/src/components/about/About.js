@@ -13,7 +13,7 @@ const About = () => {
             <div className="about-content">
             <h2>A little bit info about our website</h2>
                  <p>
-                 Hi Dear user 
+                 &nbsp; Hi Dear user:)))))
                  Here we will talk a little bit about our website and will explain you how to use it
                  First of all our web site is intended for users who want to follow all HTML changes in correct view,for all websites.
                  To get HTML code of website you just need to write correct URL in search bar,for example https://www.dataowl.io/

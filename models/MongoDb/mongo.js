@@ -105,13 +105,13 @@ const getImages = async (req, res) => {
     try{
       req.query.page = parseInt(req.query.page);
       if(!Boolean(req.query.page)){
-        res.send(400);
+        res.sendStatus(400);
         return;
       }
       const result = await db.find({id: `${req.userId}`})
       .project({images: {$slice: [(req.query.page-1)*3,req.query.page*3]}, totalImages: 1, _id: 0}).toArray();
       console.log(result);
-      res.send(result);     
+      res.send(JSON.stringify(result));     
     }catch(e){
       console.log(e);
       res.sendStatus(503);
