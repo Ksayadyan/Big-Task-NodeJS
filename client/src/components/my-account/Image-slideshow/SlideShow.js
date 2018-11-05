@@ -6,7 +6,8 @@ class SlideShow extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            images : []
+            images : [],
+            user: JSON.parse(localStorage.user),
         }
     }
     componentWillMount = () => {
@@ -29,7 +30,7 @@ class SlideShow extends React.Component {
             {images.map((image) => (
                 <ul>
                     {console.log(image)}
-                    { <li><img alt="saved picture" src={image}/></li>}
+                    { <li><img alt="saved picture" src={`${image}?token=${this.state.user.token}`}/></li>}
                 </ul>
             ))}
             </div>

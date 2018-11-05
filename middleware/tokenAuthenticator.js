@@ -19,6 +19,21 @@ const AuthenticateToken = async (req, res, next) => {
     }
 }
 
+const AuthenticateImageToken = async (req, res, next)=>{
+    try{
+        const token = req.query.token;
+        console.log(token);
+        console.log('Client url request');
+        await jwt.verify(token, SECRET_KEY);
+        next();
+    } catch(e) {
+        console.log('not authenticated');
+        res.send(401)
+    }
+
+}
+
 module.exports = {
     AuthenticateToken,
+    AuthenticateImageToken,
 }
