@@ -15,7 +15,7 @@ const AuthenticateToken = async (req, res, next) => {
         next();
     }catch(e){
         console.log('not authenticated');
-        res.send(401)
+        res.json(401)
     }
 }
 
@@ -28,7 +28,7 @@ const AuthenticateImageToken = async (req, res, next)=>{
         next();
     } catch(e) {
         console.log('not authenticated');
-        res.send(401)
+        res.json(401)
     }
 
 }

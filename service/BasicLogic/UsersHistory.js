@@ -27,7 +27,7 @@ const fetchurl = async (req, res) => {
         try{
           fetchedUrl = new URL(req.body.url);
         }catch(e){
-          res.sendStatus(406);
+          res.json(406);
           return;
         }
         const hostname = fetchedUrl.hostname;
@@ -52,7 +52,7 @@ const fetchurl = async (req, res) => {
           uri: `${req.body.url}/`,
         },async (err,response,body)=>{
           if(err){
-            res.sendStatus(400);
+            res.json(400);
             return;
           }
             const result = HTML.parse(body);
@@ -60,7 +60,7 @@ const fetchurl = async (req, res) => {
             res.send(result);
         });
     } catch (e) {
-      res.sendStatus(507);
+      res.json(507);
       console.log(e);
       errorHandler('Error occured while trying to save fetched url','fetchurl','UsersHistory.js',__dirname);
     }
@@ -77,7 +77,7 @@ const fetchurl = async (req, res) => {
           uri: `${req.body.url}/`,
         },async (err,response,body)=>{
           if(err){
-            res.send(507);
+            res.json(507);
             errorHandler('Error occured while making a request','saveHtml','UsersHistory', __dirname);
           }
           try{
@@ -86,9 +86,9 @@ const fetchurl = async (req, res) => {
             errorHandler('Error occured while saving html','saveHtml','UsersHistory',__dirname);
           }
         });
-        res.sendStatus(201);
+        res.json(201);
     } catch (e) {
-      res.sendStatus(507);
+      res.json(507);
       errorHandler('Unknown error while saving html','saveHtml','UsersHistory',__dirname);
     }
   }
@@ -99,7 +99,7 @@ const fetchurl = async (req, res) => {
     try{
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
         if(!parseResult){
-          res.send(400);
+          res.json(400);
           return;
         }
         req.query.page = parseResult.page;
@@ -134,7 +134,7 @@ const fetchurl = async (req, res) => {
       
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
         if(!parseResult){
-          res.send(400);
+          res.json(400);
           return;
         }
         req.query.page = parseResult.page;
@@ -163,7 +163,7 @@ const fetchurl = async (req, res) => {
       try{
         const parseResult = queryToIntParser(req.query.page, req.query.perPage);
         if(!parseResult){
-          res.sendStatus(400);
+          res.json(400);
           return;
         }
         req.query.page = parseResult.page;
@@ -181,7 +181,7 @@ const fetchurl = async (req, res) => {
       res.send(result);
     }catch(e){
       console.log(e);
-      res.send(503);
+      res.json(503);
       errorHandler('Unable to retrieve history from "history" database', 'browseGroupedUrlHistory', 'Usershistory.js', __dirname);
     }
   }

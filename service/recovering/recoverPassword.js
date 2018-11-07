@@ -21,16 +21,16 @@ const recoverPassword = async (req,db,res)=>{
           {password : newPassword},
           {where:{login : req.body.login}},
           );   
-        res.sendStatus(205);
+        res.json(205);
         console.log('Password has been reset');
     }else{
-      res.sendStatus(409);
+      res.json(409);
       console.log('Answer is incorrect');
     }
   }catch(e){
-      res.sendStatus(501);
+      res.json(501);
       errorHandler('Error happend while updating user data','recoverPassword','recoverPassword.js',__dirname);
-
+    
   }
 }
 

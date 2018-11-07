@@ -9,7 +9,7 @@ class Search_Group extends React.Component{
     this.state = {
         groups : [],
         page : 1,
-        totalpages : 10,
+        totalPages : 10,
         className : 'Pagination',
         loading : false,
         }
@@ -23,7 +23,6 @@ class Search_Group extends React.Component{
     let nextPage = this.state.page;
     nextPage = direction === "next" ? nextPage + 1 : nextPage - 1;
     this.setState({page : nextPage
-             // call fetchCurrencies function inside setStates callback   
     }, ()=>{  this.handeleGroupHistory();});
   
 }
@@ -46,7 +45,7 @@ class Search_Group extends React.Component{
       this.setState({
         groups : get.rows,
         counts : get.count,
-        className : "block",
+        className : 'block',
         loading : false,
       })
       console.log(get)
@@ -56,7 +55,7 @@ class Search_Group extends React.Component{
     })
   } 
   render(){
-      const {page , totalpages , groups , className, loading} = this.state;
+      const {page , totalPages , groups , className, loading} = this.state;
       return(
         <div className="search-history-body">
           <div className="groupHistory">
@@ -78,7 +77,7 @@ class Search_Group extends React.Component{
               <Group_Url value={group.groupName} token={this.state.user.token}/>
             ))}
             </ul>
-              <Pagination className = {className} page={page} totalpages={totalpages} handlePaginationClick = {this.handlePaginationClick}/>
+              <Pagination className = {className} page={page} totalPages={totalPages} handlePaginationClick = {this.handlePaginationClick}/>
         </div>
           </div> 
     </div>

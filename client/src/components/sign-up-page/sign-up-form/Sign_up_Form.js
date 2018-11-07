@@ -1,5 +1,8 @@
 //react main imports
 import React from 'react';
+import {withRouter} from 'react-router-dom';     
+
+
 // My shared components
 import errMsg from '../../shared/ErrorMessages.js';
 import Input from '../../shared/Input';
@@ -10,6 +13,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 // Services
 import WebService from '../../../services/WebService';
+// CSS
+import '../signUp.css';
 // errors are pushing to these object after validation
 let errors = {}
 // SignUp is a class component that returns inputs for signing up with 
@@ -126,21 +131,16 @@ class SignUp extends React.Component {
     }
     handleSubmit(event){
         event.preventDefault();
-        let body = {
-            lastName : this.state.lastName,
-            login : this.state.login,
-            firstName : this.state.firstName,
-            password : this.state.password,
-            gender : this.state.gender,
-            birthday : this.state.birthday,
-            email : this.state.email,
-            phone : this.state.phone,
-            question : this.state.question,
-            answer : this.state.answer
-        }
+        const {lastName, login, firstName, password, gender, birthday, email, phone, question, answer} = this.state;
+        let body = { lastName, login, firstName, password, gender, birthday, email, phone, question, answer};
+
         WebService.request('/api', 'POST', body)
-                .then(res => res.json())
-                .then(get => console.log(get))
+                .then(get => {
+                    if(get){
+                        alert("Succesfully registered!!!");
+                        this.history.push('/signin');
+                    }
+                })
                 .catch(err => console.log("err", err));
     }
     render(){
@@ -185,22 +185,24 @@ class SignUp extends React.Component {
                     onChange={this.handleChange}
                     value={this.state.password}
                     /> 
-                <ErrorField errorName={this.state.passwordError}/>                
-                <Checkbox  
-                    type="radio"
-                    className="form-field-rad" 
-                    name="gender" 
-                    value="male" 
-                    onChange = {this.handleChange} 
-                    checked={this.state.gender==="male"}/>
-                    Male
-                <Checkbox 
-                    type="radio"
-                    className="form-field-rad" 
-                    name="gender"
-                    value="female" 
-                    onChange = {this.handleChange} 
-                    checked={this.state.gender==="female"}/> Female
+                <ErrorField errorName={this.state.passwordError}/> 
+                <div>               
+                    <Checkbox  
+                        type="radio"
+                        className="form-field-rad" 
+                        name="gender" 
+                        value="male" 
+                        onChange = {this.handleChange} 
+                        checked={this.state.gender==="male"}/>
+                        Male
+                    <Checkbox 
+                        type="radio"
+                        className="form-field-rad" 
+                        name="gender"
+                        value="female" 
+                        onChange = {this.handleChange} 
+                        checked={this.state.gender==="female"}/> Female
+                </div>
                 <TextField
                     onBlur={this.dateValidation}
                     variant="outlined"
@@ -252,17 +254,10 @@ class SignUp extends React.Component {
                     onChange={this.handleChange}
                     value={this.state.answer}
                     /> 
-                    <label className = 'form-checkbox-label'>Do you agree with terms ?</label>
-                <Checkbox 
-                    type="checkbox" 
-                    className="form-field-checkbox" 
-                    value={this.state.agree} 
-                    onChange={this.handleChange}
-                    name="agree"/>
                 <Btn event={this.handleSubmit} name="Sign-Up"/>
             </form>
         </div>
         )
     }
 }
-export default SignUp;
+export default withRouter(SignUp);

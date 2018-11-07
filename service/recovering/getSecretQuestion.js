@@ -15,7 +15,7 @@ const  getSecretQuestion = async (req, res, db)=>{
  
   res.send(result.question)
 }catch(e){
-    res.sendStatus(404)
+    res.json(404)
     console.log('User not found');
   }
 }

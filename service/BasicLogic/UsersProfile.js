@@ -32,7 +32,7 @@ const profile = async (req, res, token, userId) => {
       //Find information about specific user in mongo database
       await mongod.findAndSendUserInfo(userId, res, obj);
     } catch (e) {
-      res.sendStatus(500);
+      res.json(500);
       errorHandler('Unable to retrieve data from MySQL','profile','UsersProfile.js',__dirname);
     }
   }
@@ -41,15 +41,15 @@ const profile = async (req, res, token, userId) => {
   const imageUpload = (req, res) => {
       if (!req.files) {
         console.log('No files uploaded');
-        res.sendStatus(415);
+        res.json(415);
       } else {
         const image = req.files.image;
         image.mv(`./user-images/Client${req.userId}/${req.files.image.name}`, (err) => {
           if (err) {
-            res.sendStatus(500)
+            res.json(500)
             errorHandler('Unable to save uploaded image','imageUpload','UsersProfile.js',__dirname);
           }
-          res.sendStatus(201);
+          res.json(201);
           mongod.updateImages(req.userId, `Client${req.userId}/${req.files.image.name}`);
         })
       }
@@ -69,9 +69,9 @@ const profile = async (req, res, token, userId) => {
       {where:{id:req.userId}});
       
       console.log('information changed');
-      res.sendStatus(205);
+      res.json(205);
     } catch (e) {
-      res.sendStatus(503);
+      res.json(503);
       console.log(e);
       errorHandler('Error happend while changing user data','editProfile','UsersProfile',__dirname);
     }

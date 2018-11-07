@@ -92,9 +92,9 @@ const editProfilePic = async (req, res) => {
         profileImage: req.body.path
       }
     });
-    res.send(205);
+    res.json(205);
   }catch(e){
-    res.sendStatus(503);
+    res.json(503);
     errorHandler('Unable to update profile pick','editProfilePick','mongo.js', __dirname);
   }
 }
@@ -105,16 +105,16 @@ const getImages = async (req, res) => {
     try{
       req.query.page = parseInt(req.query.page);
       if(!Boolean(req.query.page)){
-        res.sendStatus(400);
+        res.json(400);
         return;
       }
       const result = await db.find({id: `${req.userId}`})
-      .project({images: {$slice: [(req.query.page-1)*3,req.query.page*3]}, totalImages: 1, _id: 0}).toArray();
+      .project({images: {$slice: [(req.query.page-1)*3,3]}, totalImages: 1, _id: 0}).toArray();
       console.log(result);
       res.send(JSON.stringify(result));     
     }catch(e){
       console.log(e);
-      res.sendStatus(503);
+      res.json(503);
       errorHandler('Unable to get images', 'getImages','mongo.js',__dirname)
     }
 }
@@ -156,7 +156,7 @@ const getSavedHtml = async (req,res)=>{
       html = HTML.parse(user.html);
     }catch(e){
       console.log(e);
-      res.sendStatus(404);
+      res.json(404);
       return;
     }
     res.send(html);

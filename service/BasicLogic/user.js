@@ -40,7 +40,7 @@ const signup = async (req, res) => {
     //create folder for user
     folderCreator(user['id']);
     }catch (e){
-      res.sendStatus(507);
+      res.json(507);
       errorHandler('Unable to create user folder','folderCreator','user.js',__dirname);
     }
     //Creating mongodb user object and sending to database
@@ -52,10 +52,10 @@ const signup = async (req, res) => {
       await mongod.mongo(obj);
     }
     console.log("Succesfully registered");
-    res.sendStatus(201)
+    res.json(201)
   } catch (e) {
     console.log(`User with login "${values.login}" exists`);
-    res.sendStatus(409)
+    res.json(409)
   }
 }
 
@@ -83,12 +83,12 @@ const login = async (req, res) => {
 
       } else {
         console.log('User is not found');
-        res.sendStatus(401);
+        res.json(401);
       }
   } catch (e) {
     console.log(e);
     errorHandler('Unable to retrieve data from MySQL','login','user.js',__dirname);
-    res.sendStatus(503);
+    res.json(503);
   }
 }
 
@@ -98,9 +98,9 @@ const login = async (req, res) => {
 //Signing out specific user
 const signout = async (req, res) => {
   if (req.userId) {
-    res.sendStatus(200);
+    res.json(200);
   } else {
-    res.sendStatus(401)
+    res.json(401)
   }
 }
 

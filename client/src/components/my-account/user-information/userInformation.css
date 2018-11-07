@@ -1,0 +1,47 @@
+.user-information{
+    background-color: azure;
+    width: 300px;
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: baseline;
+    padding-top: 100px;
+    padding-left: 20px;
+}
+.user-information > h2{
+    font-family: sans-serif;
+    color: brown;
+    text-align: center
+}
+.user-information > img {
+    box-shadow:-1px 2px 14px #ccc;
+    transition-duration: 1s;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.user-information > img:hover{
+    transform: scale(0.9)
+}
+.user-information > span{
+    font-family: sans-serif;
+    font-size: 30px;
+    color: crimson;
+    margin-top: 10px;
+
+}
+
+/* images uploade */
+.user-information label img{
+    width: 50px;
+    cursor: pointer;
+}
+.user-information div{
+    margin-top: 50px;
+    display: flex;
+    justify-content: flex-end    
+}
+.user-information input:last-child{
+    outline: none;
+
+}

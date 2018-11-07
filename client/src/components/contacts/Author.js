@@ -1,7 +1,7 @@
 // React main imports
 import React from 'react';
 // Li component returns web-site authors information , which he gets with props
-const Li = (props) => {
+const Author = (props) => {
     const {name, img, email, phone} = props;
     return(
         <li>
@@ -12,4 +12,4 @@ const Li = (props) => {
         </li>
     )
 }
-export default Li;
+export default Author;
