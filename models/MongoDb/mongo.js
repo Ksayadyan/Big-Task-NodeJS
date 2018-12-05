@@ -1,6 +1,9 @@
 const MongoClient = require('mongodb').MongoClient;
 const findUserById = require('./findUserById.js');
 const errorHandler = require('../../helpers/errorhandler.js');
+const request = require('request')
+const jsdiff = require('diff');
+const pretty = require('pretty');
 
 //Getting configuration constrants
 const {
@@ -162,7 +165,29 @@ const getSavedHtml = async (req,res)=>{
     res.send(html);
 }
 
+const compareHtml =async (req,res)=>{
+  const one = await dbHtml.findOne({id: req.userId, url: req.body.url});
+  await request({
+    uri :`${req.body.url}`,
+  },async (err,response,body)=>{
+    if(err){
+      res.json(507);
+      errorHandler('Error occured while making a request','compareHtml','UserHistor ',__dirname)
+    }
+
+    
+  const diff = jsdiff.diffLines((one.html),(body));
+  diff.map((difference,index,arr)=>{
+    arr[index].value = arr[index].value.replace(/[\r\n\t]/gim,'');
+  })
+  res.send(diff);
+  })
+   
+    }
+
+
 module.exports = {
+  compareHtml,
   mongo,
   findAndSendUserInfo,
   updateImages,

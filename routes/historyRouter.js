@@ -1,7 +1,7 @@
 
 
-const {fetchurl,saveHtml,browseGroupHistory,browseUrlHistory,browseGroupedUrlHistory} = require('../service/BasicLogic/UsersHistory.js');
-const {getSavedHtml, getImages, editProfilePic} = require('../models/MongoDb/mongo.js');
+const {fetchurl,saveHtml,browseGroupHistory,browseUrlHistory,browseGroupedUrlHistory,} = require('../service/BasicLogic/UsersHistory.js');
+const {getSavedHtml, getImages, editProfilePic,compareHtml} = require('../models/MongoDb/mongo.js');
 const {AuthenticateToken} = require('../middleware/tokenAuthenticator.js');
 
 const configureHistoryRouter = (router) =>{
@@ -21,6 +21,8 @@ const configureHistoryRouter = (router) =>{
     router.get('/getImages', AuthenticateToken, getImages);
     //changing profile picture
     router.post('/editProfilePic', AuthenticateToken, editProfilePic);
+    //compareing
+    router.post('/compare',AuthenticateToken,compareHtml)
 
     console.log('History route configired');
 }

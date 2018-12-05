@@ -94,6 +94,11 @@ const fetchurl = async (req, res) => {
   }
 
 
+
+
+
+
+
   //browse users history as groups
   const browseGroupHistory = async (req,res)=>{
     try{
@@ -192,4 +197,5 @@ module.exports = {
   browseGroupHistory,
   browseUrlHistory,
   browseGroupedUrlHistory,
+  
 }
