@@ -49,7 +49,7 @@ const profile = async (req, res, token, userId) => {
             res.json(500)
             errorHandler('Unable to save uploaded image','imageUpload','UsersProfile.js',__dirname);
           }
-          req.body.path = `user-images/Client${req.userId}/${req.files.image.name}`;
+          req.body.path = `Client${req.userId}/${req.files.image.name}`;
           mongod.editProfilePic(req, res);
           mongod.updateImages(req.userId, `Client${req.userId}/${req.files.image.name}`);
         })
