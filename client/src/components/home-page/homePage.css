@@ -41,6 +41,7 @@
   .home-page{
       height: 100vh;
       display: flex;
+      background-color: aliceblue
   }
   .inspector{
     width: 100%;

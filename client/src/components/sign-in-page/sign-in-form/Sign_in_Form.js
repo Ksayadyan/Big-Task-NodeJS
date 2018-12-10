@@ -36,7 +36,7 @@ class Sign_In_Form extends React.Component {
     makeButtonActive(){
         if (this.state.loginError === '' && this.state.passwordError === ''){
             this.setState({
-                buttinDisabled:false
+                buttinDisabled : false
             })
         }else{
             this.setState({
@@ -106,7 +106,7 @@ handleSubmit(event) {
         .then(user => {
             this.checkUser(user);
         })
-        .catch(error =>{
+        .catch(error => {
                 console.log(error.statusText);
                 this.setState({
                     invalidUser : `User ${error.statusText} , please enter valid login & password`

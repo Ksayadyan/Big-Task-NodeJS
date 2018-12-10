@@ -37,9 +37,14 @@ class MyAccount extends React.Component{
         method: 'POST',
         body: formdata,
       })
-      .then(()=>{
-          alert("Image was succesfully uploaded!!!!!!!");
-      }).catch((e)=>{
+      .then((res)=>{
+          return res.json();
+          
+      }).then((data) => {
+        console.log(data)
+      })
+      
+      .catch((e)=>{
         console.log(e);
       })
   }
@@ -58,7 +63,8 @@ class MyAccount extends React.Component{
               profileImage={profileImage}
               name={name}
               lastname={lastname}
-              handleSubmit={this.handleSubmit}/>
+              handleSubmit={this.handleSubmit}
+              token={token}/>
           <SlideShow token={token}/>
 
       </div>

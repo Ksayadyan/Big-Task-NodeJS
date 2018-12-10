@@ -1,8 +1,6 @@
 //react main imports
 import React from 'react';
 import {withRouter} from 'react-router-dom';     
-
-
 // My shared components
 import errMsg from '../../shared/ErrorMessages.js';
 import Input from '../../shared/Input';
@@ -34,7 +32,8 @@ class SignUp extends React.Component {
             question : '',
             answer : '',
             agree : false,
-            errors : {}, 
+            errors : {},
+            buttinDisabled : true 
         }
         // binding all functions which contains this
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,6 +46,7 @@ class SignUp extends React.Component {
         this.loginValidation = this.loginValidation.bind(this);
         this.answerValidation = this.answerValidation.bind(this);
         this.emailValidation = this.emailValidation.bind(this);
+        this.makeButtonActive = this.makeButtonActive.bind(this);
     }
 /* handleChange is a function that takes value from the input 
      and with the setState method gives it to the components state*/
@@ -69,6 +69,19 @@ class SignUp extends React.Component {
                ...errors
             });
         } 
+    }
+
+
+    makeButtonActive(){
+        if ( this.state.loginError === '' && this.state.lastNameError === '' && this.state.passwordError === '' & this.state.phoneError === ''){
+            this.setState({
+                buttinDisabled:false
+            })
+        }else{
+            this.setState({
+                buttinDisabled : true
+            })
+        }
     }
     /* All validation functions are checking for the condition 
     and setting appropriate value for error type*/
@@ -138,7 +151,8 @@ class SignUp extends React.Component {
                 .then(get => {
                     if(get){
                         alert("Succesfully registered!!!");
-                        this.history.push('/signin');
+                       console.log('everything is ok')
+                        this.history.push('/sign-in');
                     }
                 })
                 .catch(err => console.log("err", err));
@@ -158,6 +172,7 @@ class SignUp extends React.Component {
                     />
                 <ErrorField errorName={this.state.firstNameError}/>
                 <Input 
+                    onBlur={this.makeButtonActive}
                     type="text"
                     label="Last Name"
                     variant="outlined"
@@ -168,6 +183,7 @@ class SignUp extends React.Component {
                     />
                 <ErrorField errorName={this.state.lastNameError}/>                
                 <Input 
+                    onBlur={this.makeButtonActive}
                     type="text"
                     label="login"
                     variant="outlined"
@@ -177,6 +193,7 @@ class SignUp extends React.Component {
                     value={this.state.login}
                     /> 
                 <Input 
+                    onBlur={this.makeButtonActive}
                     type="password"
                     label="password"
                     variant="outlined"
@@ -226,7 +243,8 @@ class SignUp extends React.Component {
                     value={this.state.email}
                     />
                 <ErrorField errorName={this.state.emailError}/>                                    
-                 <Input 
+                 <Input
+                    onBlur={this.makeButtonActive} 
                     type="text"
                     label="phone"
                     variant="outlined"
@@ -254,7 +272,7 @@ class SignUp extends React.Component {
                     onChange={this.handleChange}
                     value={this.state.answer}
                     /> 
-                <Btn event={this.handleSubmit} name="Sign-Up"/>
+                <Btn event={this.handleSubmit} name="Sign-Up" disabled = {this.state.buttinDisabled}/>
             </form>
         </div>
         )

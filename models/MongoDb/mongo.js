@@ -167,6 +167,9 @@ const getSavedHtml = async (req,res)=>{
 
 const compareHtml =async (req,res)=>{
   const one = await dbHtml.findOne({id: req.userId, url: req.body.url});
+  if(one === null){
+    res.status(404).json("No saved html found in database");
+  }
   await request({
     uri :`${req.body.url}`,
   },async (err,response,body)=>{

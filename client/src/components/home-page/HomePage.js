@@ -129,33 +129,31 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const {user, loading, search} = this.state;
+    console.log(this.state.user)
+    const {user, loading, search, } = this.state;
     if(!this.state.user){
       return(
         <Redirect exact to="/" />
       )
     }else
 
+
     return (
       <div>
         <Header />
         <div className="home-page">
-          <LeftContent user={user}/>
+          <LeftContent user={user} token={user.token} />
           <Body 
+              
               urlFetch={this.handleSubmit} 
               change={this.handleChange} 
               value={search} 
               getSavedHtml={this.handleSavedHtml} 
               saveHtml={this.saveHtml}
-              loading = {loading}/>
+              loading = {loading}
+              token={user.token}/>
         </div>
 
-        <div className="inspector">
-
-        <button onClick={this.showInspector}>Show inspector code</button>
-
-        
-        </div>
       </div>
     );
   }

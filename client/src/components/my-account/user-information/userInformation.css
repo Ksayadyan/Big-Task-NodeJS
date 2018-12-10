@@ -8,20 +8,40 @@
     align-items: baseline;
     padding-top: 100px;
     padding-left: 20px;
+    display: flex;
+    align-items: center;
 }
 .user-information > h2{
     font-family: sans-serif;
     color: brown;
     text-align: center
 }
-.user-information > img {
+.upload-button{
+    margin-top: 15px;
+    background: none;
+    font-family: sans-serif;
+    border: 1px solid black;
+    padding: 8px 13px 8px 13px;
+    cursor: pointer;
+    transition-duration: 0.5s
+}
+.upload-button:hover{
+    background-color: black;
+    color: #fff;
+    border: 1px solid #fff;
+}
+.user-information  img {
     box-shadow:-1px 2px 14px #ccc;
     transition-duration: 1s;
     border-radius: 20px;
     cursor: pointer;
+    width: 250px;
 }
 .user-information > img:hover{
     transform: scale(0.9)
+}
+#profile-image { 
+    display: none
 }
 .user-information > span{
     font-family: sans-serif;
@@ -30,11 +50,42 @@
     margin-top: 10px;
 
 }
-
+.Images-upload{
+    width: 250px;
+}
 /* images uploade */
-.user-information label img{
+.download img{
     width: 50px;
     cursor: pointer;
+}
+.Images-uploade{
+    position: relative;
+    cursor: pointer;
+    
+}
+.user-information label::before{
+    content: 'images Uploade';
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    font-family: sans-serif;
+    text-align: center;
+    border-radius: 20px;
+    height: 50px;
+    padding-top: 20px;
+    font-size: 0px;
+    transition-duration: 0.5s
+    
+}
+.user-information label:hover::before{
+    content: 'images Uploade';
+    font-size: 20px;
+     background-color: #00000059;
+     color: #fff;
+     position: absolute;
+     bottom: 0
 }
 .user-information div{
     margin-top: 50px;
@@ -43,5 +94,4 @@
 }
 .user-information input:last-child{
     outline: none;
-
 }

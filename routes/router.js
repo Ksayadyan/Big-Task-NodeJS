@@ -10,7 +10,7 @@ configurePasswordRecover(router);
 configurePasswordReset(router);
 configureHistoryRouter(router);
 configureProfileRouter(router);
-configureUserRouter(router);
+configureUserRouter(router); 
 
 
 module.exports = router;

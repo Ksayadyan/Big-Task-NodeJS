@@ -2,18 +2,17 @@ import React from 'react';
 import './userInformation.css';
 
 const UserInformation = (props) => {
-    const {profileImage, name, lastname, handleImage, handleSubmit}=props;
+    const {profileImage, name, lastname, handleImage, handleSubmit, token}=props;
     return(
         <div className="user-information">
             <h2>User Account</h2>
-            <img src={profileImage}/>
-            <span>{name} {lastname}</span>
-            <div>
-                <label for="file"><img src="upload.png"/></label>
-                <input id="file" type="file" name="image" onChange={handleImage}/>
-                <button className="upload-button" onClick={handleSubmit}>Upload Image</button>
+            
+            <label for="profile-image" className="Images-uploade"><img src={`http://localhost:3000/${profileImage}?token=${token}`}/></label>
+            <input id="profile-image" type="file" name="image" onChange={handleImage} />
+            <button className="upload-button" onClick={handleSubmit}>Upload Image</button>
 
-            </div>
+            <span>{name} {lastname}</span>
+           
         </div>
     )
 };

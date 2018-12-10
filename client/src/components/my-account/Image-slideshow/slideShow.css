@@ -33,3 +33,18 @@
     height: 200px;
     margin-left: 10px;
 }
+
+button{
+    margin-top: 15px;
+    background: none;
+    font-family: sans-serif;
+    border: 1px solid black;
+    padding: 8px 13px 8px 13px;
+    cursor: pointer;
+    transition-duration: 0.5s
+}
+button:hover{
+    background-color: black;
+    color: #fff;
+    border: 1px solid #fff;
+}

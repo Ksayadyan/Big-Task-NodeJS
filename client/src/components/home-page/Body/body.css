@@ -63,5 +63,34 @@
 
 }
 .search-results > button:first-of-type{
-    margin-left: 120px;
+    margin-left: -121px;
 }
+.compare-button{
+    margin-left: 100px;
+}
+.compare{
+    z-index: 1000;
+    margin-top: 200px;
+}
+.added{
+    display: block
+}
+ 
+.added{
+    color: green;
+}
+.removed{
+    color: red;
+    display: flex;
+    flex-direction: column   
+}
+.removed > li:nth-of-type(2){
+    display: none
+}
+.removed > li:last-of-type{
+    display: none
+}
+.removed > li:last-child{
+    display: none
+}
+

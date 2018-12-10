@@ -44,12 +44,13 @@ const profile = async (req, res, token, userId) => {
         res.json(415);
       } else {
         const image = req.files.image;
-        image.mv(`./user-images/Client${req.userId}/${req.files.image.name}`, (err) => {
+        image.mv(`./user-images/Client${req.userId}/${req.files.image.name}`,(err) => {
           if (err) {
             res.json(500)
             errorHandler('Unable to save uploaded image','imageUpload','UsersProfile.js',__dirname);
           }
-          res.json(201);
+          req.body.path = `user-images/Client${req.userId}/${req.files.image.name}`;
+          mongod.editProfilePic(req, res);
           mongod.updateImages(req.userId, `Client${req.userId}/${req.files.image.name}`);
         })
       }

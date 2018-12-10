@@ -45,10 +45,10 @@ const signup = async (req, res) => {
     }
     //Creating mongodb user object and sending to database
     if (values.gender === 'male') {
-      const obj = new ClassUser(`${user['id']}`, '../defaultImages/male.jpg')
+      const obj = new ClassUser(`${user['id']}`, 'defaultImages/male.jpg')
       await mongod.mongo(obj);
     } else {
-      const obj = new ClassUser(`${user['id']}`, '../defaultImages/female.jpg')
+      const obj = new ClassUser(`${user['id']}`, 'defaultImages/female.jpg')
       await mongod.mongo(obj);
     }
     console.log("Succesfully registered");

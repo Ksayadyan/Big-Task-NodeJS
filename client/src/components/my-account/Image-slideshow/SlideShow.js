@@ -24,13 +24,16 @@ class SlideShow extends React.Component {
                 'Authorization' : token,
             },
             method : 'GET',
-        }).then(res => res.json())
+        }).then(res => {return res.json()})
         // .then(get => console.log(get[0].images))
-        .then(get => this.setState({
+        .then(get => {this.setState({
                 images : get[0].images,
-                className : 'block'}))
-        .then(()=>{console.log(this.state.images)})
-        .catch(err => console.log(err))
+                className : 'block',
+                totalPages : Math.ceil(get[0].totalImages/3)
+            })
+                console.log(this.state.totalPages)
+        })
+        .catch(err => alert(err))
     }
     handlePaginationClick (direction){
         let nextPage = this.state.page;
@@ -40,7 +43,7 @@ class SlideShow extends React.Component {
       
     }
     render(){
-        const {images, user, page, className} = this.state;
+        const {images, totalPages, page, className} = this.state;
         const token = this.props.token;
         return(
             <div className="slide-show">
@@ -51,7 +54,7 @@ class SlideShow extends React.Component {
                     <li><img alt="saved picture" src={`${image}?token=${token}`}/></li>    
                 ))}
             </ul>
-                <Pagination page={page} handlePaginationClick={this.handlePaginationClick} className={className}/>
+                <Pagination page={page} handlePaginationClick={this.handlePaginationClick} className={className} totalPages={totalPages}/>
             </div>
 
         )

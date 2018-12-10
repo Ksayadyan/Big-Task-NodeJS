@@ -6,7 +6,7 @@ const {AuthenticateImageToken} = require('../middleware/tokenAuthenticator');
 
 //Server full configuration
 module.exports = (app) => {
-  app.use('/Client*/*', AuthenticateImageToken);
+  app.use('/user-images/*/*', AuthenticateImageToken);
     app.use(express.static(`${__dirname}\\..\\user-images`));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
